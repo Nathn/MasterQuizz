@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"ng serve\" \"nodemon start backend/app.js\"",
+    "start": "concurrently \"ng serve --configuration=production\" \"nodemon start backend/app.js\"",
+    "start:dev": "concurrently \"ng serve --configuration=development\" \"nodemon start backend/app.js\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -21,6 +22,7 @@
     "concurrently": "^8.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "firebase": "^9.23.0",
     "nodemon": "^2.0.22",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
