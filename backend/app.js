@@ -1,7 +1,8 @@
 const express = require('express');
+const cors = require('cors');
 
 require('dotenv').config({
-    path: '.env'
+    path: 'backend/.env'
 });
 
 const routes = require('./routes');
@@ -13,11 +14,16 @@ app.use(express.urlencoded({
     extended: true
 }));
 
-app.use(function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin)
+            return callback(new Error('The CORS policy for this site does not allow access from the specified origin.'), false);
+        if (process.env.CORS_WHITELIST.split(',').indexOf(origin) === -1) {
+            return callback(new Error('The CORS policy for this site does not allow access from the specified origin.'), false);
+        }
+        return callback(null, origin);
+    }
+}));
 
 app.use('/', routes);
 
