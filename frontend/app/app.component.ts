@@ -14,7 +14,6 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
   title = 'MasterQuizz';
-  backendUrl: string = `http://${window.location.hostname}:3000/`;
   ping: string = '';
 
   constructor(
@@ -26,7 +25,7 @@ export class AppComponent {
   }
 
   pingServer() {
-    this.http.get(this.backendUrl + 'ping').subscribe((res: any) => {
+    this.http.get(environment.backendUrl + 'ping').subscribe((res: any) => {
       this.ping = res.message;
     });
   }

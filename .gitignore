@@ -12,6 +12,11 @@ package-lock.json
 npm-debug.log
 yarn-error.log
 
+# Deployment
+.dockerignore
+Dockerfile
+fly.toml
+
 # IDEs and editors
 .idea/
 .project
