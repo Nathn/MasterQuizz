@@ -3,6 +3,8 @@ const path = require('path');
 
 const router = express.Router();
 
+const userRoutes = require('./userRoutes');
+
 // console.log each request
 router.use((req, res, next) => {
     console.log('[SERVER] Request received: ' + req.method + ' ' + req.url);
@@ -14,6 +16,8 @@ router.get('/ping', async (req, res) => {
         message: 'pong'
     });
 });
+
+router.use('/', userRoutes);
 
 // Serve static files from the Angular app
 router.get('/*', (req, res) => {

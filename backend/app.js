@@ -1,6 +1,6 @@
 const express = require('express');
-const cors = require('cors');
 const path = require('path');
+const mongoose = require('mongoose');
 
 require('dotenv').config({
     path: 'backend/.env'
@@ -16,6 +16,9 @@ app.use(express.urlencoded({
 }));
 
 app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    next();
+    return;
     if (req.method === 'GET') { // GET requests don't need CORS
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
@@ -53,6 +56,16 @@ app.use(express.static(path.join(__dirname, '../dist/master-quizz'), {
         res.setHeader('Content-Type', mimeType[ext] || 'text/plain');
     }
 }));
+
+mongoose.set('strictQuery', true);
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+});
+mongoose.Promise = global.Promise;
+mongoose.connection.on('error', (err) => {
+    console.log(`An error occured while connecting to the database: ${err}`);
+});
 
 app.use('/', routes);
 
