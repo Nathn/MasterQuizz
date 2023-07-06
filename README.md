@@ -8,7 +8,7 @@ Run `npm run dev` for a development frontend+backend. Navigate to `http://localh
 
 ## Production build
 
-Run `npm run prod` to build the project in production conditions, then navigate to `http://localhost:3000/`. The build artifacts will be stored in the `dist/` directory.
+Run `npm run prod` to build the project and start the server in production conditions, then navigate to `http://localhost:3000/`. It is normal for reuests to not work because of the same-origin policy. The build artifacts will be stored in the `dist/` directory.
 
 ## Code scaffolding
 
