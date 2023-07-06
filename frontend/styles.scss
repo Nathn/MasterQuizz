@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import './styles/variables';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: $text-color;
+}
+
+body {
+    background-color: $primary-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+span {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin: auto 0 !important;
+}
+
+input {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    border-radius: 5px;
+    border: 1px solid #111;
+    padding: 10px !important;
+    margin: 10px 0 !important;
+    width: 100%;
+    max-width: 500px;
+    background-color: $input-color;
+    color: #d3d3d3;
+}
+
+button {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    border-radius: 5px;
+    background-color: $button-color;
+    border: 1px solid #111;
+    padding: 10px !important;
+    cursor: pointer;
+}

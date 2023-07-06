@@ -1,0 +1,71 @@
+@import '../styles/variables';
+
+@font-face {
+    font-family: 'Epica Sans Pro Black';
+    src: url('../assets/fonts/epica-sans-pro-black.otf') format('truetype');
+}
+
+/* Top toolbar styles */
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: $secondary-color;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.title {
+    flex-grow: 1;
+    text-align: center;
+    text-decoration: none;
+}
+
+.title h1 {
+    font-size: 42px;
+    font-family: Epica Sans Pro Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
+.buttons {
+    display: flex;
+}
+
+button {
+    margin-left: 10px;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.content {
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+/* Footer styles */
+footer {
+    padding: 10px;
+    background-color: $secondary-color;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+svg#clouds {
+    position: fixed;
+    bottom: -160px;
+    left: -230px;
+    z-index: -10;
+    width: 1920px;
+}

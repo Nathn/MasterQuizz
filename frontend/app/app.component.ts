@@ -14,20 +14,12 @@ import { environment } from '../environments/environment';
 })
 export class AppComponent {
   title = 'MasterQuizz';
-  ping: string = '';
 
   constructor(
     private router: Router,
     private http: HttpClient
   ) {
     initializeApp(environment.firebaseConfig);
-    this.pingServer();
-  }
-
-  pingServer() {
-    this.http.get(environment.backendUrl + 'ping').subscribe((res: any) => {
-      this.ping = res.message;
-    });
   }
 
 }
