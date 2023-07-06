@@ -16,9 +16,6 @@ app.use(express.urlencoded({
 }));
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    next();
-    return;
     if (req.method === 'GET') { // GET requests don't need CORS
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
@@ -50,7 +47,8 @@ app.use(express.static(path.join(__dirname, '../dist/master-quizz'), {
             '.png': 'image/png',
             '.jpg': 'image/jpg',
             '.gif': 'image/gif',
-            '.svg': 'image/svg+xml'
+            '.svg': 'image/svg+xml',
+            '.ico': 'image/x-icon'
         };
         const ext = path.slice(path.lastIndexOf('.'));
         res.setHeader('Content-Type', mimeType[ext] || 'text/plain');
