@@ -9,6 +9,7 @@
 
 body {
     background-color: $primary-color;
+    font-family: 'Verdana', sans-serif;
 }
 
 h1,
@@ -17,18 +18,15 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: 'Roboto', sans-serif;
     font-weight: 400;
 }
 
 span {
-    font-family: 'Roboto', sans-serif;
     font-weight: 300;
     margin: auto 0 !important;
 }
 
 input {
-    font-family: 'Roboto', sans-serif;
     font-weight: 300;
     border-radius: 5px;
     border: 1px solid #111;
@@ -41,11 +39,21 @@ input {
 }
 
 button {
-    font-family: 'Roboto', sans-serif;
+    color: $button-text-color;
     font-weight: 300;
+    font-size: 16px;
     border-radius: 5px;
     background-color: $button-color;
     border: 1px solid #111;
     padding: 10px !important;
     cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+button:hover {
+    background-color: darken($button-color, 10%);
+    color: lighten($button-text-color, 10%);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }

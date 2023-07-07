@@ -18,15 +18,65 @@
     height: 40px;
 }
 
-.title {
+.title-bar {
     flex-grow: 1;
     text-align: center;
     text-decoration: none;
 }
 
-.title h1 {
-    font-size: 42px;
-    font-family: Epica Sans Pro Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+.title-bar {
+    display: flex;
+    align-items: center;
+
+    h1 {
+        font-size: 42px;
+        font-family: Epica Sans Pro Black,
+            Impact,
+            Haettenschweiler,
+            'Arial Narrow Bold',
+            sans-serif !important;
+        float: left;
+        margin-left: 40px;
+    }
+
+    ul {
+        list-style: none;
+        float: left;
+        margin-left: 40px;
+
+        li {
+            display: inline-block;
+            margin-right: 30px;
+
+            a {
+                position: relative;
+                text-decoration: none;
+                color: $text-color;
+                font-weight: 300;
+                font-size: 22px;
+                transition: color 0.3s ease-in-out;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    bottom: -2px;
+                    left: 0;
+                    width: 0;
+                    height: 2px;
+                    background-color: $text-color;
+                    transition: width 0.3s ease-in-out;
+                }
+
+                &:hover {
+                    color: darken($text-color, 10%);
+
+                    &::before {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
 }
 
 .buttons {
