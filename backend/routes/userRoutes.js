@@ -16,13 +16,13 @@ router.post('/validateRegister', async (req, res) => {
     // Check if the email is valid
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
         return res.status(200).json({
-            message: 'Invalid email'
+            message: 'L\'adresse email n\'est pas valide.'
         });
     }
     // Check if the username is valid
-    if (!username || !username.match(/^[a-zA-Z0-9_]{3,20}$/)) {
+    if (!username || !username.match(/^[a-zA-Z0-9_]{1,18}$/)) {
         return res.status(200).json({
-            message: 'Invalid username'
+            message: 'Le pseudo n\'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores'
         });
     }
     // Check if the username is already taken
@@ -31,7 +31,7 @@ router.post('/validateRegister', async (req, res) => {
     });
     if (user) {
         return res.status(200).json({
-            message: 'Username already taken'
+            message: 'Le pseudo n\'est pas disponible.'
         });
     }
     // Check if the email is already taken
@@ -40,7 +40,7 @@ router.post('/validateRegister', async (req, res) => {
     });
     if (user) {
         return res.status(200).json({
-            message: 'Email already taken'
+            message: 'L\'adresse email est déjà utilisée par un autre compte.'
         });
     }
     // If everything is OK, return a success message
@@ -86,7 +86,7 @@ router.post('/getEmailFromUsername', async (req, res) => {
                 if (!user) {
                     console.log(`[SERVER] User not found while getting email from username`);
                     res.status(200).json({
-                        message: 'Nom d\'utilisateur introuvable'
+                        message: 'Nom d\'utilisateur introuvable.'
                     });
                 } else {
                     console.log(`[SERVER] Email found: ${user.email}`);

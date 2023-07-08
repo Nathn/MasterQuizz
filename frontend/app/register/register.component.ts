@@ -39,7 +39,7 @@ export class RegisterComponent {
   register() {
     // check password length
     if (this.password.length < 6) {
-      alert("Password must be at least 6 characters long");
+      alert("Le mot de passe doit contenir au moins 6 caractères.");
       return;
     }
     // check if all the info is valid through api
@@ -77,7 +77,15 @@ export class RegisterComponent {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log("error", errorCode, errorMessage);
-          // ..
+          if (errorCode == "auth/email-already-in-use") {
+            alert("L\'adresse email est déjà utilisée par un autre compte.");
+          }
+          if (errorCode == "auth/invalid-email") {
+            alert("L\'adresse email n\'est pas valide.");
+          }
+          if (errorCode == "auth/weak-password") {
+            alert("Le mot de passe doit contenir au moins 6 caractères.");
+          }
         });
     });
   }

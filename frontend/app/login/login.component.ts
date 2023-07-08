@@ -55,7 +55,12 @@ export class LoginComponent {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log("error", errorCode, errorMessage);
-          // ..
+          if (errorCode == "auth/wrong-password") {
+            alert("Mot de passe incorrect.");
+          }
+          if (errorCode == "auth/user-not-found") {
+            alert("Nom d\'utilisateur introuvable.");
+          }
         });
     });
   }
