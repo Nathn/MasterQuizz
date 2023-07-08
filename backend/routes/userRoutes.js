@@ -15,13 +15,13 @@ router.post('/validateRegister', async (req, res) => {
     } = req.body;
     // Check if the email is valid
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-        return res.status(400).json({
+        return res.status(200).json({
             message: 'Invalid email'
         });
     }
     // Check if the username is valid
     if (!username || !username.match(/^[a-zA-Z0-9_]{3,20}$/)) {
-        return res.status(400).json({
+        return res.status(200).json({
             message: 'Invalid username'
         });
     }
@@ -30,7 +30,7 @@ router.post('/validateRegister', async (req, res) => {
         username
     });
     if (user) {
-        return res.status(400).json({
+        return res.status(200).json({
             message: 'Username already taken'
         });
     }
@@ -39,7 +39,7 @@ router.post('/validateRegister', async (req, res) => {
         email
     });
     if (user) {
-        return res.status(400).json({
+        return res.status(200).json({
             message: 'Email already taken'
         });
     }
@@ -72,5 +72,43 @@ router.post('/register', async (req, res) => {
         });
     }
 });
+
+router.post('/getEmailFromUsername', async (req, res) => {
+    /*
+    This route is used to get the email of a user from his username.
+    */
+    try {
+        console.log(`[SERVER] Getting email from username: ${req.body.username}`);
+        await User.findOne({
+            username: req.body.username
+        }).exec()
+            .then(user => {
+                if (!user) {
+                    console.log(`[SERVER] User not found while getting email from username`);
+                    res.status(200).json({
+                        message: 'Nom d\'utilisateur introuvable'
+                    });
+                } else {
+                    console.log(`[SERVER] Email found: ${user.email}`);
+                    res.status(200).json({
+                        message: 'OK',
+                        email: user.email
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(`[SERVER] An error occured while getting email from username: ${err}`);
+                res.status(500).json({
+                    message: 'Internal server error'
+                });
+            });
+    } catch (err) {
+        console.log(`[SERVER] An error occured while getting email from username: ${err}`);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
+});
+
 
 module.exports = router;

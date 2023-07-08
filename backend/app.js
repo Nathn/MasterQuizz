@@ -27,7 +27,9 @@ app.use((req, res, next) => {
             });
         } else {
             if (process.env.CORS_WHITELIST.split(',').includes(referer)) {
-                res.setHeader('Access-Control-Allow-Origin', referer);
+                res.setHeader('Access-Control-Allow-Origin', referer.slice(0, referer.indexOf('/', 8)));
+                res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE', 'OPTIONS');
                 next();
             } else {
                 res.status(403).json({

@@ -3,7 +3,7 @@
     <div class="logo">
       <img src="../assets/logo.png" alt="MasterQuizz logo">
     </div>
-    <a class="title-bar" href="#">
+    <div class="title-bar" href="#">
       <h1>MasterQuizz</h1>
       <ul>
         <li><a href="#">Accueil</a></li>
@@ -12,14 +12,14 @@
         <li><a href="#">Classements</a></li>
         <li><a href="#">À propos</a></li>
       </ul>
-    </a>
-    <div class="buttons">
-      <button class="sign-in">Connection</button>
-      <button class="sign-up">Inscription</button>
     </div>
-    <div class="buttons" *ngIf="false">
-      <span class="username">{{ "username" }}</span>
-      <button class="sign-out">Déconnection</button>
+    <div class="buttons" *ngIf="!user">
+      <button class="sign-in" (click)="navigateToLogin()">Connection</button>
+      <button class="sign-up" (click)="navigateToRegister()">Inscription</button>
+    </div>
+    <div class="buttons" *ngIf="user">
+      <span class="username">Bonjour, <b>{{ user.displayName }}</b></span>
+      <button class="sign-out" (click)="logout()">Déconnection</button>
     </div>
   </div>
 </header>

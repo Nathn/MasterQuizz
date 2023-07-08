@@ -26,6 +26,10 @@ span {
     margin: auto 0 !important;
 }
 
+b {
+    font-weight: bold;
+}
+
 input {
     font-weight: 300;
     border-radius: 5px;
@@ -35,7 +39,7 @@ input {
     width: 100%;
     max-width: 500px;
     background-color: $input-color;
-    color: #d3d3d3;
+    color: $input-text-color;
 }
 
 button {
@@ -52,8 +56,40 @@ button {
     transition: box-shadow 0.3s ease-in-out;
 }
 
-button:hover {
+button:not([disabled]):hover,
+button:not([disabled]):focus {
     background-color: darken($button-color, 10%);
     color: lighten($button-text-color, 10%);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+button:disabled {
+    background-color: $button-disabled-color;
+    color: $button-disabled-text-color;
+    cursor: not-allowed;
+}
+
+form {
+    width: max-content;
+    max-width: 90%;
+    padding: 15px;
+    margin: auto;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-size: xx-large;
+        text-align: center !important;
+    }
+
+    .form-group {
+        margin: 20px 0;
+    }
+
+    * {
+        text-align: left;
+    }
 }
