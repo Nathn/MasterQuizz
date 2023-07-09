@@ -5,9 +5,9 @@
     "ng": "ng",
     "start": "node backend/app.js",
     "dev": "concurrently \"ng serve --configuration=development\" \"nodemon start backend/app.js\"",
-    "prod": "npm run build && npm run start",
+    "prod": "ng build --aot --configuration=productionhttp && npm run start",
     "build": "ng build --aot --configuration=production",
-    "watch": "ng build --watch --configuration development",
+    "watch": "ng build --watch --configuration=development",
     "test": "ng test"
   },
   "private": true,

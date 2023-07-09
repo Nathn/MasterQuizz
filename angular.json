@@ -56,6 +56,27 @@
                 }
               ]
             },
+            "productionhttp": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "frontend/environments/environment.ts",
+                  "with": "frontend/environments/environment.prodhttp.ts"
+                }
+              ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -72,6 +93,9 @@
           "configurations": {
             "production": {
               "browserTarget": "MasterQuizz:build:production"
+            },
+            "productionhttp": {
+              "browserTarget": "MasterQuizz:build:productionhttp"
             },
             "development": {
               "browserTarget": "MasterQuizz:build:development"
