@@ -13,5 +13,10 @@
         <label for="password">Mot de passe :</label><br />
         <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" required />
     </div>
-    <button type="submit" class="submit-button" [disabled]="!registerForm.valid">S'inscrire</button>
+    <button type="submit" class="submit-button" [disabled]="!registerForm.valid || isLoading">
+        <span *ngIf="!isLoading">S'inscrire</span>
+        <span *ngIf="isLoading">
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+        </span>
+    </button>
 </form>

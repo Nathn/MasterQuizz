@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -25,6 +27,10 @@ export class LoginComponent {
   auth: any;
   db: any;
 
+  faSpinner = faSpinner;
+
+  isLoading: boolean = false;
+
   constructor(
     private router: Router,
     private http: HttpClient
@@ -37,11 +43,13 @@ export class LoginComponent {
   }
 
   login() {
+    this.isLoading = true;
     this.http.post(environment.apiUrl + "getEmailFromUsername", {
       username: this.username
     }).subscribe((response: any) => {
       if (response.message != "OK") {
         alert(response.message);
+        this.isLoading = false;
         return;
       }
       this.email = response.email;
@@ -61,6 +69,7 @@ export class LoginComponent {
           if (errorCode == "auth/user-not-found") {
             alert("Nom d\'utilisateur introuvable.");
           }
+          this.isLoading = false;
         });
     });
   }

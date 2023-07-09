@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -18,6 +20,9 @@ export class AppComponent {
   auth: any;
 
   user: any;
+  isLoading: boolean = true;
+
+  faSpinner = faSpinner;
 
   constructor(
     private router: Router,
@@ -31,6 +36,7 @@ export class AppComponent {
       } else {
         this.user = null;
       }
+      this.isLoading = false;
     });
   }
 

@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -25,6 +27,10 @@ export class RegisterComponent {
 
   auth: any;
 
+  faSpinner = faSpinner;
+
+  isLoading: boolean = false;
+
   constructor(
     private router: Router,
     private http: HttpClient
@@ -37,6 +43,7 @@ export class RegisterComponent {
   }
 
   register() {
+    this.isLoading = true;
     // check password length
     if (this.password.length < 6) {
       alert("Le mot de passe doit contenir au moins 6 caractères.");
@@ -47,9 +54,9 @@ export class RegisterComponent {
       username: this.username,
       email: this.email
     }).subscribe((response: any) => {
-      console.log("response", response);
       if (response.message != "OK") {
         alert(response.message);
+        this.isLoading = false;
         return;
       }
       createUserWithEmailAndPassword(this.auth, this.email, this.password)
@@ -65,9 +72,14 @@ export class RegisterComponent {
             this.http.post(environment.apiUrl + "register", {
               username: this.username,
               email: this.email
-            }).subscribe((response) => {
-              console.log("response", response);
-              this.router.navigate(['']);
+            }).subscribe((response: any) => {
+              if (response.message != "OK") {
+                alert(response.message);
+                this.isLoading = false;
+                return;
+              } else {
+                this.router.navigate(['']);
+              }
             });
           }).catch((error) => {
             console.log("error", error);
@@ -86,6 +98,7 @@ export class RegisterComponent {
           if (errorCode == "auth/weak-password") {
             alert("Le mot de passe doit contenir au moins 6 caractères.");
           }
+          this.isLoading = false;
         });
     });
   }
