@@ -20,16 +20,16 @@ app.use((req, res, next) => {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
     } else { // POST, PUT, DELETE, etc. requests need CORS verification
-        const referer = req.headers.referer;
-        if (!referer) {
+        const origin = req.headers.origin;
+        if (!origin) {
             res.status(403).json({
                 message: 'Forbidden'
             });
         } else {
-            if (process.env.CORS_WHITELIST.split(',').includes(referer.slice(0, referer.indexOf('/', 8)))) {
-                res.setHeader('Access-Control-Allow-Origin', referer.slice(0, referer.indexOf('/', 8)));
+            if (process.env.CORS_WHITELIST.split(',').includes(origin)) {
+                res.setHeader('Access-Control-Allow-Origin', origin);
                 res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE', 'OPTIONS');
+                res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
                 next();
             } else {
                 res.status(403).json({
