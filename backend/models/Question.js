@@ -29,9 +29,9 @@ const questionSchema = new mongoose.Schema({
         trim: true
     },
     theme: {
-        type: String,
-        required: true,
-        trim: true
+        type: mongoose.Schema.ObjectId,
+        ref: 'Theme',
+        required: true
     },
     user: {
         type: mongoose.Schema.ObjectId,

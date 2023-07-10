@@ -24,23 +24,10 @@ export class AddQuestionComponent {
   isAuthLoading: boolean = true;
   isRequestLoading: boolean = false;
 
-  themes: string[] = [
-    "Histoire",
-    "Géographie",
-    "Sport",
-    "Culture Générale",
-    "Cinéma",
-    "Musique",
-    "Jeux Vidéo",
-    "Informatique",
-    "Mathématiques",
-    "Physique",
-    "Chimie",
-    "Biologie",
-    "Français",
-    "Langues",
-    "Autre"
-  ];
+  themes: {
+    name: string,
+    code: string
+  }[] = [];
 
   question: string = "";
   nbAnswers: number = 4;
@@ -64,7 +51,15 @@ export class AddQuestionComponent {
         this.userObj = response.user;
         if (!this.userObj.admin)
           this.router.navigate(['']);
-        this.isAuthLoading = false;
+        this.http.post(environment.apiUrl + "getAllThemes", {
+        }).subscribe((response: any) => {
+          if (response.message != "OK") {
+            alert(response.message);
+          } else {
+            this.themes = response.themes;
+            this.isAuthLoading = false;
+          }
+        });
       }
     });
   }
@@ -91,6 +86,13 @@ export class AddQuestionComponent {
         alert(response.message);
       } else {
         alert("Question ajoutée !");
+        // reset form
+        this.question = "";
+        this.nbAnswers = 4;
+        this.answers = [];
+        this.goodAnswer = 0;
+        this.theme = "";
+        this.difficulty = 1;
       }
       this.isRequestLoading = false;
     });

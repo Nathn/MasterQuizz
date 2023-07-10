@@ -3,16 +3,22 @@ const express = require('express');
 const router = express.Router();
 
 const Question = require('../models/Question');
+const Theme = require('../models/Theme');
 const User = require('../models/User');
 
 router.post('/createQuestion', async (req, res) => {
     try {
         console.log(`[SERVER] Creating a new question: ${req.body.question}`);
+        // Get corresponding theme
+        const theme = await Theme.findOne({
+            code: req.body.theme
+        }).exec();
+        // Create a new question
         question = new Question({
             answers: req.body.answers,
             difficulty: req.body.difficulty,
             question: req.body.question,
-            theme: req.body.theme,
+            theme: theme,
             user: req.body.user
         });
         await question.save();

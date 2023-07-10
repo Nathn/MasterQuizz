@@ -5,6 +5,7 @@ const router = express.Router();
 
 const userRoutes = require('./userRoutes');
 const questionRoutes = require('./questionRoutes');
+const themeRoutes = require('./themeRoutes');
 
 // console.log each request
 router.use((req, res, next) => {
@@ -12,14 +13,10 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get('/ping', async (req, res) => {
-    res.status(200).json({
-        message: 'pong'
-    });
-});
-
+// Routes
 router.use('/', userRoutes);
 router.use('/', questionRoutes);
+router.use('/', themeRoutes);
 
 // Serve static files from the Angular app
 router.get('/*', (req, res) => {
