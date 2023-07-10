@@ -46,7 +46,7 @@
 
         li {
             display: inline-block;
-            margin-right: 30px;
+            margin-right: 10px;
 
             a {
                 position: relative;
@@ -76,6 +76,10 @@
                 }
             }
         }
+
+        li:not(:last-child) {
+            margin-right: 30px;
+        }
     }
 }
 
@@ -89,6 +93,7 @@ button {
 
 .username {
     margin-right: 10px !important;
+    text-align: end;
 }
 
 main {

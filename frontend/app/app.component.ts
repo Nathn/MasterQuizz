@@ -19,8 +19,8 @@ export class AppComponent {
 
   auth: any;
 
-  user: any;
-  isLoading: boolean = true;
+  user: any = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null;
+  isLoading: boolean = localStorage.getItem("user") ? false : true;
 
   faSpinner = faSpinner;
 
@@ -33,6 +33,7 @@ export class AppComponent {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         this.user = user;
+        localStorage.setItem("user", JSON.stringify(user));
       } else {
         this.user = null;
       }

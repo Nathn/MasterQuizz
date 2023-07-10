@@ -110,5 +110,42 @@ router.post('/getEmailFromUsername', async (req, res) => {
     }
 });
 
+router.post('/getUserFromEmail', async (req, res) => {
+    /*
+    This route is used to get the user from his email.
+    */
+    try {
+        console.log(`[SERVER] Getting user from email: ${req.body.email}`);
+        await User.findOne({
+            email: req.body.email
+        }).exec()
+            .then(user => {
+                if (!user) {
+                    console.log(`[SERVER] User not found while getting user from email`);
+                    res.status(200).json({
+                        message: 'Utilisateur introuvable.'
+                    });
+                } else {
+                    console.log(`[SERVER] User found: ${user.username}`);
+                    res.status(200).json({
+                        message: 'OK',
+                        user
+                    });
+                }
+            })
+            .catch(err => {
+                console.log(`[SERVER] An error occured while getting user from email: ${err}`);
+                res.status(500).json({
+                    message: 'Internal server error'
+                });
+            });
+    } catch (err) {
+        console.log(`[SERVER] An error occured while getting user from email: ${err}`);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
+});
+
 
 module.exports = router;

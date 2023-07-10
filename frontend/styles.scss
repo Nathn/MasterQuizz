@@ -30,7 +30,8 @@ b {
     font-weight: bold;
 }
 
-input {
+input,
+select {
     font-weight: 300;
     border-radius: 5px;
     border: 1px solid #111;
@@ -87,6 +88,7 @@ form {
 
     .form-group {
         margin: 20px 0;
+        width: 100%;
     }
 
     * {
