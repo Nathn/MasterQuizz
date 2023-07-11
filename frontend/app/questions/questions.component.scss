@@ -44,6 +44,10 @@ form {
     flex-direction: column;
     align-items: center;
     margin: 20px 0;
+
+    .manage-container-subclass {
+        width: 100%;
+    }
 }
 
 .question-toolbar {
@@ -55,6 +59,18 @@ form {
     * {
         width: 400px !important;
         margin: 0 !important;
+    }
+}
+
+.question-subtoolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+
+    * {
+        margin: 0 !important;
+        font-size: large;
     }
 }
 

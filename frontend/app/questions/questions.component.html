@@ -61,10 +61,7 @@
     <div *ngIf="isRequestLoading">
         <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
     </div>
-    <div *ngIf="!isRequestLoading && questionsList.length == 0">
-        <h2>Aucune question trouvée</h2>
-    </div>
-    <div *ngIf="!isRequestLoading && questionsList.length > 0">
+    <div *ngIf="!isRequestLoading" class="manage-container-subclass">
         <h2>Gestion des questions</h2>
         <div class="questions-container">
             <div class="question-toolbar">
@@ -74,6 +71,11 @@
                 </button>
                 <input type="text" class="form-control" id="search" name="search" [(ngModel)]="search" required
                     autocomplete="off" spellcheck="true" placeholder="Rechercher..." />
+            </div>
+            <div class="question-subtoolbar">
+                <span *ngIf="getQuestionsFiltered().length > 0">{{getQuestionsFiltered().length}} questions
+                    trouvées</span>
+                <span *ngIf="getQuestionsFiltered().length == 0">Aucune question trouvée</span>
             </div>
             <ng-container *ngFor="let question of getQuestionsFiltered()">
                 <div class="question">
