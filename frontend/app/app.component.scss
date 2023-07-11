@@ -14,8 +14,14 @@
     background-color: $secondary-color;
 }
 
-.logo img {
-    height: 40px;
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+
+    img {
+        height: 40px;
+    }
 }
 
 .title-bar {
