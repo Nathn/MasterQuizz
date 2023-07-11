@@ -103,5 +103,40 @@ router.post('/getRandomQuestion', async (req, res) => {
     }
 });
 
+router.post('/getAllQuestions', async (req, res) => {
+    try {
+        console.log(`[SERVER] Getting all questions`);
+        await Question.find().exec()
+            .then(questions => {
+                console.log(`[SERVER] Questions found: ${questions.length}`);
+                // For each question, get the corresponding theme and user
+                Question.populate(questions, { path: 'theme user' })
+                    .then(populatedQuestions => {
+                        res.status(200).json({
+                            message: 'OK',
+                            questions: populatedQuestions
+                        });
+                    })
+                    .catch(err => {
+                        console.log(`[SERVER] An error occured while populating questions: ${err}`);
+                        res.status(500).json({
+                            message: 'Internal server error'
+                        });
+                    });
+            })
+            .catch(err => {
+                console.log(`[SERVER] An error occured while getting all questions: ${err}`);
+                res.status(500).json({
+                    message: 'Internal server error'
+                });
+            });
+    } catch (err) {
+        console.log(`[SERVER] An error occured while getting all questions: ${err}`);
+        res.status(500).json({
+            message: 'Internal server error'
+        });
+    }
+});
+
 
 module.exports = router;

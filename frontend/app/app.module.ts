@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-import { AddQuestionComponent } from './add-question/add-question.component';
+import { QuestionsComponent } from './questions/questions.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { AddQuestionComponent } from './add-question/add-question.component';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    AddQuestionComponent
+    QuestionsComponent
   ],
   imports: [
     BrowserModule,

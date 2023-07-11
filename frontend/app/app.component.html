@@ -10,6 +10,7 @@
         <li><a href="#">Multijoueur</a></li>
         <li><a href="#">Classements</a></li>
         <li><a href="#">À propos</a></li>
+        <li><a href="/questions/manage" *ngIf="userObj && userObj.admin">Questions</a></li>
       </ul>
     </div>
     <div class="buttons" *ngIf="!user && !isLoading">

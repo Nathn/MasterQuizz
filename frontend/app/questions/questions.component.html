@@ -1,0 +1,106 @@
+<form *ngIf="isAuthLoading">
+    <div>
+        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+    </div>
+</form>
+<form (ngSubmit)="addQuestion()" #registerForm="ngForm" *ngIf="!isAuthLoading && action == 'add'">
+    <h2 *ngIf="!isAuthLoading">Ajouter une question</h2>
+    <div class="field-container">
+        <div>
+            <div class="form-group">
+                <label for="question">Question :</label><br />
+                <input type="text" class="form-control" id="question" name="question" [(ngModel)]="question" required
+                    autocomplete="off" spellcheck="true" />
+            </div>
+            <div class="form-group">
+                <label for="nbAnswers">Nombre de réponses</label><br />
+                <input type="number" class="form-control" id="nbAnswers" name="nbAnswers" [(ngModel)]="nbAnswers"
+                    required min="2" max="6" />
+            </div>
+        </div>
+        <div>
+            <div class="form-group" *ngFor="let _ of [].constructor(nbAnswers); let i = index;">
+                <label for="answer{{i}}">Réponse {{i + 1}}</label><br />
+                <input type="text" class="form-control" id="answer{{i}}" name="answer{{i}}" [(ngModel)]="answers[i]"
+                    spellcheck="true" required />
+            </div>
+        </div>
+        <div>
+            <div class="form-group">
+                <label for="goodAnswer">Bonne réponse</label><br />
+                <select class="form-control" id="goodAnswer" name="goodAnswer" [(ngModel)]="goodAnswer" required>
+                    <option *ngFor="let _ of [].constructor(nbAnswers); let i = index;" [value]="i">Réponse {{i + 1}}
+                    </option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="theme">Thème</label><br />
+                <select class="form-control" id="theme" name="theme" [(ngModel)]="theme" required>
+                    <option *ngFor="let theme of themes" [value]="theme.code">{{theme.name}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="difficulty">Difficulté</label><br />
+                <input type="number" class="form-control" id="difficulty" name="difficulty" [(ngModel)]="difficulty"
+                    required min="1" max="5" />
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="submit-button" [disabled]="!registerForm.valid || isRequestLoading">
+        <span *ngIf="!isRequestLoading">Enregistrer</span>
+        <span *ngIf="isRequestLoading">
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+        </span>
+    </button>
+    <br />
+    <button type="button" class="back-button" [disabled]="isRequestLoading" [routerLink]="['/questions/manage']">
+        <span>Retourner à la liste des questions</span>
+    </button>
+</form>
+<div *ngIf="!isAuthLoading && action == 'manage'" class="manage-container">
+    <div *ngIf="isRequestLoading">
+        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+    </div>
+    <div *ngIf="!isRequestLoading && questionsList.length == 0">
+        <h2>Aucune question trouvée</h2>
+    </div>
+    <div *ngIf="!isRequestLoading && questionsList.length > 0">
+        <h2>Gestion des questions</h2>
+        <div class="questions-container">
+            <div class="question" *ngFor="let question of questionsList">
+                <div class="question-header">
+                    <div class="question-title">
+                        <span>{{question.question}}</span>
+                    </div>
+                </div>
+                <div class="question-body">
+                    <ul class="question-answers">
+                        <li *ngFor="let answer of question.answers; let i = index;">
+                            <span [ngClass]="{'good-answer': answer.correct}">{{answer.answer}}</span>
+                        </li>
+                    </ul>
+                    <div class="question-infos">
+                        <span>Thème : {{question.theme.name}}</span>
+                        <span>Difficulté : {{question.difficulty}}</span>
+                        <span>Créée le : {{question.created | date:'dd/MM/yyyy'}}</span>
+                        <span>Ajoutée par : {{question.user.username}}</span>
+                    </div>
+                </div>
+                <div class="question-actions">
+                    <button class="btn btn-primary" (click)="editQuestion(question)">
+                        <fa-icon [icon]="faEdit"></fa-icon>
+                        Modifier
+                    </button>
+                    <button class="btn btn-danger" (click)="deleteQuestion(question)">
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                        Supprimer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="add-button" [routerLink]="['/questions/add']">
+        <fa-icon [icon]="faPlus"></fa-icon>
+        Ajouter une question
+    </button>
+</div>

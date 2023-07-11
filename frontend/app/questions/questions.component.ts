@@ -1,25 +1,29 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faEdit, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'app-add-question',
-  templateUrl: './add-question.component.html',
-  styleUrls: ['./add-question.component.scss']
+  selector: 'app-questions',
+  templateUrl: './questions.component.html',
+  styleUrls: ['./questions.component.scss']
 })
-export class AddQuestionComponent {
+export class QuestionsComponent {
 
   user: any = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null;
   userObj: any;
+  action: string = "";
 
   auth: any;
   db: any;
 
   faSpinner = faSpinner;
+  faEdit = faEdit;
+  faTrash = faTrash;
+  faPlus = faPlus;
 
   isAuthLoading: boolean = true;
   isRequestLoading: boolean = false;
@@ -27,6 +31,26 @@ export class AddQuestionComponent {
   themes: {
     name: string,
     code: string
+  }[] = [];
+  validActions: string[] = ["add", "manage"];
+  questionsList: {
+    _id: string,
+    question: string,
+    created: Date,
+    nbAnswers: number,
+    answers: {
+      answer: string,
+      correct: boolean
+    }[],
+    goodAnswer: number,
+    theme: {
+      name: string,
+      code: string
+    },
+    difficulty: number,
+    user: {
+      username: string
+    }
   }[] = [];
 
   question: string = "";
@@ -38,6 +62,7 @@ export class AddQuestionComponent {
 
   constructor(
     private router: Router,
+    private ar: ActivatedRoute,
     private http: HttpClient
   ) {
     if (!this.user)
@@ -57,9 +82,31 @@ export class AddQuestionComponent {
             alert(response.message);
           } else {
             this.themes = response.themes;
-            this.isAuthLoading = false;
+            ar.params.subscribe(params => {
+              this.action = params['action'];
+              if (!this.validActions.includes(this.action))
+                this.router.navigate(['/questions/manage']);
+              if (this.action == "manage")
+                this.getQuestions();
+              this.isAuthLoading = false;
+            });
           }
         });
+      }
+    });
+  }
+
+  async getQuestions() {
+    this.isRequestLoading = true;
+    this.http.post(environment.apiUrl + "getAllQuestions", {
+      user: this.userObj._id
+    }).subscribe((response: any) => {
+      if (response.message != "OK") {
+        alert(response.message);
+      } else {
+        this.questionsList = response.questions;
+        console.log(this.questionsList);
+        this.isRequestLoading = false;
       }
     });
   }
@@ -96,6 +143,12 @@ export class AddQuestionComponent {
       }
       this.isRequestLoading = false;
     });
+  }
+
+  editQuestion(question: any) {
+  }
+
+  deleteQuestion(question: any) {
   }
 
 }
