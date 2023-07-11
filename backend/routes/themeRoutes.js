@@ -12,7 +12,7 @@ router.post('/getAllThemes', async (req, res) => {
     */
     try {
         console.log(`[SERVER] Getting all themes`);
-        await Theme.find().exec()
+        await Theme.find().sort({ code: 'asc' }).exec()
             .then(themes => {
                 if (!themes) {
                     console.log(`[SERVER] Themes not found while getting all themes`);
