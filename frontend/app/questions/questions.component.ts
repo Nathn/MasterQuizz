@@ -53,6 +53,8 @@ export class QuestionsComponent {
     }
   }[] = [];
 
+  search: string = "";
+
   question: string = "";
   nbAnswers: number = 4;
   answers: string[] = [];
@@ -105,10 +107,34 @@ export class QuestionsComponent {
         alert(response.message);
       } else {
         this.questionsList = response.questions;
-        console.log(this.questionsList);
         this.isRequestLoading = false;
       }
     });
+  }
+
+  getQuestionsFiltered() {
+    let filteredQuestions: any[] = [];
+    for (let question of this.questionsList) {
+      if (question.question.toLowerCase().includes(this.search.toLowerCase())) {
+        filteredQuestions.push(question);
+        continue;
+      }
+      if (question.theme.name.toLowerCase().includes(this.search.toLowerCase())) {
+        filteredQuestions.push(question);
+        continue;
+      }
+      if (question.user.username.toLowerCase().includes(this.search.toLowerCase())) {
+        filteredQuestions.push(question);
+        continue;
+      }
+      for (let answer of question.answers) {
+        if (answer.answer.toLowerCase().includes(this.search.toLowerCase())) {
+          filteredQuestions.push(question);
+          continue;
+        }
+      }
+    }
+    return filteredQuestions;
   }
 
   addQuestion() {

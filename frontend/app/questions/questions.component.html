@@ -67,40 +67,46 @@
     <div *ngIf="!isRequestLoading && questionsList.length > 0">
         <h2>Gestion des questions</h2>
         <div class="questions-container">
-            <div class="question" *ngFor="let question of questionsList">
-                <div class="question-header">
-                    <div class="question-title">
-                        <span>{{question.question}}</span>
-                    </div>
-                </div>
-                <div class="question-body">
-                    <ul class="question-answers">
-                        <li *ngFor="let answer of question.answers; let i = index;">
-                            <span [ngClass]="{'good-answer': answer.correct}">{{answer.answer}}</span>
-                        </li>
-                    </ul>
-                    <div class="question-infos">
-                        <span>Thème : {{question.theme.name}}</span>
-                        <span>Difficulté : {{question.difficulty}}/5</span>
-                        <span>Créée le : {{question.created | date:'dd/MM/yyyy'}}</span>
-                        <span>Ajoutée par : {{question.user.username}}</span>
-                    </div>
-                </div>
-                <div class="question-actions">
-                    <button class="btn btn-primary" (click)="editQuestion(question)">
-                        <fa-icon [icon]="faEdit"></fa-icon>
-                        Modifier
-                    </button>
-                    <button class="btn btn-danger" (click)="deleteQuestion(question)">
-                        <fa-icon [icon]="faTrash"></fa-icon>
-                        Supprimer
-                    </button>
-                </div>
+            <div class="question-toolbar">
+                <button class="add-button" [routerLink]="['/questions/add']">
+                    <fa-icon [icon]="faPlus"></fa-icon>
+                    Ajouter une question
+                </button>
+                <input type="text" class="form-control" id="search" name="search" [(ngModel)]="search" required
+                    autocomplete="off" spellcheck="true" placeholder="Rechercher..." />
             </div>
+            <ng-container *ngFor="let question of getQuestionsFiltered()">
+                <div class="question">
+                    <div class="question-header">
+                        <div class="question-title">
+                            <span>{{question.question}}</span>
+                        </div>
+                    </div>
+                    <div class="question-body">
+                        <ul class="question-answers">
+                            <li *ngFor="let answer of question.answers; let i = index;">
+                                <span [ngClass]="{'good-answer': answer.correct}">{{answer.answer}}</span>
+                            </li>
+                        </ul>
+                        <div class="question-infos">
+                            <span>Thème : {{question.theme.name}}</span>
+                            <span>Difficulté : {{question.difficulty}}/5</span>
+                            <span>Créée le : {{question.created | date:'dd/MM/yyyy'}}</span>
+                            <span>Ajoutée par : {{question.user.username}}</span>
+                        </div>
+                    </div>
+                    <div class="question-actions">
+                        <button class="btn btn-primary" (click)="editQuestion(question)">
+                            <fa-icon [icon]="faEdit"></fa-icon>
+                            Modifier
+                        </button>
+                        <button class="btn btn-danger" (click)="deleteQuestion(question)">
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                            Supprimer
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
         </div>
     </div>
-    <button class="add-button" [routerLink]="['/questions/add']">
-        <fa-icon [icon]="faPlus"></fa-icon>
-        Ajouter une question
-    </button>
 </div>

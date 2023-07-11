@@ -46,6 +46,18 @@ form {
     margin: 20px 0;
 }
 
+.question-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+
+    * {
+        width: 400px !important;
+        margin: 0 !important;
+    }
+}
+
 .questions-container {
     display: flex;
     flex-wrap: wrap;
