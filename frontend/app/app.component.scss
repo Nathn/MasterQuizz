@@ -105,6 +105,14 @@ button {
     text-align: end;
 }
 
+.sign-out {
+    display: flex;
+}
+
+.sign-out fa-icon {
+    margin-right: 10px;
+}
+
 main {
     flex-grow: 1;
     padding: 20px;

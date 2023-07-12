@@ -175,6 +175,20 @@ export class QuestionsComponent {
   }
 
   deleteQuestion(question: any) {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette question ?")) {
+      this.isRequestLoading = true;
+      this.http.post(environment.apiUrl + "deleteQuestion", {
+        questionId: question._id
+      }).subscribe((response: any) => {
+        if (response.message != "OK") {
+          alert(response.message);
+        } else {
+          alert("La question a été supprimée.");
+          this.questionsList.splice(this.questionsList.indexOf(question), 1);
+        }
+        this.isRequestLoading = false;
+      });
+    }
   }
 
 }

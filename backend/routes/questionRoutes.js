@@ -34,7 +34,7 @@ router.post('/createQuestion', async (req, res) => {
     }
 });
 
-router.delete('/deleteQuestion', async (req, res) => {
+router.post('/deleteQuestion', async (req, res) => {
     try {
         console.log(`[SERVER] Deleting a question: ${req.body.questionId}`);
         await Question.deleteOne({
