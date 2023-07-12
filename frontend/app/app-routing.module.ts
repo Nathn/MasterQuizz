@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'questions', component: QuestionsComponent },
   { path: 'questions/:action', component: QuestionsComponent },
+  { path: 'questions/:action/:id', component: QuestionsComponent },
   { path: '**', redirectTo: '' }
 ];
 

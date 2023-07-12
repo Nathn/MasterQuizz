@@ -33,7 +33,16 @@ const questionSchema = new mongoose.Schema({
         ref: 'Theme',
         required: true
     },
+    updated: {
+        type: Date,
+        default: Date.now
+    },
     user: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: false
+    },
+    userUpdated: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: false

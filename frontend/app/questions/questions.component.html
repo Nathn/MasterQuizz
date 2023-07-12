@@ -3,8 +3,9 @@
         <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
     </div>
 </form>
-<form (ngSubmit)="addQuestion()" #registerForm="ngForm" *ngIf="!isAuthLoading && action == 'add'">
-    <h2 *ngIf="!isAuthLoading">Ajouter une question</h2>
+<form #registerForm="ngForm" *ngIf="!isAuthLoading && (action == 'add' || action == 'edit')"
+    (ngSubmit)="actionQuestion()">
+    <h2 *ngIf=" !isAuthLoading">Ajouter une question</h2>
     <div class="field-container">
         <div>
             <div class="form-group">
@@ -35,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="theme">Thème</label><br />
-                <select class="form-control" id="theme" name="theme" [(ngModel)]="theme" required>
+                <select class="form-control" id="theme" name="theme" [(ngModel)]="themeSelected" required>
                     <option *ngFor="let theme of themes" [value]="theme.code">{{theme.name}}</option>
                 </select>
             </div>
@@ -53,7 +54,7 @@
         </span>
     </button>
     <br />
-    <button type="button" class="back-button" [disabled]="isRequestLoading" [routerLink]="['/questions/manage']">
+    <button type="button" class="back-button" [disabled]="isRequestLoading" (click)="backToList()">
         <span>Retourner à la liste des questions</span>
     </button>
 </form>
@@ -93,12 +94,15 @@
                         <div class="question-infos">
                             <span>Thème : {{question.theme.name}}</span>
                             <span>Difficulté : {{question.difficulty}}/5</span>
-                            <span>Créée le : {{question.created | date:'dd/MM/yyyy'}}</span>
-                            <span>Ajoutée par : {{question.user.username}}</span>
+                            <span>Ajoutée le {{question.created | date:'dd/MM/yyyy'}} par
+                                {{question.user.username}}</span>
+                            <span *ngIf="question.updated && question.userUpdated">Modifiée le
+                                {{question.updated | date:'dd/MM/yyyy'}} par
+                                {{question.userUpdated.username}}</span>
                         </div>
                     </div>
                     <div class="question-actions">
-                        <button class="btn btn-primary" (click)="editQuestion(question)">
+                        <button class="btn btn-primary" [routerLink]="['/questions/edit', question._id]">
                             <fa-icon [icon]="faEdit"></fa-icon>
                             Modifier
                         </button>
