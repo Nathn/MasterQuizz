@@ -1,0 +1,206 @@
+@import '../../styles/variables';
+
+
+.qdj.quizzmodule-slide.quizzmodule-slide--question {
+    border-radius: initial;
+    position: initial;
+    background: initial;
+    padding: 0;
+    color: #fff;
+}
+
+.qdjlogo {
+    position: absolute;
+    margin-top: -45px;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    // background: #392989;
+    background: $tertiary-color;
+    color: $primary-text-color;
+    padding: 10px 37px 10px 40px;
+    border-radius: 69px;
+    flex-direction: row;
+    justify-content: center;
+    border: solid 7px $secondary-color;
+    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, .2);
+}
+
+.module-content-container {
+    margin: auto;
+}
+
+.spinner {
+    font-size: 42px;
+}
+
+.date-container {
+    border-radius: 12px;
+    transform: rotate(3deg);
+    flex-shrink: 0;
+}
+
+.qdj-class {
+    background: #ffb921;
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin: 10px auto;
+    font-size: .9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #1d1735;
+}
+
+.qdj h1,
+.qdj h2.q {
+    font-size: 1.5rem;
+    margin: 20px auto 14px;
+    max-width: 90%;
+    text-align: center;
+    color: #fff;
+}
+
+.photo-answer {
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+
+.photo-answer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding: 25px;
+    padding-bottom: 25px;
+    align-items: center;
+    justify-content: center;
+}
+
+.qimage {
+    max-width: 52%;
+    max-height: 380px;
+    height: 100%;
+    border: solid 7px #fff;
+    padding: 1px;
+    box-shadow: rgba(33, 24, 66, .5) 2px 4px 15px 0px;
+    transform: rotate(-2deg);
+    background: #fff;
+    border-radius: 18px;
+}
+
+@media screen and (min-width: 768px) {
+    .quizzmodule-slide--question.is-active ul {
+        margin-bottom: 1em;
+    }
+}
+
+.quizzmodule-slide--question .photo-answer ul {
+    margin: 0 0 0 20px;
+    margin-bottom: 0px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 55%;
+}
+
+ul.quizzmodule-slide-answers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.photo-answer ul li {
+    width: 100%;
+    margin: 5px 1%;
+}
+
+.quizzmodule-slide--question li {
+    width: 48%;
+    margin: 1.5% 1%;
+    display: flex;
+    align-items: stretch;
+}
+
+label:hover {
+    background-color: #ffe5ac;
+}
+
+li {
+    list-style-type: none;
+}
+
+li label {
+    width: 100%;
+    font-size: 1.05em;
+    line-height: 1.15;
+    text-align: left;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+label {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 11px 30px 11px 20px;
+    border: 0 solid #ddd;
+    border-radius: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    transition: background-color .2s, box-shadow .2s;
+    //color: #43329d;
+    color: $primary-text-color;
+    font-weight: 600;
+}
+
+.rankingmodule-slide-ranking {
+    list-style: none;
+    margin: 0;
+    margin-top: 10px;
+    padding: 3px 0;
+}
+
+.rankingmodule-slide-ranking li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 11px 30px 11px 20px;
+    border: 0 solid #ddd;
+    border-radius: 40px;
+    background-color: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    //color: #43329d;
+    color: $primary-text-color;
+    font-weight: 600;
+}
+
+.rankingmodule-slide-ranking-position {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.rankingmodule-slide-ranking-name {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.rankingmodule-slide-ranking-score {
+    font-weight: bold;
+}

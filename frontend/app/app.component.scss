@@ -60,7 +60,7 @@
             a {
                 position: relative;
                 text-decoration: none;
-                color: $text-color;
+                color: $primary-text-color;
                 font-weight: 300;
                 font-size: 22px;
                 transition: color 0.3s ease-in-out;
@@ -72,12 +72,12 @@
                     left: 0;
                     width: 0;
                     height: 2px;
-                    background-color: $text-color;
+                    background-color: $primary-text-color;
                     transition: width 0.3s ease-in-out;
                 }
 
                 &:hover {
-                    color: darken($text-color, 10%);
+                    color: darken($primary-text-color, 10%);
 
                     &::before {
                         width: 100%;

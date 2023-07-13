@@ -1,0 +1,33 @@
+<div class="qdjlogo">
+    {{ moduleTitle }}
+</div>
+<div *ngIf="moduleType == 'question' && question" class="module-content-container">
+    <div class="qdj-class">{{question.theme.name}}</div>
+    <h1 class="quizzmodule-slide-question">{{question.question}}</h1>
+    <div class="photo-answer">
+        <ul class="quizzmodule-slide-answers">
+            <li *ngFor="let answer of question.answers; let i = index">
+                <input type="radio" name="q{{question._id}}" value="a{{i}}" id="q{{question._id}}a{{i}}">
+                <label class="response" for="q{{question._id}}a{{i}}">
+                    {{answer.answer}}
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <button style="margin-right: 8px;">Une autre question au hasard</button>
+        <button class="button button--start js-quizzmodule-validate-answer">Valider</button>
+    </div>
+</div>
+<div *ngIf="moduleType == 'question' && !question" class="module-content-container spinner">
+    <fa-icon [icon]="faSpinner" class="fa-spin"></fa-icon>
+</div>
+<div *ngIf="moduleType == 'ranking'" class="module-content-container" style="width: 90%;">
+    <ul class="rankingmodule-slide-ranking">
+        <li *ngFor="let user of ranking; let i = index">
+            <div class="rankingmodule-slide-ranking-position">{{i+1}}.</div>
+            <div class="rankingmodule-slide-ranking-name">{{user.username}}</div>
+            <div class="rankingmodule-slide-ranking-score">{{user.score}}</div>
+        </li>
+    </ul>
+</div>

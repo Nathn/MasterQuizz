@@ -127,11 +127,14 @@ router.post('/getRandomQuestion', async (req, res) => {
                         message: 'Question introuvable.'
                     });
                 } else {
-                    console.log(`[SERVER] Question found: ${question._id}`);
-                    res.status(200).json({
-                        message: 'OK',
-                        question: question
-                    });
+                    Question.populate(question, { path: 'theme user userUpdated' })
+                        .then(populatedQuestion => {
+                            console.log(`[SERVER] Question found: ${populatedQuestion._id}`);
+                            res.status(200).json({
+                                message: 'OK',
+                                question: populatedQuestion
+                            });
+                        });
                 }
             })
             .catch(err => {
