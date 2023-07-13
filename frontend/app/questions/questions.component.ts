@@ -175,7 +175,7 @@ export class QuestionsComponent {
   }
 
   backToList() {
-    if (this.question != "" || this.nbAnswers != 4 || this.answers.length != 4 || this.themeSelected != "" || this.difficulty != 1 || this.goodAnswer != 0) {
+    if (this.question != "") {
       if (confirm("Êtes-vous sûr de vouloir quitter cette page ? Les modifications non enregistrées seront perdues.")) {
         this.router.navigate(['/questions/manage']);
       }

@@ -19,8 +19,7 @@ router.post('/createQuestion', async (req, res) => {
             difficulty: req.body.difficulty,
             question: req.body.question,
             theme: theme,
-            user: req.body.user,
-            userUpdated: req.body.user
+            user: req.body.user
         });
         await question.save();
         // And return a success message
