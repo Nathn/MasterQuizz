@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
+const shrinkRay = require('shrink-ray-current');
 
 require('dotenv').config({
     path: 'backend/.env'
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+
+app.use(shrinkRay());
 
 app.use((req, res, next) => {
     if (req.method === 'GET') { // GET requests don't need CORS

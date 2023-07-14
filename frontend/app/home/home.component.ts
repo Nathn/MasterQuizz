@@ -19,7 +19,7 @@ export class HomeComponent {
     private http: HttpClient
   ) {
     this.http.post(environment.apiUrl + "getRandomQuestion", {}).subscribe((res: any) => {
-      this.randomQuestion = res.question[0];
+      this.randomQuestion = res.question;
     });
   }
 

@@ -27,6 +27,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "frontend/favicon.ico",
+              "frontend/robots.txt",
               "frontend/assets"
             ],
             "styles": [
@@ -123,6 +124,7 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "frontend/favicon.ico",
+              "frontend/robots.txt",
               "frontend/assets"
             ],
             "styles": [

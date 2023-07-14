@@ -129,10 +129,10 @@ router.post('/getRandomQuestion', async (req, res) => {
                 } else {
                     Question.populate(question, { path: 'theme user userUpdated' })
                         .then(populatedQuestion => {
-                            console.log(`[SERVER] Question found: ${populatedQuestion._id}`);
+                            console.log(`[SERVER] Question found: ${populatedQuestion[0]._id}`);
                             res.status(200).json({
                                 message: 'OK',
-                                question: populatedQuestion
+                                question: populatedQuestion[0]
                             });
                         });
                 }
