@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-home-module',
@@ -47,7 +47,21 @@ export class HomeModuleComponent {
   @Input('moduleType') moduleType: string = "";
 
   faSpinner = faSpinner;
+  faCheck = faCheck;
+  faTimes = faTimes;
+
+  selectedAnswerIndex: number = -1;
+  answerValidated: boolean = false;
 
   constructor() { }
+
+  selectAnswer(index: number) {
+    this.selectedAnswerIndex = index;
+    console.log(this.selectedAnswerIndex);
+  }
+
+  validateAnswer() {
+    this.answerValidated = true;
+  }
 
 }

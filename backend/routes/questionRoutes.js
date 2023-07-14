@@ -191,7 +191,7 @@ router.post('/getQuestionFromId', async (req, res) => {
 router.post('/getAllQuestions', async (req, res) => {
     try {
         console.log(`[SERVER] Getting all questions`);
-        await Question.find().exec()
+        await Question.find().sort({ updated: -1, created: -1 }).exec()
             .then(questions => {
                 console.log(`[SERVER] Questions found: ${questions.length}`);
                 // For each question, get the corresponding theme and user
