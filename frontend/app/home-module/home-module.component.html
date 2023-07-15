@@ -2,38 +2,20 @@
     {{ moduleTitle }}
 </div>
 <div *ngIf="moduleType == 'question' && question" class="module-content-container">
-    <div class="qdj-class">{{question.theme.name}}</div>
-    <h1 class="quizzmodule-slide-question">{{question.question}}</h1>
-    <div class="photo-answer">
-        <ul class="quizzmodule-slide-answers">
-            <li *ngFor="let answer of question.answers; let i = index">
-                <input type="radio" name="q{{question._id}}" value="a{{i}}" id="q{{question._id}}a{{i}}">
-                <label for="q{{question._id}}a{{i}}" [ngClass]="{'selected': selectedAnswerIndex == i}"
-                    (click)="selectAnswer(i)" *ngIf="!answerValidated">
-                    {{answer.answer}}
-                </label>
-                <label [ngClass]="{'incorrect': selectedAnswerIndex == i && !answer.correct, 'correct': answer.correct}"
-                    *ngIf="answerValidated">
-                    <span class="answer-status">
-                        <fa-icon [icon]="answer.correct ? faCheck : faTimes"></fa-icon>
-                    </span>
-                    &nbsp;
-                    {{answer.answer}}
-                </label>
-            </li>
-        </ul>
-    </div>
+    <app-question [question]="question" [answerValidated]="answerValidated"
+        (selectedAnswer)="selectedAnswer($event)"></app-question>
     <div>
-        <button style="margin-right: 8px;">
-            Une autre question au hasard
+        <button class="button-start" *ngIf="answerValidated" (click)="next()">
+            Une autre !
         </button>
-        <button class="button-start" (click)="validateAnswer()" *ngIf="selectedAnswerIndex != -1 && !answerValidated">
+        <button class="button-start" *ngIf="!answerValidated" (click)="validateAnswer()"
+            [disabled]="selectedAnswerIndex == -1">
             Valider
         </button>
     </div>
 </div>
 <div *ngIf="moduleType == 'question' && !question" class="module-content-container spinner">
-    <fa-icon [icon]="faSpinner" class="fa-spin"></fa-icon>
+    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
 </div>
 <div *ngIf="moduleType == 'ranking'" class="module-content-container" style="width: 90%;">
     <ul class="rankingmodule-slide-ranking">

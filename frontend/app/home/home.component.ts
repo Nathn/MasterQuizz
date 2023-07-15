@@ -23,7 +23,8 @@ export class HomeComponent {
     });
   }
 
-  quizzFinished(event: any) {
+  nextQuestion() {
+    this.randomQuestion = null;
     this.http.post(environment.apiUrl + "getRandomQuestion", {}).subscribe((res: any) => {
       this.randomQuestion = res.question;
     });

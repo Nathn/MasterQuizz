@@ -1,14 +1,6 @@
 @import '../../styles/variables';
 
 
-.qdj.quizzmodule-slide.quizzmodule-slide-question {
-    border-radius: initial;
-    position: initial;
-    background: initial;
-    padding: 0;
-    color: #fff;
-}
-
 .qdjlogo {
     position: absolute;
     margin-top: -45px;
@@ -31,108 +23,7 @@
 }
 
 .spinner {
-    font-size: 42px;
-}
-
-.date-container {
-    border-radius: 12px;
-    transform: rotate(3deg);
-    flex-shrink: 0;
-}
-
-.qdj-class {
-    background: #ffb921;
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 4px;
-    margin: 10px auto;
-    font-size: .9em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #1d1735;
-}
-
-.qdj h1,
-.qdj h2.q {
-    font-size: 1.5rem;
-    margin: 20px auto 14px;
-    max-width: 90%;
-    text-align: center;
-    color: #fff;
-}
-
-.photo-answer {
-    margin-bottom: 0;
-    padding-bottom: 10px;
-}
-
-.photo-answer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    padding: 25px;
-    padding-bottom: 25px;
-    align-items: center;
-    justify-content: center;
-}
-
-.selected {
-    background-color: #ffb921 !important;
-}
-
-.correct {
-    background-color: #60d060 !important;
-}
-
-.incorrect {
-    background-color: #ff5959 !important;
-}
-
-.qimage {
-    max-width: 52%;
-    max-height: 380px;
-    height: 100%;
-    border: solid 7px #fff;
-    padding: 1px;
-    box-shadow: rgba(33, 24, 66, .5) 2px 4px 15px 0px;
-    transform: rotate(-2deg);
-    background: #fff;
-    border-radius: 18px;
-}
-
-@media screen and (min-width: 768px) {
-    .quizzmodule-slide-question.is-active ul {
-        margin-bottom: 1em;
-    }
-}
-
-.quizzmodule-slide-question .photo-answer ul {
-    margin: 0 0 0 20px;
-    margin-bottom: 0px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 55%;
-}
-
-ul.quizzmodule-slide-answers {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 85%;
-}
-
-.photo-answer ul li {
-    width: 100%;
-    margin: 5px 1%;
-}
-
-.quizzmodule-slide-question li {
-    width: 48%;
-    margin: 1.5% 1%;
-    display: flex;
-    align-items: stretch;
+    font-size: 28px;
 }
 
 label:hover {

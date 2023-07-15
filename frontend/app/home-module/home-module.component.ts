@@ -46,6 +46,8 @@ export class HomeModuleComponent {
   @Input('moduleTitle') moduleTitle: string = "";
   @Input('moduleType') moduleType: string = "";
 
+  @Output() nextQuestion = new EventEmitter();
+
   faSpinner = faSpinner;
   faCheck = faCheck;
   faTimes = faTimes;
@@ -55,13 +57,18 @@ export class HomeModuleComponent {
 
   constructor() { }
 
-  selectAnswer(index: number) {
+  selectedAnswer(index: number) {
     this.selectedAnswerIndex = index;
-    console.log(this.selectedAnswerIndex);
   }
 
   validateAnswer() {
     this.answerValidated = true;
+  }
+
+  next() {
+    this.answerValidated = false;
+    this.selectedAnswerIndex = -1;
+    this.nextQuestion.emit();
   }
 
 }

@@ -1,0 +1,22 @@
+<div class="qdj-class">{{question.theme.name}}</div>
+<h1 class="quizzmodule-slide-question">{{question.question}}</h1>
+<div class="photo-answer">
+    <ul class="quizzmodule-slide-answers">
+        <li *ngFor="let answer of question.answers; let i = index">
+            <input type="radio" name="q{{question._id}}" value="a{{i}}" id="q{{question._id}}a{{i}}">
+            <label for="q{{question._id}}a{{i}}" [ngClass]="{'selected': selectedAnswerIndex == i}"
+                (click)="selectAnswer(i)" *ngIf="!answerValidated">
+                {{answer.answer}}
+            </label>
+            <label
+                [ngClass]="{'incorrect': selectedAnswerIndex == i && !answer.correct, 'correct': answer.correct, 'answer-status': true}"
+                *ngIf="answerValidated">
+                <span class="answer-status">
+                    <fa-icon [icon]="answer.correct ? faCheck : faTimes"></fa-icon>
+                </span>
+                &nbsp;
+                {{answer.answer}}
+            </label>
+        </li>
+    </ul>
+</div>
