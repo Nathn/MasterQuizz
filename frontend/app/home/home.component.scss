@@ -1,6 +1,17 @@
 @import '../../styles/variables';
 
 
+.home-title {
+    font-size: 42px;
+    font-family: Epica Sans Pro Black,
+        Impact,
+        Haettenschweiler,
+        'Arial Narrow Bold',
+        sans-serif !important;
+    color: $primary-text-color;
+    margin-left: 40px;
+}
+
 .home-module-container {
     display: flex;
     flex-direction: row;

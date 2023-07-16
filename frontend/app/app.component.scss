@@ -164,9 +164,12 @@ footer {
     text-align: center;
     position: fixed;
     bottom: 0;
-    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
+    border-radius: 12px 12px 0 0;
 }
 
 svg#clouds {

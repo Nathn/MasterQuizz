@@ -7,9 +7,11 @@
     max-width: 100%;
     display: flex;
     align-items: center;
-    // background: #392989;
     background: $tertiary-color;
-    color: $primary-text-color;
+    color: $tertiary-text-color;
+    font-family: Epica Sans Pro Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    font-size: larger;
+    letter-spacing: 0.03em;
     padding: 10px 37px 10px 40px;
     border-radius: 69px;
     flex-direction: row;
@@ -61,7 +63,6 @@ label {
     -ms-user-select: none;
     user-select: none;
     transition: background-color .2s, box-shadow .2s;
-    //color: #43329d;
     color: $primary-text-color;
     font-weight: 600;
 }
@@ -90,7 +91,6 @@ label {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    //color: #43329d;
     color: $primary-text-color;
     font-weight: 600;
 }
