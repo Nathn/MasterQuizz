@@ -2,7 +2,7 @@
   <div class="toolbar">
     <div class="title-bar" href="#">
       <a class="logo" href="#">
-        <img src="../assets/logo.png" alt="MasterQuizz logo" width="40" height="40">
+        <img src="../assets/logo.png" alt="MasterQuizz logo" width="60" height="60">
         <h1>MasterQuizz</h1>
       </a>
       <ul>
@@ -14,14 +14,20 @@
       </ul>
     </div>
     <div class="buttons" *ngIf="!user && !isLoading">
-      <button class="sign-in" (click)="navigateToLogin()">Connection</button>
-      <button class="sign-up" (click)="navigateToRegister()">Inscription</button>
+      <button class="sign-in" (click)="navigateToLogin()">
+        <fa-icon [icon]="faSignInAlt"></fa-icon>
+        <span>Connection</span>
+      </button>
+      <button class="sign-up" (click)="navigateToRegister()">
+        <fa-icon [icon]="faUserPlus"></fa-icon>
+        <span>Inscription</span>
+      </button>
     </div>
     <div class="buttons" *ngIf="user && !isLoading">
       <span class="username">Bonjour, <b>{{ user.displayName }}</b></span>
       <button class="sign-out" (click)="logout()">
         <fa-icon [icon]="faSignOutAlt"></fa-icon>
-        Déconnection
+        <span>Déconnection</span>
       </button>
     </div>
     <div class="buttons" *ngIf="isLoading">

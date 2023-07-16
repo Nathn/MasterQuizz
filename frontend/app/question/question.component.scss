@@ -1,29 +1,16 @@
 @import '../../styles/variables';
 
 
+* {
+    color: $secondary-text-color;
+}
+
 .qdj.quizzmodule-slide.quizzmodule-slide-question {
     border-radius: initial;
     position: initial;
     background: initial;
     padding: 0;
     color: #fff;
-}
-
-.qdjlogo {
-    position: absolute;
-    margin-top: -45px;
-    max-width: 100%;
-    display: flex;
-    align-items: center;
-    // background: #392989;
-    background: $tertiary-color;
-    color: $primary-text-color;
-    padding: 10px 37px 10px 40px;
-    border-radius: 69px;
-    flex-direction: row;
-    justify-content: center;
-    border: solid 7px $secondary-color;
-    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, .2);
 }
 
 .module-content-container {

@@ -4,7 +4,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: $primary-text-color;
 }
 
 body {
@@ -55,6 +54,10 @@ button {
     outline: none;
     box-shadow: none;
     transition: box-shadow 0.3s ease-in-out;
+}
+
+button * {
+    color: $button-text-color;
 }
 
 button:not([disabled]):hover,

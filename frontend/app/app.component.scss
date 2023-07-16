@@ -12,20 +12,21 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 20px;
+    padding: 10px 60px;
     background-color: $secondary-color;
-    width: 100%;
+    width: 100vw;
     height: 75px;
+    z-index: 100;
+}
+
+.toolbar *:not(button span) {
+    color: $secondary-text-color;
 }
 
 .logo {
     display: flex;
     align-items: center;
     text-decoration: none;
-
-    img {
-        height: 40px;
-    }
 }
 
 .title-bar {
@@ -61,7 +62,6 @@
             a {
                 position: relative;
                 text-decoration: none;
-                color: $primary-text-color;
                 font-weight: 300;
                 font-size: 22px;
                 transition: color 0.3s ease-in-out;
@@ -73,12 +73,12 @@
                     left: 0;
                     width: 0;
                     height: 2px;
-                    background-color: $primary-text-color;
+                    background-color: $secondary-text-color;
                     transition: width 0.3s ease-in-out;
                 }
 
                 &:hover {
-                    color: darken($primary-text-color, 10%);
+                    color: darken($secondary-text-color, 10%);
 
                     &::before {
                         width: 100%;
@@ -91,6 +91,32 @@
             margin-right: 30px;
         }
     }
+
+    @media (max-width: 1130px) {
+        h1 {
+            font-size: 38px;
+            margin-left: 30px;
+        }
+
+        ul li {
+            margin-right: 5px;
+
+            a {
+                font-size: 20px;
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        h1 {
+            font-size: 32px;
+            margin-left: 20px;
+        }
+
+        ul {
+            display: none;
+        }
+    }
 }
 
 .buttons {
@@ -98,6 +124,10 @@
 }
 
 button {
+    fa-icon {
+        margin-right: 10px;
+    }
+
     margin-left: 10px;
 }
 
@@ -106,12 +136,10 @@ button {
     text-align: end;
 }
 
-.sign-out {
+.sign-out,
+.sign-in,
+.sign-up {
     display: flex;
-}
-
-.sign-out fa-icon {
-    margin-right: 10px;
 }
 
 main {
@@ -131,6 +159,7 @@ h2 {
 /* Footer styles */
 footer {
     padding: 10px;
+    color: $secondary-text-color;
     background-color: $secondary-color;
     text-align: center;
     position: fixed;
@@ -146,4 +175,25 @@ svg#clouds {
     left: -230px;
     z-index: -10;
     width: 1920px;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .toolbar {
+        padding: 10px 20px;
+    }
+
+    button {
+        fa-icon {
+            margin-right: 0 !important;
+        }
+
+        span {
+            display: none;
+        }
+    }
 }
