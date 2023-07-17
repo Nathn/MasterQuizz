@@ -22,8 +22,12 @@ export class QuestionComponent {
   constructor() { }
 
   selectAnswer(index: number) {
-    this.selectedAnswerIndex = index;
-    this.selectedAnswer.emit(index);
+    if (this.selectedAnswerIndex == index) {
+      this.selectedAnswerIndex = -1;
+    } else {
+      this.selectedAnswerIndex = index;
+    }
+    this.selectedAnswer.emit(this.selectedAnswerIndex);
   }
 
 }

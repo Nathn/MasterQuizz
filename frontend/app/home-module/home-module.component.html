@@ -20,7 +20,7 @@
 <div *ngIf="moduleType == 'ranking'" class="module-content-container" style="width: 90%;">
     <ul class="rankingmodule-slide-ranking">
         <li *ngFor="let user of ranking; let i = index">
-            <div class="rankingmodule-slide-ranking-position">{{i + 1}}.</div>
+            <div class="rankingmodule-slide-ranking-position">{{i + 1}}</div>
             <div class="rankingmodule-slide-ranking-name">{{user.username}}</div>
             <div class="rankingmodule-slide-ranking-score">{{user.score}}</div>
         </li>

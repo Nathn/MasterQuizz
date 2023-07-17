@@ -37,10 +37,6 @@ export class HomeModuleComponent {
     {
       username: "Adipiscing",
       score: 117
-    },
-    {
-      username: "Elit",
-      score: 114
     }
   ]
   @Input('moduleTitle') moduleTitle: string = "";

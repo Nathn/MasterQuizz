@@ -46,10 +46,10 @@ button {
     color: $button-text-color;
     font-weight: 300;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 12px;
     background-color: $button-color;
     border: 1px solid #111;
-    padding: 10px !important;
+    padding: 10px;
     cursor: pointer;
     outline: none;
     box-shadow: none;
@@ -62,8 +62,6 @@ button * {
 
 button:not([disabled]):hover,
 button:not([disabled]):focus {
-    background-color: darken($button-color, 10%);
-    color: lighten($button-text-color, 10%);
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 

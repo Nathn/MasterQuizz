@@ -78,8 +78,6 @@
                 }
 
                 &:hover {
-                    color: darken($secondary-text-color, 10%);
-
                     &::before {
                         width: 100%;
                     }
@@ -144,7 +142,7 @@ button {
 
 main {
     flex-grow: 1;
-    padding: 20px;
+    padding: 20px 60px;
 }
 
 .content {
@@ -172,22 +170,18 @@ footer {
     border-radius: 12px 12px 0 0;
 }
 
-svg#clouds {
-    position: fixed;
-    bottom: -160px;
-    left: -230px;
-    z-index: -10;
-    width: 1920px;
-}
-
 @media (max-width: 768px) {
     main {
-        padding-left: 0px;
-        padding-right: 0px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .toolbar {
-        padding: 10px 20px;
+        padding: 10px 10px;
+    }
+
+    .username {
+        display: none;
     }
 
     button {

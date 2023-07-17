@@ -29,42 +29,19 @@
     color: $secondary-text-color;
 }
 
-label:hover {
-    background-color: #ffe5ac;
+.button-start {
+    font-size: larger;
+    padding: 10px 37px 10px 40px !important;
+    border-radius: 69px;
 }
 
-li {
-    list-style-type: none;
+.button-start:not(:disabled) {
+    border: solid 1px $secondary-text-color;
 }
 
-li label {
-    width: 100%;
-    font-size: 1.05em;
-    line-height: 1.15;
-    text-align: left;
-}
-
-input[type=radio] {
-    display: none;
-}
-
-label {
-    display: flex;
-    align-items: center;
-    position: relative;
-    padding: 11px 30px 11px 20px;
-    border: 0 solid #ddd;
-    border-radius: 40px;
-    background-color: #fff;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    transition: background-color .2s, box-shadow .2s;
-    color: $primary-text-color;
-    font-weight: 600;
+.button-start:not(:disabled):hover,
+.button-start:not(:disabled):focus {
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
 }
 
 .rankingmodule-slide-ranking {
@@ -75,6 +52,7 @@ label {
 }
 
 .rankingmodule-slide-ranking li {
+    list-style-type: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -93,6 +71,10 @@ label {
     user-select: none;
     color: $primary-text-color;
     font-weight: 600;
+}
+
+.rankingmodule-slide-ranking li:last-child {
+    margin-bottom: 0;
 }
 
 .rankingmodule-slide-ranking-position {

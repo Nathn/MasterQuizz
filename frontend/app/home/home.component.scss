@@ -9,14 +9,14 @@
         'Arial Narrow Bold',
         sans-serif !important;
     color: $primary-text-color;
-    margin-left: 40px;
+    //margin-left: 40px;
 }
 
 .home-module-container {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 20px;
+    margin: 20px 0;
 }
 
 .home-module {
@@ -26,7 +26,6 @@
     flex-direction: column;
     align-items: center;
     margin: 20px;
-    // background: #2e265c;
     background: $secondary-color;
     border-radius: 12px;
     position: relative;
@@ -36,7 +35,20 @@
     text-align: center;
 }
 
+.home-module:first-child {
+    margin-left: 0;
+}
+
+.home-module:last-child {
+    margin-right: 0;
+}
+
 @media (max-width: 768px) {
+
+    .home-title {
+        font-size: 38px;
+    }
+
     .home-module-container {
         flex-direction: column;
     }
