@@ -38,6 +38,7 @@
 .title-bar {
     display: flex;
     align-items: center;
+    justify-content: initial;
 
     h1 {
         font-size: 42px;
@@ -48,6 +49,20 @@
             sans-serif !important;
         float: left;
         margin-left: 40px;
+    }
+
+    .menu-icon {
+        display: none;
+        font-size: 32px;
+        color: $button-text-color;
+        border: none;
+        padding: 0;
+        background-color: transparent;
+        cursor: default;
+        box-shadow: none;
+        outline: initial;
+        border-radius: 0;
+        transition: none;
     }
 
     ul {
@@ -106,6 +121,8 @@
     }
 
     @media (max-width: 768px) {
+        justify-content: space-between;
+
         h1 {
             font-size: 32px;
             margin-left: 20px;
@@ -113,6 +130,36 @@
 
         ul {
             display: none;
+        }
+
+        .menu-icon {
+            display: block;
+
+            fa-icon {
+                cursor: pointer;
+            }
+
+            ul {
+                display: none;
+            }
+        }
+
+        .menu-icon[aria-expanded='true'] {
+            ul {
+                display: block;
+                position: absolute;
+                top: 75px;
+                left: 0;
+                width: 100%;
+                margin: 0;
+                background-color: rgba($secondary-color, 0.93);
+                padding: 10px 0;
+                padding-top: 0px;
+                border: 1px solid $secondary-text-color;
+                border-radius: 0 0 12px 12px;
+                border-top: none;
+                z-index: 100;
+            }
         }
     }
 }
@@ -176,8 +223,17 @@ footer {
         padding-right: 10px;
     }
 
+    .content {
+        margin-top: 75px;
+    }
+
     .toolbar {
         padding: 10px 10px;
+    }
+
+    .logo img {
+        width: 40px;
+        height: 40px;
     }
 
     .username {

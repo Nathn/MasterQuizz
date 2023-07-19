@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { faSpinner, faSignInAlt, faUserPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faBars, faSignInAlt, faUserPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -22,8 +22,10 @@ export class AppComponent {
   user: any = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null;
   userObj: any = localStorage.getItem("userObj") ? JSON.parse(localStorage.getItem("userObj") || "") : null;
   isLoading: boolean = localStorage.getItem("user") ? false : true;
+  showMenu: boolean = false;
 
   faSpinner = faSpinner;
+  faBars = faBars;
   faSignInAlt = faSignInAlt;
   faUserPlus = faUserPlus;
   faSignOutAlt = faSignOutAlt;
