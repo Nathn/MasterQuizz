@@ -27,7 +27,7 @@
       </button>
     </div>
     <div class="buttons" *ngIf="user && !isLoading">
-      <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
+      <img class="avatar web" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
       <span class="username" *ngIf="user.displayName || userObj.username">
         <b>{{ user.displayName || userObj.username }}</b>
       </span>
