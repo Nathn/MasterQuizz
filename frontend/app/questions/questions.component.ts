@@ -151,7 +151,7 @@ export class QuestionsComponent {
 
   getQuestionsFiltered() {
     let filteredQuestions: any[] = [];
-    for (let question of this.questionsList) {
+    outer: for (let question of this.questionsList) {
       if (question.question.toLowerCase().includes(this.search.toLowerCase())) {
         filteredQuestions.push(question);
         continue;
@@ -167,7 +167,7 @@ export class QuestionsComponent {
       for (let answer of question.answers) {
         if (answer.answer.toLowerCase().includes(this.search.toLowerCase())) {
           filteredQuestions.push(question);
-          continue;
+          continue outer;
         }
       }
     }

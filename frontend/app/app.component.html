@@ -5,15 +5,8 @@
         <img src="../assets/logo.png" alt="MasterQuizz logo" width="60" height="60">
         <h1>MasterQuizz</h1>
       </a>
-      <button class="menu-icon" [attr.aria-expanded]="showMenu" *ngIf="user && !isLoading">
+      <button class="menu-icon" *ngIf="user && !isLoading">
         <fa-icon [icon]="faBars" (click)="showMenu = !showMenu"></fa-icon>
-        <ul>
-          <li><a href="#">Entraînement</a></li>
-          <li><a href="#">Multijoueur</a></li>
-          <li><a href="#">Classements</a></li>
-          <li><a href="#">À propos</a></li>
-          <li><a href="/questions/manage" *ngIf="userObj && userObj.admin">Questions</a></li>
-        </ul>
       </button>
       <ul>
         <li><a href="#">Entraînement</a></li>
@@ -34,7 +27,13 @@
       </button>
     </div>
     <div class="buttons" *ngIf="user && !isLoading">
-      <span class="username">Bonjour, <b>{{ user.displayName }}</b></span>
+      <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
+      <span class="username" *ngIf="user.displayName || userObj.username">
+        <b>{{ user.displayName || userObj.username }}</b>
+      </span>
+      <span class="username">
+        {{ userObj.elo || "0" }}&nbsp;🏆
+      </span>
       <button class="sign-out" (click)="logout()">
         <fa-icon [icon]="faSignOutAlt"></fa-icon>
         <span>Déconnection</span>
@@ -44,6 +43,24 @@
       <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
     </div>
   </div>
+  <ul class="menu-mobile" [attr.aria-expanded]="showMenu"> <!-- displayed only on mobile -->
+    <li><a href="#">Entraînement</a></li>
+    <li><a href="#">Multijoueur</a></li>
+    <li><a href="#">Classements</a></li>
+    <li><a href="#">À propos</a></li>
+    <li><a href="/questions/manage" *ngIf="userObj && userObj.admin">Questions</a></li>
+    <div class="user-info">
+      <div class="user-info-header">
+        <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
+        <span class="username-mini" *ngIf="user.displayName || userObj.username">
+          <b>{{ user.displayName || userObj.username }}</b>
+        </span>
+      </div>
+      <span class="username-mini">
+        {{ userObj.elo || "0" }} 🏆
+      </span>
+    </div>
+  </ul>
 </header>
 
 <main>
