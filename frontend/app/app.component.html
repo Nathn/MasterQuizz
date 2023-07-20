@@ -43,7 +43,7 @@
       <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
     </div>
   </div>
-  <ul class="menu-mobile" [attr.aria-expanded]="showMenu"> <!-- displayed only on mobile -->
+  <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && !isLoading"> <!-- displayed only on mobile -->
     <li><a href="#">Entraînement</a></li>
     <li><a href="#">Multijoueur</a></li>
     <li><a href="#">Classements</a></li>
