@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true
     },
+    numberOfGames: {
+        type: Number,
+        default: 0
+    },
     username: {
         type: String,
         trim: true,

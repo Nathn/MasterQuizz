@@ -13,6 +13,7 @@ import { RegisterComponent } from './register/register.component';
 import { QuestionsComponent } from './questions/questions.component';
 import { HomeModuleComponent } from './home-module/home-module.component';
 import { QuestionComponent } from './question/question.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { QuestionComponent } from './question/question.component';
     RegisterComponent,
     QuestionsComponent,
     HomeModuleComponent,
-    QuestionComponent
+    QuestionComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

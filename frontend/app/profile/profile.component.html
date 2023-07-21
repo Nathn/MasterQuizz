@@ -1,0 +1,25 @@
+<div *ngIf="isRequestLoading" class="profile">
+    <div>
+        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+    </div>
+</div>
+<div *ngIf="!isRequestLoading && displayedUser" class="profile">
+    <img [src]="displayedUser.avatarUrl" width="100" height="100" *ngIf="displayedUser.avatarUrl" />
+    <h1>
+        {{ displayedUser.username }}
+    </h1>
+    <span>
+        Inscrit le {{ displayedUser.created | date: 'dd/MM/yyyy' }}
+    </span>
+    <span>
+        {{ displayedUser.elo }} ELO
+    </span>
+    <span>
+        {{ displayedUser.numberOfGames }} parties jouées
+    </span>
+    <div *ngIf="displayedUser.admin">
+        <span>
+            Administrateur
+        </span>
+    </div>
+</div>
