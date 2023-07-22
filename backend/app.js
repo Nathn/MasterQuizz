@@ -1,6 +1,8 @@
 const express = require('express');
-const path = require('path');
+const ws = require('ws');
 const mongoose = require('mongoose');
+const http = require('http');
+const path = require('path');
 const shrinkRay = require('shrink-ray-current');
 
 require('dotenv').config({
@@ -9,6 +11,7 @@ require('dotenv').config({
 
 const routes = require('./routes');
 
+// Express server
 const app = express();
 
 app.use(express.json());
@@ -60,6 +63,21 @@ app.use(express.static(path.join(__dirname, '../dist/master-quizz'), {
     }
 }));
 
+// Websocket server
+const server = http.createServer(app);
+const wss = new ws.Server({
+    server
+});
+
+wss.on('connection', (ws) => {
+    ws.on('message', (message) => {
+        console.log(`[WS] received: ${message}`);
+        ws.send(`[WS] received: ${message}`);
+    });
+    ws.send('[WS] connected');
+});
+
+// MongoDB connection
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -74,4 +92,7 @@ app.use('/', routes);
 
 app.listen(process.env.PORT || 3000, () => {
     console.log(`[SERVER] is running on port ${process.env.PORT || 3000} !`);
+});
+server.listen(process.env.WS_PORT || 3001, () => {
+    console.log(`[WS] is running on port ${process.env.WS_PORT || 3001} !`);
 });
