@@ -94,11 +94,18 @@
                         <div class="question-infos">
                             <span>Thème : {{question.theme.name}}</span>
                             <span>Difficulté : {{question.difficulty}}/5</span>
-                            <span>Ajoutée le {{question.created | date:'dd/MM/yyyy'}} par
-                                {{question.user.username}}</span>
-                            <span *ngIf="question.updated && question.userUpdated">Modifiée le
-                                {{question.updated | date:'dd/MM/yyyy'}} par
-                                {{question.userUpdated.username}}</span>
+                            <span>
+                                Ajoutée le {{question.created | date:'dd/MM/yyyy'}} par
+                                <a href="/profile/{{question.user.username}}">
+                                    {{question.user.username}}
+                                </a>
+                            </span>
+                            <span *ngIf="question.updated && question.userUpdated">
+                                Modifiée le {{question.updated | date:'dd/MM/yyyy'}} par
+                                <a href="/profile/{{question.userUpdated.username}}">
+                                    {{question.userUpdated.username}}
+                                </a>
+                            </span>
                         </div>
                     </div>
                     <div class="question-actions">

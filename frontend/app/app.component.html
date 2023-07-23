@@ -10,7 +10,7 @@
       </button>
       <ul>
         <li><a href="#">Entraînement</a></li>
-        <li *ngIf="userObj"><a href="/multiplayer">Multijoueur</a></li>
+        <li><a href="/multiplayer">Multijoueur</a></li>
         <li><a href="#">Classements</a></li>
         <li><a href="#">À propos</a></li>
         <li *ngIf="userObj && userObj.admin"><a href="/questions/manage">Questions</a></li>
@@ -47,7 +47,7 @@
   </div>
   <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && !isLoading"> <!-- displayed only on mobile -->
     <li><a href="#">Entraînement</a></li>
-    <li *ngIf="userObj"><a href="/multiplayer">Multijoueur</a></li>
+    <li><a href="/multiplayer">Multijoueur</a></li>
     <li><a href="#">Classements</a></li>
     <li><a href="#">À propos</a></li>
     <li *ngIf="userObj && userObj.admin"><a href="/questions/manage">Questions</a></li>

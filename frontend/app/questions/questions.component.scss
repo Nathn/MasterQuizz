@@ -8,6 +8,11 @@ h6 {
     text-align: center !important;
 }
 
+a {
+    text-decoration: underline;
+    color: #000;
+}
+
 form {
     display: flex;
     flex-direction: column;

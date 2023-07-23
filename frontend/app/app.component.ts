@@ -46,6 +46,9 @@ export class AppComponent {
         this.getUserInfo();
       } else {
         this.user = null;
+        this.userObj = null;
+        localStorage.removeItem("user");
+        localStorage.removeItem("userObj");
       }
       this.isLoading = false;
     });
