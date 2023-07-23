@@ -70,11 +70,11 @@ const wss = new ws.Server({
 });
 
 wss.on('connection', (ws) => {
+    console.log('[WS] Connected to client');
     ws.on('message', (message) => {
-        console.log(`[WS] received: ${message}`);
-        ws.send(`[WS] received: ${message}`);
+        console.log(`[WS] Request received: ${message}`);
+        ws.send(`{"message": "Hello from the server !"}`);
     });
-    ws.send('[WS] connected');
 });
 
 // MongoDB connection

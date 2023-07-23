@@ -1,0 +1,10 @@
+<div class="main">
+    <button type="button" (click)="findMatch()" *ngIf="!status">
+        Trouver un adversaire
+    </button>
+    <button type="button" (click)="cancelSearch()" *ngIf="status">
+        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+        Annuler
+    </button>
+    <span class="status" *ngIf="status">{{ status }}</span>
+</div>

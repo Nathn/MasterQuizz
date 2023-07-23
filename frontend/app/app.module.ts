@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+
+import { AppRoutingModule } from './app-routing.module';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -14,6 +16,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { HomeModuleComponent } from './home-module/home-module.component';
 import { QuestionComponent } from './question/question.component';
 import { ProfileComponent } from './profile/profile.component';
+import { DuelComponent } from './duel/duel.component';
 
 @NgModule({
   declarations: [
@@ -24,13 +27,15 @@ import { ProfileComponent } from './profile/profile.component';
     QuestionsComponent,
     HomeModuleComponent,
     QuestionComponent,
-    ProfileComponent
+    ProfileComponent,
+    DuelComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    StoreModule.forRoot({}),
     FontAwesomeModule
   ],
   providers: [],

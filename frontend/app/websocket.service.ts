@@ -8,7 +8,7 @@ import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class WebsocketsService {
+export class WebSocketService {
   private connection$: WebSocketSubject<any> | null = null;
 
   constructor(private store: Store<object>) { }

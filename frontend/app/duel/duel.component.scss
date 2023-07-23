@@ -1,0 +1,11 @@
+@import '../../styles/variables';
+
+
+.main {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    max-width: 90%;
+    padding: 15px;
+    margin: auto;
+}

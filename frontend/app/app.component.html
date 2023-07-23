@@ -10,10 +10,10 @@
       </button>
       <ul>
         <li><a href="#">Entraînement</a></li>
-        <li><a href="#">Multijoueur</a></li>
+        <li *ngIf="userObj"><a href="/multiplayer">Multijoueur</a></li>
         <li><a href="#">Classements</a></li>
         <li><a href="#">À propos</a></li>
-        <li><a href="/questions/manage" *ngIf="userObj && userObj.admin">Questions</a></li>
+        <li *ngIf="userObj && userObj.admin"><a href="/questions/manage">Questions</a></li>
       </ul>
     </div>
     <div class="buttons" *ngIf="!user && !isLoading">
@@ -47,10 +47,10 @@
   </div>
   <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && !isLoading"> <!-- displayed only on mobile -->
     <li><a href="#">Entraînement</a></li>
-    <li><a href="#">Multijoueur</a></li>
+    <li *ngIf="userObj"><a href="/multiplayer">Multijoueur</a></li>
     <li><a href="#">Classements</a></li>
     <li><a href="#">À propos</a></li>
-    <li><a href="/questions/manage" *ngIf="userObj && userObj.admin">Questions</a></li>
+    <li *ngIf="userObj && userObj.admin"><a href="/questions/manage">Questions</a></li>
     <div class="user-info-mobile">
       <div class="user-info-header">
         <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
