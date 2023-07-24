@@ -10,6 +10,7 @@ require('dotenv').config({
 });
 
 const routes = require('./routes');
+const websocket = require('./websocket');
 
 // Express server
 const app = express();
@@ -69,11 +70,33 @@ const wss = new ws.Server({
     server
 });
 
+var userWebSockets = {};
+
 wss.on('connection', (ws) => {
-    console.log('[WS] Connected to client');
+    console.log('[WS] Connected to a client');
     ws.on('message', (message) => {
         console.log(`[WS] Request received: ${message}`);
-        ws.send(`{"message": "Hello from the server !"}`);
+        // example message : {
+        //   type: "duel",
+        //   action: "find",
+        //   user: "5e9f1b7b0f0b7b1b1c9b1b1b" // user id
+        // }
+        const request = JSON.parse(message);
+        userWebSockets[request.user] = ws;
+        if (request.type === 'duel') {
+            websocket.handleWebSocketDuelMessage(request, ws, userWebSockets);
+        }
+    });
+    ws.on('close', () => {
+        // Clean up the WebSocket connection when it's closed
+        const user = Object.keys(userWebSockets).find((key) => userWebSockets[key] === ws);
+        if (user) {
+        delete userWebSockets[user];
+        console.log(`[WS] User ${user} WebSocket disconnected`);
+        }
+    });
+    ws.on('error', (err) => {
+        console.log(`[WS] Error: ${err}`);
     });
 });
 

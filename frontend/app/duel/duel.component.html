@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main" *ngIf="!duelId">
     <button type="button" (click)="findMatch()" *ngIf="!status">
         Trouver un adversaire
     </button>
@@ -7,4 +7,7 @@
         Annuler
     </button>
     <span class="status" *ngIf="status">{{ status }}</span>
+</div>
+<div class="main" *ngIf="duelId">
+    c'est l'heure du duel
 </div>

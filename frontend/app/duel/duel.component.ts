@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import { WebSocketService } from '../websocket.service';
 
@@ -17,7 +17,9 @@ import { environment } from '../../environments/environment';
 export class DuelComponent implements OnInit, OnDestroy {
 
   user: any = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") || "") : null;
-  userObj: any;
+  userObj: any = localStorage.getItem("userObj") ? JSON.parse(localStorage.getItem("userObj") || "") : null;
+  duelId: string = "";
+  duelObj: any = null;
 
   destroyed$ = new Subject();
 
@@ -34,20 +36,24 @@ export class DuelComponent implements OnInit, OnDestroy {
     private router: Router,
     private ar: ActivatedRoute,
     private http: HttpClient,
-    private ws: WebSocketService
+    private ws: WebSocketService,
   ) {
     if (!this.user)
       this.router.navigate(['/login']);
-    this.http.post(environment.apiUrl + "getUserFromEmail", {
-      email: this.user.email
-    }).subscribe((response: any) => {
-      if (response.message != "OK") {
-        alert(response.message);
-      } else {
-        this.userObj = response.user;
-        if (!this.userObj)
-          this.router.navigate(['']);
-      }
+    ar.params.subscribe(params => {
+      if (params['id'])
+        this.duelId = params['id'];
+      this.http.post(environment.apiUrl + "getUserFromEmail", {
+        email: this.user.email
+      }).subscribe((response: any) => {
+        if (response.message != "OK") {
+          alert(response.message);
+        } else {
+          this.userObj = response.user;
+          if (!this.userObj)
+            this.router.navigate(['']);
+        }
+      });
     });
   }
 
@@ -55,12 +61,11 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.ws.connect().pipe(
       takeUntil(this.destroyed$)
     ).subscribe((message: any) => {
-      console.log(message);
       if (message.type == "duel") {
-        if (message.duel.status == "waiting") {
-          this.status = "waiting";
-        } else if (message.duel.status == "started") {
-          this.router.navigate(['duel', message.duel._id]);
+        if (message.status == "waiting") {
+          this.status = "Recherche d'adversaire en cours...";
+        } else if (message.status == "ready") {
+          this.router.navigate(['duel', message.match._id]);
         }
       }
     });
@@ -68,14 +73,14 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroyed$.next(0);
+    this.ws.closeConnection();
   }
 
   findMatch() {
-    this.status = "Recherche d'adversaire en cours...";
     this.ws.send({
       type: "duel",
       action: "find",
-      user: this.userObj
+      user: this.userObj._id
     });
   }
 
@@ -84,7 +89,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.ws.send({
       type: "duel",
       action: "cancel",
-      user: this.userObj
+      user: this.userObj._id
     });
   }
 
