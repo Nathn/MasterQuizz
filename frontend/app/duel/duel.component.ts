@@ -41,8 +41,10 @@ export class DuelComponent implements OnInit, OnDestroy {
     if (!this.user)
       this.router.navigate(['/login']);
     ar.params.subscribe(params => {
-      if (params['id'])
+      if (params['id']) {
         this.duelId = params['id'];
+        this.status = "Match trouvé ! En attente de l'adversaire..."
+      }
       this.http.post(environment.apiUrl + "getUserFromEmail", {
         email: this.user.email
       }).subscribe((response: any) => {
@@ -66,9 +68,17 @@ export class DuelComponent implements OnInit, OnDestroy {
           this.status = "Recherche d'adversaire en cours...";
         } else if (message.status == "ready") {
           this.router.navigate(['duel', message.match._id]);
+        } else if (message.status == "canceled") {
+          this.status = "";
+        } else if (message.status == "started") {
+          this.status = "";
+          this.duelObj = message.match;
         }
       }
     });
+    if (this.duelId) {
+      this.startMatch();
+    }
   }
 
   ngOnDestroy() {
@@ -85,11 +95,19 @@ export class DuelComponent implements OnInit, OnDestroy {
   }
 
   cancelSearch() {
-    this.status = "";
     this.ws.send({
       type: "duel",
       action: "cancel",
       user: this.userObj._id
+    });
+  }
+
+  startMatch() {
+    this.ws.send({
+      type: "duel",
+      action: "start",
+      user: this.userObj._id,
+      match: this.duelId
     });
   }
 

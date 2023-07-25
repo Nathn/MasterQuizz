@@ -1,13 +1,22 @@
-<div class="main" *ngIf="!duelId">
-    <button type="button" (click)="findMatch()" *ngIf="!status">
+<div class="main" *ngIf="!duelId || !duelObj">
+    <button type="button" (click)="findMatch()" *ngIf="!status && !duelId">
         Trouver un adversaire
     </button>
-    <button type="button" (click)="cancelSearch()" *ngIf="status">
+    <button type="button" (click)="cancelSearch()" *ngIf="status && !duelId">
         <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
         Annuler
     </button>
     <span class="status" *ngIf="status">{{ status }}</span>
 </div>
-<div class="main" *ngIf="duelId">
-    c'est l'heure du duel
+<div class="main" *ngIf="duelId && duelObj">
+    <h1>
+        <span>
+            C'est l'heure du duel !
+        </span>
+        <span>
+            <img src="{{ duelObj.users[0].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
+            {{ duelObj.users[0].username }} VS {{ duelObj.users[1].username }}
+            <img src="{{ duelObj.users[1].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
+        </span>
+    </h1>
 </div>

@@ -7,8 +7,8 @@ const matchSchema = new mongoose.Schema({
         default: Date.now
     },
     started: {
-        type: Boolean,
-        default: false
+        type: Number,
+        default: 0
     },
     ended: {
         type: Boolean,
