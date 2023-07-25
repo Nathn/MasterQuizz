@@ -84,7 +84,8 @@ function handleWebSocketDuelMessage(request, ws, userWebSockets) {
             });
     } else if (request.action === 'cancel') {
         Match.findOne({
-            users: request.user
+            users: request.user,
+            started: 0
         }).exec().then(match => {
             Match.deleteOne({ _id: match._id })
                 .then(() => {

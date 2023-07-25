@@ -26,7 +26,7 @@
         <span>Inscription</span>
       </button>
     </div>
-    <div class="buttons" *ngIf="user && !isLoading">
+    <div class="buttons" *ngIf="user && userObj && !isLoading">
       <a class="user-info" href="/profile/{{ userObj.username || user.displayName }}">
         <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
         <span class="username" *ngIf="user.displayName || userObj.username">
@@ -45,7 +45,8 @@
       <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
     </div>
   </div>
-  <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && !isLoading"> <!-- displayed only on mobile -->
+  <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && userObj && !isLoading">
+    <!-- displayed only on mobile -->
     <li><a href="#">Entraînement</a></li>
     <li><a href="/multiplayer">Multijoueur</a></li>
     <li><a href="#">Classements</a></li>

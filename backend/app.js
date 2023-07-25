@@ -1,7 +1,6 @@
 const express = require('express');
 const ws = require('ws');
 const mongoose = require('mongoose');
-const http = require('http');
 const path = require('path');
 const shrinkRay = require('shrink-ray-current');
 
@@ -64,11 +63,32 @@ app.use(express.static(path.join(__dirname, '../dist/master-quizz'), {
     }
 }));
 
-// Websocket server
-const server = http.createServer(app);
-const wss = new ws.Server({
-    server
+// MongoDB connection
+mongoose.set('strictQuery', true);
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
+mongoose.Promise = global.Promise;
+mongoose.connection.on('error', (err) => {
+    console.log(`An error occured while connecting to the database: ${err}`);
+});
+
+app.use('/', routes);
+
+// Server and WebSocket server initialization
+
+const wss = new ws.Server({
+  server: app.listen(process.env.PORT || 3000, () => {
+    console.log(`[SERVER] is running on port ${process.env.PORT || 3000} !`);
+  })
+}).on('error', (err) => {
+    console.log(`[WS] An error occurred while creating the WebSocket server: ${err}`);
+});
+
+console.log('[WS] WebSocket server is running');
+
+// WebSocket server
 
 var userWebSockets = {};
 
@@ -98,24 +118,4 @@ wss.on('connection', (ws) => {
     ws.on('error', (err) => {
         console.log(`[WS] Error: ${err}`);
     });
-});
-
-// MongoDB connection
-mongoose.set('strictQuery', true);
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-mongoose.Promise = global.Promise;
-mongoose.connection.on('error', (err) => {
-    console.log(`An error occured while connecting to the database: ${err}`);
-});
-
-app.use('/', routes);
-
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`[SERVER] is running on port ${process.env.PORT || 3000} !`);
-});
-server.listen(process.env.WS_PORT || 3001, () => {
-    console.log(`[WS] is running on port ${process.env.WS_PORT || 3001} !`);
 });
