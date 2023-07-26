@@ -193,6 +193,22 @@ function handleWebSocketDuelMessage(request, ws, userWebSockets) {
                         }));
                     });
                 }
+            })
+            .catch(err => {
+                if (err.name === 'CastError') {
+                    console.log(`[WS] Match not found (invalid id)`);
+                    ws.send(JSON.stringify({
+                        message: 'OK',
+                        type: 'duel',
+                        status: 'not found'
+                    }));
+                } else {
+                    console.log(`[WS] An error occurred while finding match: ${err}`);
+                    console.log(err.stack);
+                    ws.send(JSON.stringify({
+                        message: 'Internal server error'
+                    }));
+                }
             });
     }
 }

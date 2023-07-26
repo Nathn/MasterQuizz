@@ -20,6 +20,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   userObj: any = localStorage.getItem("userObj") ? JSON.parse(localStorage.getItem("userObj") || "") : null;
   duelId: string = "";
   duelObj: any = null;
+  startedDuelId: string = "";
 
   destroyed$ = new Subject();
 
@@ -28,7 +29,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   faTrash = faTrash;
   faPlus = faPlus;
 
-  isRequestLoading: boolean = false;
+  isRequestLoading: boolean = true;
 
   status: string = "";
 
@@ -56,6 +57,23 @@ export class DuelComponent implements OnInit, OnDestroy {
           this.userObj = response.user;
           if (!this.userObj)
             this.router.navigate(['']);
+          if (!this.duelId) {
+            this.http.post(environment.apiUrl + "getCurrentDuelFromUser", {
+              user: this.userObj._id
+            }).subscribe((response: any) => {
+              if (response.message != "OK") {
+                alert(response.message);
+              } else {
+                if (response.match) {
+                  this.startedDuelId = response.match._id;
+                  this.status = "Match en cours...";
+                }
+                this.isRequestLoading = false;
+              }
+            });
+          } else {
+            this.isRequestLoading = false;
+          }
         }
       });
     });
@@ -75,6 +93,8 @@ export class DuelComponent implements OnInit, OnDestroy {
         } else if (message.status == "started") {
           this.status = "";
           this.duelObj = message.match;
+        } else if (message.status == "not found") {
+          this.router.navigate(['multiplayer']);
         }
       }
     });
@@ -94,6 +114,10 @@ export class DuelComponent implements OnInit, OnDestroy {
       action: "find",
       user: this.userObj._id
     });
+  }
+
+  joinMatch() {
+    this.router.navigate(['duel', this.startedDuelId]);
   }
 
   cancelSearch() {

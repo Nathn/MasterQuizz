@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'questions/:action', component: QuestionsComponent },
   { path: 'questions/:action/:id', component: QuestionsComponent },
   { path: 'multiplayer', component: DuelComponent },
+  { path: 'multiplayer/:id', component: DuelComponent },
   { path: 'duel/:id', component: DuelComponent },
   { path: '**', redirectTo: '' }
 ];

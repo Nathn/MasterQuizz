@@ -6,6 +6,7 @@ const router = express.Router();
 const userRoutes = require('./userRoutes');
 const questionRoutes = require('./questionRoutes');
 const themeRoutes = require('./themeRoutes');
+const matchRoutes = require('./matchRoutes');
 
 // console.log each request
 router.use((req, res, next) => {
@@ -17,6 +18,7 @@ router.use((req, res, next) => {
 router.use('/', userRoutes);
 router.use('/', questionRoutes);
 router.use('/', themeRoutes);
+router.use('/', matchRoutes);
 
 // Serve static files from the Angular app
 router.get('/*', (req, res) => {
