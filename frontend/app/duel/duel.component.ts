@@ -32,6 +32,9 @@ export class DuelComponent implements OnInit, OnDestroy {
   isRequestLoading: boolean = true;
 
   status: string = "";
+  currentQuestion: any = null;
+  selectedAnswerIndex: number = -1;
+  answerValidated: boolean = false;
 
   constructor(
     private router: Router,
@@ -91,8 +94,10 @@ export class DuelComponent implements OnInit, OnDestroy {
         } else if (message.status == "cancelled") {
           this.status = "";
         } else if (message.status == "started") {
+          console.log(message);
           this.status = "";
           this.duelObj = message.match;
+          this.currentQuestion = message.question;
         } else if (message.status == "not found") {
           this.router.navigate(['multiplayer']);
         }
@@ -135,6 +140,10 @@ export class DuelComponent implements OnInit, OnDestroy {
       user: this.userObj._id,
       match: this.duelId
     });
+  }
+
+  selectedAnswer(index: number) {
+    this.selectedAnswerIndex = index;
   }
 
 }

@@ -6,6 +6,14 @@ const matchSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    questions: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Question'
+    }],
+    currentQuestion: {
+        type: Number,
+        default: 0
+    },
     started: {
         type: Number,
         default: 0

@@ -137,25 +137,32 @@ function handleWebSocketDuelMessage(request, ws, userWebSockets) {
                             // Check if both users' WebSocket connections exist
                             if (userWs1 && userWs2) {
                                 Question.aggregate([
-                                    { $sample: { size: 1 } }
+                                    { $sample: { size: 1 } },
+                                    { $lookup: { from: 'themes', localField: 'theme', foreignField: '_id', as: 'theme' } },
+                                    { $unwind: '$theme' }
                                 ]).exec()
                                 .then(questions => {
-                                    console.log(`[WS] Question found: ${questions[0]._id}`);
-                                        // Send a message to both users
-                                        userWs1.send(JSON.stringify({
-                                            message: 'OK',
-                                            type: 'duel',
-                                            status: 'started',
-                                            match,
-                                            question: questions[0]
-                                        }));
-                                        userWs2.send(JSON.stringify({
-                                            message: 'OK',
-                                            type: 'duel',
-                                            status: 'started',
-                                            match,
-                                            question: questions[0]
-                                        }));
+                                        console.log(`[WS] Question found: ${questions[0]._id}`);
+                                        // Add the question to the match
+                                        match.questions.push(questions[0]._id);
+                                        match.save().then(match => {
+                                            console.log(`[WS] Match updated with question`);
+                                            // Send a message to both users
+                                            userWs1.send(JSON.stringify({
+                                                message: 'OK',
+                                                type: 'duel',
+                                                status: 'started',
+                                                match,
+                                                question: questions[0]
+                                            }));
+                                            userWs2.send(JSON.stringify({
+                                                message: 'OK',
+                                                type: 'duel',
+                                                status: 'started',
+                                                match,
+                                                question: questions[0]
+                                            }));
+                                        });
                                     })
                                     .catch(err => {
                                         console.log(`[WS] An error occurred while finding question: ${err}`);
@@ -177,12 +184,15 @@ function handleWebSocketDuelMessage(request, ws, userWebSockets) {
                             console.log(`[WS] Both users already started the match`);
                             match.started = 2;
                             match.save().then(match => {
-                                ws.send(JSON.stringify({
-                                    message: 'OK',
-                                    type: 'duel',
-                                    status: 'started',
-                                    match
-                                }));
+                                Question.findById(match.questions[match.currentQuestion]).populate('theme').exec().then(question => {
+                                    ws.send(JSON.stringify({
+                                        message: 'OK',
+                                        type: 'duel',
+                                        status: 'started',
+                                        match,
+                                        question
+                                    }));
+                                });
                             });
                         }
                     }).catch(err => {
