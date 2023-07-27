@@ -1,5 +1,18 @@
 @import './styles/variables';
 
+@font-face {
+    font-family: 'Epica Sans Pro Black';
+    src: url('/assets/fonts/epica-sans-pro-black.otf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Averta';
+    src: url('/assets/fonts/averta-semibold.otf') format('truetype');
+    font-display: swap;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -46,6 +59,7 @@ button {
     color: $button-text-color;
     font-weight: 300;
     font-size: 16px;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
     border-radius: 12px;
     background-color: $button-color;
     border: 1px solid #111;

@@ -6,7 +6,7 @@
 </h1>
 <div class="home-module-container">
     <app-home-module class="home-module" [question]="randomQuestion" moduleTitle="Question aléatoire"
-        moduleType="question" (nextQuestion)="nextQuestion()"></app-home-module>
+        moduleType="question" (nextQuestion)="nextQuestion($event)"></app-home-module>
     <app-home-module class="home-module" [question]="randomQuestion" moduleTitle="Classement Général"
         moduleType="ranking"></app-home-module>
 </div>

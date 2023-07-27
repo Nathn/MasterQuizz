@@ -10,14 +10,16 @@
     margin: auto;
 
     h1 {
+        font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
         text-align: center;
+        font-size: xx-large;
+        margin-bottom: 10px;
 
         span {
             display: flex;
             justify-content: center;
             align-items: center;
             margin: 10px;
-            font-size: 1.5rem;
             font-weight: 400;
             color: $primary-text-color;
 
@@ -27,7 +29,7 @@
         }
     }
 
-    app-question {
+    app-home-module {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -42,7 +44,7 @@
     }
 
     @media (max-width: 768px) {
-        app-question {
+        app-home-module {
             margin: 20px 0;
         }
     }

@@ -1,10 +1,5 @@
 @import '../styles/variables';
 
-@font-face {
-    font-family: 'Epica Sans Pro Black';
-    src: url('../assets/fonts/epica-sans-pro-black.otf') format('truetype');
-    font-display: swap;
-}
 
 /* Top toolbar styles */
 .toolbar {
@@ -70,6 +65,7 @@
         float: left;
         margin-left: 30px;
         margin-right: 10px;
+        font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
 
         li {
             display: inline-block;
@@ -301,6 +297,7 @@ footer {
         li {
             display: inline-block;
             margin: 5px 10px;
+            font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
 
             a {
                 position: relative;

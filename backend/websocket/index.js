@@ -1,228 +1,329 @@
-const Question = require('../models/Question');
-const Match = require('../models/Match');
-const User = require('../models/User');
+const Question = require("../models/Question");
+const Match = require("../models/Match");
+const User = require("../models/User");
 
 function handleWebSocketDuelMessage(request, ws, userWebSockets) {
-    if (request.action === 'find') {
+    if (request.action === "find") {
         Match.findOne({
             users: {
-                $size: 1
+                $size: 1,
             },
-            started: 0
-        }).populate('users').exec()
-            .then(match => {
+            started: 0,
+        })
+            .populate("users")
+            .exec()
+            .then((match) => {
                 if (!match) {
                     console.log(`[WS] No match found`);
                     const newMatch = new Match({
-                        users: [request.user]
+                        users: [request.user],
                     });
-                    newMatch.save()
-                        .then(match => {
+                    newMatch
+                        .save()
+                        .then((match) => {
                             console.log(`[WS] Match created`);
-                            ws.send(JSON.stringify({
-                                message: 'OK',
-                                type: 'duel',
-                                status: 'waiting',
-                                match
-                            }));
+                            ws.send(
+                                JSON.stringify({
+                                    message: "OK",
+                                    type: "duel",
+                                    status: "waiting",
+                                    match,
+                                })
+                            );
                         })
-                        .catch(err => {
-                            console.log(`[WS] An error occurred while creating match: ${err}`);
+                        .catch((err) => {
+                            console.log(
+                                `[WS] An error occurred while creating match: ${err}`
+                            );
                             console.log(err.stack);
-                            ws.send(JSON.stringify({
-                                message: 'Internal server error'
-                            }));
+                            ws.send(
+                                JSON.stringify({
+                                    message: "Internal server error",
+                                })
+                            );
                         });
                 } else {
                     console.log(`[WS] Match found: ${match._id}`);
                     match.users.push(request.user);
-                    match.save()
-                    .then(match => {
-                        console.log(`[WS] Match updated`);
-                        const userWs1 = userWebSockets[match.users[0]._id]; // WebSocket of the first user
-                        const userWs2 = userWebSockets[match.users[1]._id]; // WebSocket of the second user (newly joined)
-                        // Check if both users' WebSocket connections exist
-                        if (userWs1 && userWs2) {
-                            // Send a message to both users
-                            userWs1.send(JSON.stringify({
-                                message: 'OK',
-                                type: 'duel',
-                                status: 'ready',
-                                match
-                            }));
-                            userWs2.send(JSON.stringify({
-                                message: 'OK',
-                                type: 'duel',
-                                status: 'ready',
-                                match
-                            }));
-                        } else {
-                            console.log(`[WS] One of the users is not connected`);
-                            ws.send(JSON.stringify({
-                                message: 'OK',
-                                type: 'duel',
-                                status: 'waiting',
-                                match
-                            }));
-                        }
-                    })
-                    .catch(err => {
-                        console.log(`[WS] An error occurred while updating match: ${err}`);
-                        console.log(err.stack);
-                        ws.send(JSON.stringify({
-                            message: 'Internal server error'
-                        }));
-                    });
+                    match
+                        .save()
+                        .then((match) => {
+                            console.log(`[WS] Match updated`);
+                            const userWs1 = userWebSockets[match.users[0]._id]; // WebSocket of the first user
+                            const userWs2 = userWebSockets[match.users[1]._id]; // WebSocket of the second user (newly joined)
+                            // Check if both users' WebSocket connections exist
+                            if (userWs1 && userWs2) {
+                                // Send a message to both users
+                                userWs1.send(
+                                    JSON.stringify({
+                                        message: "OK",
+                                        type: "duel",
+                                        status: "ready",
+                                        match,
+                                    })
+                                );
+                                userWs2.send(
+                                    JSON.stringify({
+                                        message: "OK",
+                                        type: "duel",
+                                        status: "ready",
+                                        match,
+                                    })
+                                );
+                            } else {
+                                console.log(
+                                    `[WS] One of the users is not connected`
+                                );
+                                ws.send(
+                                    JSON.stringify({
+                                        message: "OK",
+                                        type: "duel",
+                                        status: "waiting",
+                                        match,
+                                    })
+                                );
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(
+                                `[WS] An error occurred while updating match: ${err}`
+                            );
+                            console.log(err.stack);
+                            ws.send(
+                                JSON.stringify({
+                                    message: "Internal server error",
+                                })
+                            );
+                        });
                 }
             })
-            .catch(err => {
-                console.log(`[WS] An error occurred while finding match: ${err}`);
+            .catch((err) => {
+                console.log(
+                    `[WS] An error occurred while finding match: ${err}`
+                );
                 console.log(err.stack);
-                ws.send(JSON.stringify({
-                    message: 'Internal server error'
-                }));
+                ws.send(
+                    JSON.stringify({
+                        message: "Internal server error",
+                    })
+                );
             });
-    } else if (request.action === 'cancel') {
+    } else if (request.action === "cancel") {
         Match.findOne({
             users: request.user,
-            started: 0
-        }).exec().then(match => {
-            Match.deleteOne({ _id: match._id })
-                .then(() => {
-                    console.log(`[WS] Match deleted`);
-                    ws.send(JSON.stringify({
-                        message: 'OK',
-                        type: 'duel',
-                        status: 'cancelled'
-                    }));
-                })
-                .catch(err => {
-                    console.log(`[WS] An error occurred while deleting match: ${err}`);
-                    console.log(err.stack);
-                    ws.send(JSON.stringify({
-                        message: 'Internal server error'
-                    }));
-                });
-        }).catch(err => {
-            console.log(`[WS] An error occurred while finding match: ${err}`);
-            console.log(err.stack);
-            ws.send(JSON.stringify({
-                message: 'Internal server error'
-            }));
-        });
-    } else if (request.action === 'start') {
+            started: 0,
+        })
+            .exec()
+            .then((match) => {
+                Match.deleteOne({ _id: match._id })
+                    .then(() => {
+                        console.log(`[WS] Match deleted`);
+                        ws.send(
+                            JSON.stringify({
+                                message: "OK",
+                                type: "duel",
+                                status: "cancelled",
+                            })
+                        );
+                    })
+                    .catch((err) => {
+                        console.log(
+                            `[WS] An error occurred while deleting match: ${err}`
+                        );
+                        console.log(err.stack);
+                        ws.send(
+                            JSON.stringify({
+                                message: "Internal server error",
+                            })
+                        );
+                    });
+            })
+            .catch((err) => {
+                console.log(
+                    `[WS] An error occurred while finding match: ${err}`
+                );
+                console.log(err.stack);
+                ws.send(
+                    JSON.stringify({
+                        message: "Internal server error",
+                    })
+                );
+            });
+    } else if (request.action === "start") {
         // Find the match corresponding to the match parameter
         // Add 1 to the started field
         // If both users started the match, then send a message to both users containing the info & first question
         Match.findOne({
-            _id: request.match
-        }).populate('users').exec()
-            .then(match => {
+            _id: request.match,
+        })
+            .populate("users")
+            .exec()
+            .then((match) => {
                 if (!match) {
                     console.log(`[WS] Match not found`);
-                    ws.send(JSON.stringify({
-                        message: 'OK',
-                        type: 'duel',
-                        status: 'not found'
-                    }));
+                    ws.send(
+                        JSON.stringify({
+                            message: "OK",
+                            type: "duel",
+                            status: "not found",
+                        })
+                    );
                 } else {
                     console.log(`[WS] Match found: ${match._id}`);
                     match.started += 1;
-                    match.save().then(match => {
-                        console.log(`[WS] Match updated`);
-                        if (match.started === 2) {
-                            console.log(`[WS] Both users started the match`);
-                            const userWs1 = userWebSockets[match.users[0]._id]; // WebSocket of the first user
-                            const userWs2 = userWebSockets[match.users[1]._id]; // WebSocket of the second user
-                            // Check if both users' WebSocket connections exist
-                            if (userWs1 && userWs2) {
-                                Question.aggregate([
-                                    { $sample: { size: 1 } },
-                                    { $lookup: { from: 'themes', localField: 'theme', foreignField: '_id', as: 'theme' } },
-                                    { $unwind: '$theme' }
-                                ]).exec()
-                                .then(questions => {
-                                        console.log(`[WS] Question found: ${questions[0]._id}`);
-                                        // Add the question to the match
-                                        match.questions.push(questions[0]._id);
-                                        match.save().then(match => {
-                                            console.log(`[WS] Match updated with question`);
-                                            // Send a message to both users
-                                            userWs1.send(JSON.stringify({
-                                                message: 'OK',
-                                                type: 'duel',
-                                                status: 'started',
-                                                match,
-                                                question: questions[0]
-                                            }));
-                                            userWs2.send(JSON.stringify({
-                                                message: 'OK',
-                                                type: 'duel',
-                                                status: 'started',
-                                                match,
-                                                question: questions[0]
-                                            }));
+                    match
+                        .save()
+                        .then((match) => {
+                            console.log(`[WS] Match updated`);
+                            if (match.started === 2) {
+                                console.log(
+                                    `[WS] Both users started the match`
+                                );
+                                const userWs1 =
+                                    userWebSockets[match.users[0]._id]; // WebSocket of the first user
+                                const userWs2 =
+                                    userWebSockets[match.users[1]._id]; // WebSocket of the second user
+                                // Check if both users' WebSocket connections exist
+                                if (userWs1 && userWs2) {
+                                    Question.aggregate([
+                                        {
+                                            $match: {
+                                                difficulty: { $in: [1, 2] },
+                                            },
+                                        },
+                                        { $sample: { size: 1 } },
+                                        {
+                                            $lookup: {
+                                                from: "themes",
+                                                localField: "theme",
+                                                foreignField: "_id",
+                                                as: "theme",
+                                            },
+                                        },
+                                        { $unwind: "$theme" },
+                                    ])
+                                        .exec()
+                                        .then((questions) => {
+                                            console.log(
+                                                `[WS] Question found: ${questions[0]._id}`
+                                            );
+                                            // Add the question to the match
+                                            match.questions.push(
+                                                questions[0]._id
+                                            );
+                                            match.save().then((match) => {
+                                                console.log(
+                                                    `[WS] Match updated with question`
+                                                );
+                                                // Send a message to both users
+                                                userWs1.send(
+                                                    JSON.stringify({
+                                                        message: "OK",
+                                                        type: "duel",
+                                                        status: "started",
+                                                        match,
+                                                        question: questions[0],
+                                                    })
+                                                );
+                                                userWs2.send(
+                                                    JSON.stringify({
+                                                        message: "OK",
+                                                        type: "duel",
+                                                        status: "started",
+                                                        match,
+                                                        question: questions[0],
+                                                    })
+                                                );
+                                            });
+                                        })
+                                        .catch((err) => {
+                                            console.log(
+                                                `[WS] An error occurred while finding question: ${err}`
+                                            );
+                                            console.log(err.stack);
+                                            ws.send(
+                                                JSON.stringify({
+                                                    message:
+                                                        "Internal server error",
+                                                })
+                                            );
                                         });
-                                    })
-                                    .catch(err => {
-                                        console.log(`[WS] An error occurred while finding question: ${err}`);
-                                        console.log(err.stack);
-                                        ws.send(JSON.stringify({
-                                            message: 'Internal server error'
-                                        }));
-                                    });
-                            } else {
-                                console.log(`[WS] One of the users is not connected`);
-                                ws.send(JSON.stringify({
-                                    message: 'OK',
-                                    type: 'duel',
-                                    status: 'waiting',
-                                    match
-                                }));
-                            }
-                        } else if (match.started > 2) {
-                            console.log(`[WS] Both users already started the match`);
-                            match.started = 2;
-                            match.save().then(match => {
-                                Question.findById(match.questions[match.currentQuestion]).populate('theme').exec().then(question => {
-                                    ws.send(JSON.stringify({
-                                        message: 'OK',
-                                        type: 'duel',
-                                        status: 'started',
-                                        match,
-                                        question
-                                    }));
+                                } else {
+                                    console.log(
+                                        `[WS] One of the users is not connected`
+                                    );
+                                    ws.send(
+                                        JSON.stringify({
+                                            message: "OK",
+                                            type: "duel",
+                                            status: "waiting",
+                                            match,
+                                        })
+                                    );
+                                }
+                            } else if (match.started > 2) {
+                                console.log(
+                                    `[WS] Both users already started the match`
+                                );
+                                match.started = 2;
+                                match.save().then((match) => {
+                                    Question.findById(
+                                        match.questions[match.currentQuestion]
+                                    )
+                                        .populate("theme")
+                                        .exec()
+                                        .then((question) => {
+                                            ws.send(
+                                                JSON.stringify({
+                                                    message: "OK",
+                                                    type: "duel",
+                                                    status: "started",
+                                                    match,
+                                                    question,
+                                                })
+                                            );
+                                        });
                                 });
-                            });
-                        }
-                    }).catch(err => {
-                        console.log(`[WS] An error occurred while updating match: ${err}`);
-                        console.log(err.stack);
-                        ws.send(JSON.stringify({
-                            message: 'Internal server error'
-                        }));
-                    });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(
+                                `[WS] An error occurred while updating match: ${err}`
+                            );
+                            console.log(err.stack);
+                            ws.send(
+                                JSON.stringify({
+                                    message: "Internal server error",
+                                })
+                            );
+                        });
                 }
             })
-            .catch(err => {
-                if (err.name === 'CastError') {
+            .catch((err) => {
+                if (err.name === "CastError") {
                     console.log(`[WS] Match not found (invalid id)`);
-                    ws.send(JSON.stringify({
-                        message: 'OK',
-                        type: 'duel',
-                        status: 'not found'
-                    }));
+                    ws.send(
+                        JSON.stringify({
+                            message: "OK",
+                            type: "duel",
+                            status: "not found",
+                        })
+                    );
                 } else {
-                    console.log(`[WS] An error occurred while finding match: ${err}`);
+                    console.log(
+                        `[WS] An error occurred while finding match: ${err}`
+                    );
                     console.log(err.stack);
-                    ws.send(JSON.stringify({
-                        message: 'Internal server error'
-                    }));
+                    ws.send(
+                        JSON.stringify({
+                            message: "Internal server error",
+                        })
+                    );
                 }
             });
     }
 }
 
 module.exports = {
-    handleWebSocketDuelMessage
+    handleWebSocketDuelMessage,
 };

@@ -32,6 +32,6 @@
             <img src="{{ duelObj.users[1].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
         </span>
     </h1>
-    <app-question [question]="currentQuestion" [answerValidated]="answerValidated"
-        (selectedAnswer)="selectedAnswer($event)" *ngIf="currentQuestion"></app-question>
+    <app-home-module class="home-module" [question]="currentQuestion" moduleTitle="Question {{ currentQuestionIndex + 1 }}" moduleType="match"
+        (nextQuestion)="nextQuestion($event)" *ngIf="currentQuestion"></app-home-module>
 </div>

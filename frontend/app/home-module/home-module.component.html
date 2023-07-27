@@ -14,7 +14,20 @@
         </button>
     </div>
 </div>
-<div *ngIf="moduleType == 'question' && !question" class="module-content-container spinner">
+<div *ngIf="moduleType == 'match' && question" class="module-content-container">
+    <app-question [question]="question" [answerValidated]="answerValidated"
+        (selectedAnswer)="selectedAnswer($event)"></app-question>
+    <div>
+        <button class="button-start" *ngIf="answerValidated" (click)="next()">
+            Une autre !
+        </button>
+        <button class="button-start" *ngIf="!answerValidated" (click)="validateAnswer()"
+            [disabled]="selectedAnswerIndex == -1">
+            Valider
+        </button>
+    </div>
+</div>
+<div *ngIf="(moduleType == 'question' || moduleType == 'match') && !question" class="module-content-container spinner">
     <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
 </div>
 <div *ngIf="moduleType == 'ranking'" class="module-content-container" style="width: 90%;">

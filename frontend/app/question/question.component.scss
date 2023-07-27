@@ -43,9 +43,14 @@ h1 {
     flex-direction: row;
     flex-wrap: nowrap;
     padding: 25px;
-    padding-bottom: 25px;
     align-items: center;
     justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .photo-answer {
+        padding: 10px;
+    }
 }
 
 .selected {
@@ -126,4 +131,10 @@ label {
     //color: #43329d;
     color: $primary-text-color;
     font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    label {
+        padding: 11px 15px;
+    }
 }

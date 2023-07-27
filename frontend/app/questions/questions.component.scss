@@ -1,3 +1,6 @@
+@import '../../styles/variables';
+
+
 h1,
 h2,
 h3,
@@ -6,6 +9,7 @@ h5,
 h6 {
     font-size: xx-large;
     text-align: center !important;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
 }
 
 a {
@@ -63,7 +67,7 @@ form {
 
     * {
         width: 400px !important;
-        margin: 0 !important;
+        margin: 0 3px !important;
     }
 }
 
@@ -91,9 +95,9 @@ form {
     width: 400px;
     height: fit-content;
     background-color: #fff;
-    border: 1px solid #ccc;
+    border: 2px solid $primary-text-color;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px 4px rgba($primary-text-color, 0.1);
 }
 
 .question-header {

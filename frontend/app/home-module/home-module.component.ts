@@ -62,9 +62,9 @@ export class HomeModuleComponent {
   }
 
   next() {
+    this.nextQuestion.emit(this.selectedAnswerIndex);
     this.answerValidated = false;
     this.selectedAnswerIndex = -1;
-    this.nextQuestion.emit();
   }
 
 }

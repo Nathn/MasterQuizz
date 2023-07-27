@@ -33,6 +33,7 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   status: string = "";
   currentQuestion: any = null;
+  currentQuestionIndex: number = 0;
   selectedAnswerIndex: number = -1;
   answerValidated: boolean = false;
 
@@ -94,7 +95,6 @@ export class DuelComponent implements OnInit, OnDestroy {
         } else if (message.status == "cancelled") {
           this.status = "";
         } else if (message.status == "started") {
-          console.log(message);
           this.status = "";
           this.duelObj = message.match;
           this.currentQuestion = message.question;
@@ -144,6 +144,10 @@ export class DuelComponent implements OnInit, OnDestroy {
 
   selectedAnswer(index: number) {
     this.selectedAnswerIndex = index;
+  }
+
+  nextQuestion(event: any) {
+    console.log(event);
   }
 
 }

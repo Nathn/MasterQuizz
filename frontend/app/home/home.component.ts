@@ -23,7 +23,7 @@ export class HomeComponent {
     });
   }
 
-  nextQuestion() {
+  nextQuestion(event: any) {
     this.randomQuestion = null;
     this.http.post(environment.apiUrl + "getRandomQuestion", {}).subscribe((res: any) => {
       this.randomQuestion = res.question;
