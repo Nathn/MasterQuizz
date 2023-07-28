@@ -26,6 +26,23 @@
             * {
                 margin: 0 10px;
             }
+
+            .vs {
+                display: flex;
+                flex-direction: row;
+
+                * {
+                    margin: none;
+                }
+
+                @media (max-width: 768px) {
+                    flex-direction: column;
+                }
+            }
+        }
+
+        @media (max-width: 768px) {
+            font-size: x-large;
         }
     }
 
@@ -41,12 +58,16 @@
         display: flex;
         flex-direction: column;
         text-align: center;
+
+        @media (max-width: 768px) {
+            margin: 20px 0;
+        }
     }
 
     @media (max-width: 768px) {
-        app-home-module {
-            margin: 20px 0;
-        }
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
     }
 }
 

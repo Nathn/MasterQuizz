@@ -22,13 +22,15 @@
         </span>
         <span>
             <img src="{{ duelObj.users[0].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
-            <a href="/profile/{{ duelObj.users[0].username }}" target="_blank">
-                {{ duelObj.users[0].username }}
-            </a>
-            VS
-            <a href="/profile/{{ duelObj.users[1].username }}" target="_blank">
-                {{ duelObj.users[1].username }}
-            </a>
+            <div class="vs">
+                <a href="/profile/{{ duelObj.users[0].username }}" target="_blank">
+                    {{ duelObj.users[0].username }}
+                </a>
+                VS
+                <a href="/profile/{{ duelObj.users[1].username }}" target="_blank">
+                    {{ duelObj.users[1].username }}
+                </a>
+            </div>
             <img src="{{ duelObj.users[1].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
         </span>
     </h1>
