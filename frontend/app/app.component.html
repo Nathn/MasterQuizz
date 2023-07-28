@@ -9,11 +9,8 @@
         <fa-icon [icon]="faBars" (click)="showMenu = !showMenu"></fa-icon>
       </button>
       <ul>
-        <li><a href="#">Entraînement</a></li>
-        <li><a href="/multiplayer">Multijoueur</a></li>
-        <li><a href="#">Classements</a></li>
-        <li><a href="#">À propos</a></li>
-        <li *ngIf="userObj && userObj.admin"><a href="/questions/manage">Questions</a></li>
+        <li *ngFor="let link of menuLinks">
+          <a [routerLink]="link.path" routerLinkActive="active">{{ link.text }}</a>
       </ul>
     </div>
     <div class="buttons" *ngIf="!user && !isLoading">
@@ -47,11 +44,9 @@
   </div>
   <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && userObj && !isLoading">
     <!-- displayed only on mobile -->
-    <li><a href="#">Entraînement</a></li>
-    <li><a href="/multiplayer">Multijoueur</a></li>
-    <li><a href="#">Classements</a></li>
-    <li><a href="#">À propos</a></li>
-    <li *ngIf="userObj && userObj.admin"><a href="/questions/manage">Questions</a></li>
+    <li *ngFor="let link of menuLinks">
+      <a [routerLink]="link.path" routerLinkActive="active">{{ link.text }}</a>
+    </li>
     <div class="user-info-mobile">
       <div class="user-info-header">
         <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">

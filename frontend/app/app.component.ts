@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -14,7 +14,7 @@ import { environment } from '../environments/environment';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'MasterQuizz';
 
   auth: any;
@@ -23,6 +23,7 @@ export class AppComponent {
   userObj: any = localStorage.getItem("userObj") ? JSON.parse(localStorage.getItem("userObj") || "") : null;
   isLoading: boolean = localStorage.getItem("user") ? false : true;
   showMenu: boolean = false;
+  menuLinks: any = [];
 
   faSpinner = faSpinner;
   faBars = faBars;
@@ -50,8 +51,13 @@ export class AppComponent {
         localStorage.removeItem("user");
         localStorage.removeItem("userObj");
       }
+      this.getMenuLinks();
       this.isLoading = false;
     });
+  }
+
+  ngOnInit() {
+    this.getMenuLinks();
   }
 
   getUserInfo() {
@@ -65,6 +71,31 @@ export class AppComponent {
         localStorage.setItem("userObj", JSON.stringify(response.user));
       }
     });
+  }
+
+  getMenuLinks() {
+    this.menuLinks = [];
+    this.menuLinks.push({
+      text: "Entraînement",
+      path: "#"
+    });
+    this.menuLinks.push({
+      text: "Multijoueur",
+      path: "/multiplayer"
+    });
+    this.menuLinks.push({
+      text: "Classements",
+      path: "#"
+    });
+    this.menuLinks.push({
+      text: "À propos",
+      path: "#"
+    });
+    if (this.userObj && this.userObj.admin)
+      this.menuLinks.push({
+        text: "Questions",
+        path: "/questions/manage"
+      });
   }
 
   navigateToLogin() {
