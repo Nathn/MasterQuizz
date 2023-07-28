@@ -45,7 +45,7 @@
   <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && userObj && !isLoading">
     <!-- displayed only on mobile -->
     <li *ngFor="let link of menuLinks">
-      <a href="link.path">{{ link.text }}</a>
+      <a href="{{link.path}}">{{ link.text }}</a>
     </li>
     <div class="user-info-mobile">
       <div class="user-info-header">
