@@ -343,7 +343,10 @@ function answer(request, ws, userWebSockets) {
                 // Check if both users' WebSocket connections exist
                 if (userWs1 && userWs2) {
                     // Check if the other user already answered
-                    if (match.answers[match.currentQuestion].length > 0) {
+                    if (
+                        match.answers.length > match.currentQuestion &&
+                        match.answers[match.currentQuestion].length > 0
+                    ) {
                         console.log(`[WS] Second user answered the question`);
                         // Pick a random question and add it to the match
                         Question.aggregate([
@@ -380,6 +383,7 @@ function answer(request, ws, userWebSockets) {
                                 );
                                 // Add the question to the match
                                 match.questions.push(questions[0]._id);
+                                match.currentQuestion++;
                                 match.save().then((match) => {
                                     console.log(
                                         `[WS] Match updated with question`
@@ -419,6 +423,7 @@ function answer(request, ws, userWebSockets) {
                     } else {
                         console.log(`[WS] First user answered the question`);
                         // Save the answer
+                        match.answers.push([]);
                         match.answers[match.currentQuestion].push({
                             user: request.user,
                             answerIndex: request.answer,
@@ -430,7 +435,7 @@ function answer(request, ws, userWebSockets) {
                                 JSON.stringify({
                                     message: "OK",
                                     type: "duel",
-                                    status: "waiting",
+                                    status: "waitingforanswer",
                                     match,
                                 })
                             );
@@ -438,7 +443,7 @@ function answer(request, ws, userWebSockets) {
                                 JSON.stringify({
                                     message: "OK",
                                     type: "duel",
-                                    status: "waiting",
+                                    status: "waitingforanswer",
                                     match,
                                 })
                             );
@@ -451,7 +456,7 @@ function answer(request, ws, userWebSockets) {
                             JSON.stringify({
                                 message: "OK",
                                 type: "duel",
-                                status: "waiting",
+                                status: "waitingforanswer",
                                 match,
                             })
                         );
@@ -461,7 +466,7 @@ function answer(request, ws, userWebSockets) {
                             JSON.stringify({
                                 message: "OK",
                                 type: "duel",
-                                status: "waiting",
+                                status: "waitingforanswer",
                                 match,
                             })
                         );

@@ -34,8 +34,9 @@ export class DuelComponent implements OnInit, OnDestroy {
   status: string = "";
   currentQuestion: any = null;
   currentQuestionIndex: number = 0;
+  nextQuestion: any = null;
   selectedAnswerIndex: number = -1;
-  answerValidated: boolean = false;
+  nextQuestionReady: boolean = false;
 
   constructor(
     private router: Router,
@@ -88,6 +89,7 @@ export class DuelComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe((message: any) => {
       if (message.type == "duel") {
+        console.log(message.status);
         if (message.status == "waiting") {
           this.status = "Recherche d'adversaire en cours...";
         } else if (message.status == "ready") {
@@ -98,6 +100,14 @@ export class DuelComponent implements OnInit, OnDestroy {
           this.status = "";
           this.duelObj = message.match;
           this.currentQuestion = message.question;
+          this.currentQuestionIndex = message.match.currentQuestion;
+        } else if (message.status == "waitingforanswer") {
+          if (message.match.currentQuestion == this.currentQuestionIndex) {
+            this.nextQuestionReady = false;
+          }
+        } else if (message.status == "answered") {
+          this.nextQuestionReady = true;
+          this.nextQuestion = message.question;
         } else if (message.status == "not found") {
           this.router.navigate(['multiplayer']);
         }
@@ -146,8 +156,21 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.selectedAnswerIndex = index;
   }
 
-  nextQuestion(event: any) {
-    console.log(event);
+  validatedAnswer(event: any) {
+    this.ws.send({
+      type: "duel",
+      action: "answer",
+      user: this.userObj._id,
+      match: this.duelId,
+      answer: this.selectedAnswerIndex
+    });
+  }
+
+  nextQuestionPressed(event: any) {
+    this.selectedAnswerIndex = -1;
+    this.currentQuestionIndex++;
+    this.currentQuestion = this.nextQuestion;
+    this.nextQuestion = null;
   }
 
 }

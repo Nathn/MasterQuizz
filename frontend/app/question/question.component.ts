@@ -10,14 +10,13 @@ import { faSpinner, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 export class QuestionComponent {
   @Input('question') question: any;
   @Input('answerValidated') answerValidated: boolean = false;
+  @Input('selectedAnswerIndex') selectedAnswerIndex: number = -1;
 
   @Output() selectedAnswer = new EventEmitter();
 
   faSpinner = faSpinner;
   faCheck = faCheck;
   faTimes = faTimes;
-
-  selectedAnswerIndex: number = -1;
 
   constructor() { }
 

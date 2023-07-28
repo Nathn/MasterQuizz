@@ -41,7 +41,9 @@ export class HomeModuleComponent {
   ]
   @Input('moduleTitle') moduleTitle: string = "";
   @Input('moduleType') moduleType: string = "";
+  @Input('moduleParams') moduleParams: any = {} as any;
 
+  @Output() validatedAnswer = new EventEmitter();
   @Output() nextQuestion = new EventEmitter();
 
   faSpinner = faSpinner;
@@ -58,6 +60,7 @@ export class HomeModuleComponent {
   }
 
   validateAnswer() {
+    this.validatedAnswer.emit(this.selectedAnswerIndex);
     this.answerValidated = true;
   }
 
