@@ -1,33 +1,48 @@
-const mongoose = require('mongoose');
-const mongodbErrorHandler = require('mongoose-mongodb-errors');
+const mongoose = require("mongoose");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const matchSchema = new mongoose.Schema({
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
-    questions: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'Question'
-    }],
+    questions: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "Question",
+        },
+    ],
     currentQuestion: {
         type: Number,
-        default: 0
+        default: 0,
     },
+    answers: [
+        [
+            {
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "User",
+                },
+                answerIndex: Number,
+            },
+        ],
+    ],
     started: {
         type: Number,
-        default: 0
+        default: 0,
     },
     ended: {
         type: Boolean,
-        default: false
+        default: false,
     },
-    users: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-    }]
+    users: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "User",
+        },
+    ],
 });
 
 matchSchema.plugin(mongodbErrorHandler);
 
-module.exports = mongoose.model('Match', matchSchema);
+module.exports = mongoose.model("Match", matchSchema);

@@ -1,43 +1,44 @@
-const mongoose = require('mongoose');
-const mongodbErrorHandler = require('mongoose-mongodb-errors');
+const mongoose = require("mongoose");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const userSchema = new mongoose.Schema({
     admin: {
         type: Boolean,
-        default: false
+        default: false,
     },
     avatarUrl: {
         type: String,
-        default: 'https://firebasestorage.googleapis.com/v0/b/masterquizz06.appspot.com/o/javoue_tout.jpg?alt=media&token=52cc269f-730b-468e-ae4c-1e0a5e384329'
+        default:
+            "https://firebasestorage.googleapis.com/v0/b/masterquizz06.appspot.com/o/javoue_tout.jpg?alt=media&token=52cc269f-730b-468e-ae4c-1e0a5e384329",
     },
     created: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     elo: {
         type: Number,
-        default: 0
+        default: 0,
     },
     email: {
         type: String,
         required: true,
         unique: true,
         lowercase: true,
-        trim: true
+        trim: true,
     },
     numberOfGames: {
         type: Number,
-        default: 0
+        default: 0,
     },
     username: {
         type: String,
         trim: true,
         required: true,
         unique: true,
-        lowercase: true
-    }
+        lowercase: true,
+    },
 });
 
 userSchema.plugin(mongodbErrorHandler);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model("User", userSchema);
