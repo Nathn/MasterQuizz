@@ -103,6 +103,9 @@ export class DuelComponent implements OnInit, OnDestroy {
           this.currentQuestionIndex = message.match.currentQuestion;
         } else if (message.status == "ended") {
           this.status = "ended";
+          this.duelObj = message.match;
+          this.currentQuestion = message.match.questions[message.match.questions.length - 1];
+          this.currentQuestionIndex = message.match.currentQuestion;
         } else if (message.status == "waitingforanswer") {
           if (message.match.currentQuestion == this.currentQuestionIndex) {
             this.nextQuestionReady = false;
@@ -173,6 +176,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.currentQuestionIndex++;
     this.currentQuestion = this.nextQuestion;
     this.nextQuestion = null;
+    this.nextQuestionReady = false;
     if (this.status == "ended") {
       this.router.navigate(['multiplayer']);
     }

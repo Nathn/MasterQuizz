@@ -35,7 +35,7 @@
         </span>
     </h1>
     <app-home-module class="home-module" [question]="currentQuestion" [moduleTitle]="status == 'ended' ? 'Résultats' : 'Question ' + (currentQuestionIndex + 1)"
-        moduleType="match" [moduleParams]="{'nextQuestionReady': nextQuestionReady, 'matchEnded': status == 'ended'}"
+        moduleType="match" [moduleParams]="{'nextQuestionReady': nextQuestionReady, 'matchEnded': status == 'ended', 'matchObj': duelObj}"
         (selectedAnswer)="selectedAnswer($event)" (validatedAnswer)="validatedAnswer($event)" (nextQuestion)="nextQuestionPressed($event)" *ngIf="currentQuestion">
     </app-home-module>
 </div>

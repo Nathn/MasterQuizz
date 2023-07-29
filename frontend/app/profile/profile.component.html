@@ -15,7 +15,9 @@
         {{ displayedUser.elo }} ELO
     </span>
     <span>
-        {{ displayedUser.numberOfGames }} parties jouées
+        {{ displayedUser.stats.duels.wins }} duels gagnés<br />
+        {{ displayedUser.stats.duels.losses }} duels perdus<br />
+        {{ displayedUser.stats.duels.draws }} duels nuls
     </span>
     <div *ngIf="displayedUser.admin">
         <span>

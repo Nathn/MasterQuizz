@@ -155,7 +155,7 @@ function start(request, ws, userWebSockets) {
     Match.findOne({
         _id: request.match,
     })
-        .populate("users")
+        .populate("users winner scores.user")
         .exec()
         .then((match) => {
             if (!match) {
@@ -168,6 +168,18 @@ function start(request, ws, userWebSockets) {
                     })
                 );
             } else {
+                if (match.ended) {
+                    console.log(`[WS] Match already ended`);
+                    ws.send(
+                        JSON.stringify({
+                            message: "OK",
+                            type: "duel",
+                            status: "ended",
+                            match: match.toObject(),
+                        })
+                    );
+                    return;
+                }
                 console.log(`[WS] Match found: ${match._id}`);
                 match.started += 1;
                 match
@@ -316,6 +328,17 @@ function start(request, ws, userWebSockets) {
         });
 }
 
+function getNewElo(currentElo, opponentElo, result) {
+    const k = 32;
+    const expectedScore =
+        1 / (1 + Math.pow(10, (opponentElo - currentElo) / 400));
+    let newElo = Math.round(currentElo + k * (result - expectedScore));
+    if (newElo < 0) {
+        newElo = 0;
+    }
+    return newElo;
+}
+
 function answer(request, ws, userWebSockets) {
     // Find the match corresponding to the match parameter
     // Check if the other user already answered
@@ -324,7 +347,7 @@ function answer(request, ws, userWebSockets) {
     Match.findOne({
         _id: request.match,
     })
-        .populate("users")
+        .populate("users questions")
         .exec()
         .then((match) => {
             if (!match) {
@@ -357,25 +380,131 @@ function answer(request, ws, userWebSockets) {
                             // Check if the question was the last one
                             if (match.currentQuestion === 9) {
                                 console.log(`[WS] Match ended`);
-                                // Calculate the score of both users (todo) and mark the match as ended
+                                // Calculate the score of both users
+                                for (let j = 0; j < 2; j++) {
+                                    match.scores.push({
+                                        user: null,
+                                        score: 0,
+                                    });
+                                }
+                                for (let i = 0; i < 10; i++) {
+                                    for (let j = 0; j < 2; j++) {
+                                        if (
+                                            match.questions[i].answers[
+                                                match.answers[i][j].answerIndex
+                                            ].correct
+                                        ) {
+                                            match.scores[j].score++;
+                                            if (!match.scores[j].user) {
+                                                match.scores[j].user =
+                                                    match.answers[i][j].user;
+                                            }
+                                        }
+                                    }
+                                }
+                                // Set the winner
+                                if (
+                                    match.scores[0].score >
+                                    match.scores[1].score
+                                ) {
+                                    match.winner = match.scores[0].user;
+                                } else if (
+                                    match.scores[0].score <
+                                    match.scores[1].score
+                                ) {
+                                    match.winner = match.scores[1].user;
+                                } else {
+                                    match.winner = null;
+                                }
+                                // Set the match as ended
                                 match.ended = true;
                                 match.save().then((match) => {
-                                    // Send a message to both users
-                                    userWs1.send(
-                                        JSON.stringify({
-                                            message: "OK",
-                                            type: "duel",
-                                            status: "ended",
-                                            match,
-                                        })
-                                    );
-                                    userWs2.send(
-                                        JSON.stringify({
-                                            message: "OK",
-                                            type: "duel",
-                                            status: "ended",
-                                            match,
-                                        })
+                                    // Update the users' stats and elo
+                                    User.findById(match.users[0]._id).then(
+                                        (user1) => {
+                                            User.findById(
+                                                match.users[1]._id
+                                            ).then((user2) => {
+                                                if (match.winner) {
+                                                    if (
+                                                        match.winner._id.toString() ===
+                                                        user1._id.toString()
+                                                    ) {
+                                                        user1.stats.duels
+                                                            .wins++;
+                                                        user2.stats.duels
+                                                            .losses++;
+                                                        user1.elo = getNewElo(
+                                                            user1.elo,
+                                                            user2.elo,
+                                                            1
+                                                        );
+                                                        user2.elo = getNewElo(
+                                                            user2.elo,
+                                                            user1.elo,
+                                                            -1
+                                                        );
+                                                    } else {
+                                                        user1.stats.duels
+                                                            .losses++;
+                                                        user2.stats.duels
+                                                            .wins++;
+                                                        user1.elo = getNewElo(
+                                                            user1.elo,
+                                                            user2.elo,
+                                                            -1
+                                                        );
+                                                        user2.elo = getNewElo(
+                                                            user2.elo,
+                                                            user1.elo,
+                                                            1
+                                                        );
+                                                    }
+                                                } else {
+                                                    user1.stats.duels.draws++;
+                                                    user2.stats.duels.draws++;
+                                                    user1.elo = getNewElo(
+                                                        user1.elo,
+                                                        user2.elo,
+                                                        0
+                                                    );
+                                                    user2.elo = getNewElo(
+                                                        user2.elo,
+                                                        user1.elo,
+                                                        0
+                                                    );
+                                                }
+                                                user1.save().then(() => {
+                                                    user2.save().then(() => {
+                                                        match
+                                                            .populate(
+                                                                "users winner scores.user"
+                                                            )
+                                                            .then((match) => {
+                                                                // Send a message to both users
+                                                                const message =
+                                                                    {
+                                                                        message:
+                                                                            "OK",
+                                                                        type: "duel",
+                                                                        status: "ended",
+                                                                        match: match.toObject(), // Convert the Mongoose document to a plain JavaScript object
+                                                                    };
+                                                                userWs1.send(
+                                                                    JSON.stringify(
+                                                                        message
+                                                                    )
+                                                                );
+                                                                userWs2.send(
+                                                                    JSON.stringify(
+                                                                        message
+                                                                    )
+                                                                );
+                                                            });
+                                                    });
+                                                });
+                                            });
+                                        }
                                     );
                                 });
                             } else {

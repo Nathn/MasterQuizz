@@ -34,10 +34,19 @@
 <div *ngIf="moduleType == 'match' && moduleParams.matchEnded" class="module-content-container">
     <div class="results">
         Match terminé
+        <br /><br />
+        <span *ngIf="moduleParams.matchObj.winner">Vainqueur : {{ moduleParams.matchObj.winner.username }}</span>
+        <span *ngIf="!moduleParams.matchObj.winner">Match nul</span>
+        <br /><br />
+        Scores :
+        <br />
+        {{ moduleParams.matchObj.scores[0].user.username }} : {{ moduleParams.matchObj.scores[0].score }}/10
+        <br />
+        {{ moduleParams.matchObj.scores[1].user.username }} : {{ moduleParams.matchObj.scores[1].score }}/10
     </div>
     <div>
         <button class="button-start" (click)="next()">
-            Revenir à l'accueil
+            Quitter le match
         </button>
     </div>
 </div>

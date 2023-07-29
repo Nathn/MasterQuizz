@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     elo: {
         type: Number,
-        default: 0,
+        default: 100,
     },
     email: {
         type: String,
@@ -26,9 +26,21 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
     },
-    numberOfGames: {
-        type: Number,
-        default: 0,
+    stats: {
+        duels: {
+            wins: {
+                type: Number,
+                default: 0,
+            },
+            losses: {
+                type: Number,
+                default: 0,
+            },
+            draws: {
+                type: Number,
+                default: 0,
+            },
+        },
     },
     username: {
         type: String,
