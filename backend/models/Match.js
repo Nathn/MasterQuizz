@@ -35,12 +35,27 @@ const matchSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    scores: [
+        {
+            user: {
+                type: mongoose.Schema.ObjectId,
+                ref: "User",
+            },
+            score: {
+                type: Number,
+            },
+        },
+    ],
     users: [
         {
             type: mongoose.Schema.ObjectId,
             ref: "User",
         },
     ],
+    winner: {
+        type: mongoose.Schema.ObjectId || null,
+        ref: "User",
+    },
 });
 
 matchSchema.plugin(mongodbErrorHandler);

@@ -348,78 +348,151 @@ function answer(request, ws, userWebSockets) {
                         match.answers[match.currentQuestion].length > 0
                     ) {
                         console.log(`[WS] Second user answered the question`);
-                        // Pick a random question and add it to the match
-                        Question.aggregate([
-                            {
-                                $match: {
-                                    // difficulty based on the current question
-                                    difficulty: {
-                                        $in: [
-                                            Math.floor(
-                                                (match.currentQuestion + 1) / 2
-                                            ),
-                                            Math.floor(
-                                                (match.currentQuestion + 1) / 2
-                                            ) + 1,
-                                        ],
-                                    },
-                                },
-                            },
-                            { $sample: { size: 1 } },
-                            {
-                                $lookup: {
-                                    from: "themes",
-                                    localField: "theme",
-                                    foreignField: "_id",
-                                    as: "theme",
-                                },
-                            },
-                            { $unwind: "$theme" },
-                        ])
-                            .exec()
-                            .then((questions) => {
-                                console.log(
-                                    `[WS] Question found: ${questions[0]._id}`
-                                );
-                                // Add the question to the match
-                                match.questions.push(questions[0]._id);
-                                match.currentQuestion++;
+                        match.answers[match.currentQuestion].push({
+                            user: request.user,
+                            answerIndex: request.answer,
+                        });
+                        match.save().then((match) => {
+                            console.log("[WS] Match updated with answer");
+                            // Check if the question was the last one
+                            if (match.currentQuestion === 9) {
+                                console.log(`[WS] Match ended`);
+                                // Calculate the score of both users (todo) and mark the match as ended
+                                match.ended = true;
                                 match.save().then((match) => {
-                                    console.log(
-                                        `[WS] Match updated with question`
-                                    );
                                     // Send a message to both users
                                     userWs1.send(
                                         JSON.stringify({
                                             message: "OK",
                                             type: "duel",
-                                            status: "answered",
+                                            status: "ended",
                                             match,
-                                            question: questions[0],
                                         })
                                     );
                                     userWs2.send(
                                         JSON.stringify({
                                             message: "OK",
                                             type: "duel",
-                                            status: "answered",
+                                            status: "ended",
                                             match,
-                                            question: questions[0],
                                         })
                                     );
                                 });
-                            })
-                            .catch((err) => {
-                                console.log(
-                                    `[WS] An error occurred while finding question: ${err}`
-                                );
-                                console.log(err.stack);
-                                ws.send(
-                                    JSON.stringify({
-                                        message: "Internal server error",
+                            } else {
+                                // Pick a random question and add it to the match
+                                match.currentQuestion++;
+                                Question.aggregate([
+                                    {
+                                        $lookup: {
+                                            from: "matches",
+                                            let: { questionId: "$_id" },
+                                            pipeline: [
+                                                {
+                                                    $match: {
+                                                        $expr: {
+                                                            $and: [
+                                                                {
+                                                                    $in: [
+                                                                        "$$questionId",
+                                                                        "$questions",
+                                                                    ],
+                                                                },
+                                                                {
+                                                                    $eq: [
+                                                                        "$ended",
+                                                                        false,
+                                                                    ],
+                                                                },
+                                                            ],
+                                                        },
+                                                    },
+                                                },
+                                            ],
+                                            as: "matches",
+                                        },
+                                    },
+                                    {
+                                        $match: {
+                                            matches: { $size: 0 },
+                                            difficulty: {
+                                                $in: [
+                                                    Math.min(
+                                                        Math.floor(
+                                                            (match.currentQuestion +
+                                                                1) /
+                                                                2
+                                                        ),
+                                                        4
+                                                    ),
+                                                    Math.min(
+                                                        Math.floor(
+                                                            (match.currentQuestion +
+                                                                1) /
+                                                                2
+                                                        ),
+                                                        4
+                                                    ) + 1,
+                                                ],
+                                            },
+                                        },
+                                    },
+                                    { $sample: { size: 1 } },
+                                    {
+                                        $lookup: {
+                                            from: "themes",
+                                            localField: "theme",
+                                            foreignField: "_id",
+                                            as: "theme",
+                                        },
+                                    },
+                                    { $unwind: "$theme" },
+                                ])
+                                    .exec()
+                                    .then((questions) => {
+                                        console.log(
+                                            `[WS] Question found: ${questions[0]._id}`
+                                        );
+                                        // Add the question to the match
+                                        match.questions.push(questions[0]._id);
+                                        match.save().then((match) => {
+                                            console.log(
+                                                `[WS] Match updated with question`
+                                            );
+                                            // Send a message to both users
+                                            userWs1.send(
+                                                JSON.stringify({
+                                                    message: "OK",
+                                                    type: "duel",
+                                                    status: "answered",
+                                                    match,
+                                                    question: questions[0],
+                                                })
+                                            );
+                                            userWs2.send(
+                                                JSON.stringify({
+                                                    message: "OK",
+                                                    type: "duel",
+                                                    status: "answered",
+                                                    match,
+                                                    question: questions[0],
+                                                })
+                                            );
+                                        });
                                     })
-                                );
-                            });
+                                    .catch((err) => {
+                                        console.log(
+                                            `[WS] An error occurred while finding question: ${err}`
+                                        );
+                                        console.log(err.stack);
+                                        ws.send(
+                                            JSON.stringify({
+                                                message:
+                                                    "Internal server error",
+                                            })
+                                        );
+                                    });
+                            }
+                        });
                     } else {
                         console.log(`[WS] First user answered the question`);
                         // Save the answer
