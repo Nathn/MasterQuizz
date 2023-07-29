@@ -3,7 +3,7 @@
 </div>
 <div *ngIf="moduleType == 'question' && question" class="module-content-container">
     <app-question [question]="question" [answerValidated]="answerValidated"
-        (selectedAnswer)="selectedAnswer($event)"></app-question>
+        (selectedAnswer)="selectAnswer($event)"></app-question>
     <div>
         <button class="button-start" *ngIf="answerValidated" (click)="next()">
             Une autre !
@@ -14,9 +14,9 @@
         </button>
     </div>
 </div>
-<div *ngIf="moduleType == 'match' && question" class="module-content-container">
+<div *ngIf="moduleType == 'match' && question && !moduleParams.matchEnded" class="module-content-container">
     <app-question [question]="question" [answerValidated]="answerValidated"
-        (selectedAnswer)="selectedAnswer($event)" [selectedAnswerIndex]="selectedAnswerIndex"></app-question>
+        (selectedAnswer)="selectAnswer($event)" [selectedAnswerIndex]="selectedAnswerIndex"></app-question>
     <div>
         <button class="button-start" *ngIf="answerValidated && !moduleParams.nextQuestionReady" disabled>
             <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
@@ -28,6 +28,16 @@
         <button class="button-start" *ngIf="!answerValidated" (click)="validateAnswer()"
             [disabled]="selectedAnswerIndex == -1">
             Valider
+        </button>
+    </div>
+</div>
+<div *ngIf="moduleType == 'match' && moduleParams.matchEnded" class="module-content-container">
+    <div class="results">
+        Match terminé
+    </div>
+    <div>
+        <button class="button-start" (click)="next()">
+            Revenir à l'accueil
         </button>
     </div>
 </div>

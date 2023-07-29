@@ -94,7 +94,11 @@ ul.quizzmodule-slide-answers {
     align-items: stretch;
 }
 
-label:hover:not(.answer-status) {
+.answer-status-icon {
+    margin-right: 6px;
+}
+
+label:hover:not(.answer-status):not(.answer-status-icon) {
     background-color: #ffe5ac;
 }
 

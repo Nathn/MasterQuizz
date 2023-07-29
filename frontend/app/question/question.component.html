@@ -11,10 +11,9 @@
             <label
                 [ngClass]="{'incorrect': selectedAnswerIndex == i && !answer.correct, 'correct': answer.correct, 'answer-status': true}"
                 *ngIf="answerValidated">
-                <span class="answer-status">
+                <span class="answer-status-icon">
                     <fa-icon [icon]="answer.correct ? faCheck : faTimes"></fa-icon>
                 </span>
-                &nbsp;
                 {{answer.answer}}
             </label>
         </li>

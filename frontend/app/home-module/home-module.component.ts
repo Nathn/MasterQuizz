@@ -43,6 +43,7 @@ export class HomeModuleComponent {
   @Input('moduleType') moduleType: string = "";
   @Input('moduleParams') moduleParams: any = {} as any;
 
+  @Output() selectedAnswer = new EventEmitter();
   @Output() validatedAnswer = new EventEmitter();
   @Output() nextQuestion = new EventEmitter();
 
@@ -55,8 +56,9 @@ export class HomeModuleComponent {
 
   constructor() { }
 
-  selectedAnswer(index: number) {
-    this.selectedAnswerIndex = index;
+  selectAnswer(event: any) {
+    this.selectedAnswer.emit(event);
+    this.selectedAnswerIndex = event;
   }
 
   validateAnswer() {
