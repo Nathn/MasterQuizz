@@ -11,6 +11,7 @@ export class QuestionComponent {
   @Input('question') question: any;
   @Input('answerValidated') answerValidated: boolean = false;
   @Input('selectedAnswerIndex') selectedAnswerIndex: number = -1;
+  @Input('questionOptions') questionOptions: any = {} as any;
 
   @Output() selectedAnswer = new EventEmitter();
 

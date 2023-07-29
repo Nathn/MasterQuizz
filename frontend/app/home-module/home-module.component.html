@@ -15,7 +15,7 @@
     </div>
 </div>
 <div *ngIf="moduleType == 'match' && question && !moduleParams.matchEnded" class="module-content-container">
-    <app-question [question]="question" [answerValidated]="answerValidated"
+    <app-question [question]="question" [answerValidated]="answerValidated" [questionOptions]="{'hideAnswers': moduleParams.hideAnswers}"
         (selectedAnswer)="selectAnswer($event)" [selectedAnswerIndex]="selectedAnswerIndex"></app-question>
     <div>
         <button class="button-start" *ngIf="answerValidated && !moduleParams.nextQuestionReady" disabled>

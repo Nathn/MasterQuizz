@@ -37,6 +37,7 @@ export class DuelComponent implements OnInit, OnDestroy {
   nextQuestion: any = null;
   selectedAnswerIndex: number = -1;
   nextQuestionReady: boolean = false;
+  hideAnswers: boolean = false;
 
   constructor(
     private router: Router,
@@ -109,9 +110,11 @@ export class DuelComponent implements OnInit, OnDestroy {
         } else if (message.status == "waitingforanswer") {
           if (message.match.currentQuestion == this.currentQuestionIndex) {
             this.nextQuestionReady = false;
+            this.hideAnswers = true;
           }
         } else if (message.status == "answered") {
           this.nextQuestionReady = true;
+          this.hideAnswers = false;
           this.nextQuestion = message.question;
         } else if (message.status == "not found") {
           this.router.navigate(['multiplayer']);
@@ -177,6 +180,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     this.currentQuestion = this.nextQuestion;
     this.nextQuestion = null;
     this.nextQuestionReady = false;
+    this.hideAnswers = true;
     if (this.status == "ended") {
       this.router.navigate(['multiplayer']);
     }

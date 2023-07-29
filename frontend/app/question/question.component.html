@@ -9,9 +9,12 @@
                 {{answer.answer}}
             </label>
             <label
-                [ngClass]="{'incorrect': selectedAnswerIndex == i && !answer.correct, 'correct': answer.correct, 'answer-status': true}"
+                [ngClass]="{'incorrect': selectedAnswerIndex == i && !answer.correct && !questionOptions.hideAnswers,
+                            'correct': answer.correct && !questionOptions.hideAnswers,
+                            'hidden': questionOptions.hideAnswers,
+                            'answer-status': true}"
                 *ngIf="answerValidated">
-                <span class="answer-status-icon">
+                <span class="answer-status-icon" *ngIf="!questionOptions.hideAnswers">
                     <fa-icon [icon]="answer.correct ? faCheck : faTimes"></fa-icon>
                 </span>
                 {{answer.answer}}
