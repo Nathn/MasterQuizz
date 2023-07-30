@@ -2,16 +2,36 @@
     <h2>Connection à votre compte</h2>
     <div class="form-group">
         <label for="username">Pseudo :</label><br />
-        <input type="text" class="form-control" id="username" name="username" [(ngModel)]="username" required />
+        <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            [(ngModel)]="username"
+            required
+            autofocus
+        />
     </div>
     <div class="form-group">
         <label for="password">Mot de passe :</label><br />
-        <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password" required />
+        <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+        />
     </div>
-    <button type="submit" class="submit-button" [disabled]="!registerForm.valid || isLoading">
+    <button
+        type="submit"
+        class="submit-button"
+        [disabled]="!registerForm.valid || isLoading"
+    >
         <span *ngIf="!isLoading">Se connecter</span>
         <span *ngIf="isLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon
+            >&nbsp;Chargement...
         </span>
     </button>
 </form>

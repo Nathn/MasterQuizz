@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
     },
+    displayName: {
+        type: String,
+        trim: true,
+        required: true,
+        lowercase: false,
+    },
 });
 
 userSchema.plugin(mongodbErrorHandler);

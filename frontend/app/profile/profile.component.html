@@ -4,24 +4,23 @@
     </div>
 </div>
 <div *ngIf="!isRequestLoading && displayedUser" class="profile">
-    <img [src]="displayedUser.avatarUrl" width="100" height="100" *ngIf="displayedUser.avatarUrl" />
+    <img
+        [src]="displayedUser.avatarUrl"
+        width="100"
+        height="100"
+        *ngIf="displayedUser.avatarUrl"
+    />
     <h1>
-        {{ displayedUser.username }}
+        {{ displayedUser.displayName || displayedUser.username }}
     </h1>
-    <span>
-        Inscrit le {{ displayedUser.created | date: 'dd/MM/yyyy' }}
-    </span>
-    <span>
-        {{ displayedUser.elo }} ELO
-    </span>
+    <span> Inscrit le {{ displayedUser.created | date : "dd/MM/yyyy" }} </span>
+    <span> {{ displayedUser.elo }} ELO </span>
     <span>
         {{ displayedUser.stats.duels.wins }} duels gagnés<br />
         {{ displayedUser.stats.duels.losses }} duels perdus<br />
         {{ displayedUser.stats.duels.draws }} duels nuls
     </span>
     <div *ngIf="displayedUser.admin">
-        <span>
-            Administrateur
-        </span>
+        <span> Administrateur </span>
     </div>
 </div>

@@ -1,64 +1,120 @@
 <div class="qdjlogo">
     {{ moduleTitle }}
 </div>
-<div *ngIf="moduleType == 'question' && question" class="module-content-container">
-    <app-question [question]="question" [answerValidated]="answerValidated"
-        (selectedAnswer)="selectAnswer($event)"></app-question>
+<div
+    *ngIf="moduleType == 'question' && question"
+    class="module-content-container"
+>
+    <app-question
+        [question]="question"
+        [answerValidated]="answerValidated"
+        (selectedAnswer)="selectAnswer($event)"
+    ></app-question>
     <div>
         <button class="button-start" *ngIf="answerValidated" (click)="next()">
             Une autre !
         </button>
-        <button class="button-start" *ngIf="!answerValidated" (click)="validateAnswer()"
-            [disabled]="selectedAnswerIndex == -1">
+        <button
+            class="button-start"
+            *ngIf="!answerValidated"
+            (click)="validateAnswer()"
+            [disabled]="selectedAnswerIndex == -1"
+        >
             Valider
         </button>
     </div>
 </div>
-<div *ngIf="moduleType == 'match' && question && !moduleParams.matchEnded" class="module-content-container">
-    <app-question [question]="question" [answerValidated]="answerValidated" [questionOptions]="{'hideAnswers': moduleParams.hideAnswers}"
-        (selectedAnswer)="selectAnswer($event)" [selectedAnswerIndex]="selectedAnswerIndex"></app-question>
+<div
+    *ngIf="moduleType == 'match' && question && !moduleParams.matchEnded"
+    class="module-content-container"
+>
+    <app-question
+        [question]="question"
+        [answerValidated]="answerValidated"
+        [questionOptions]="{ hideAnswers: moduleParams.hideAnswers }"
+        (selectedAnswer)="selectAnswer($event)"
+        [selectedAnswerIndex]="selectedAnswerIndex"
+    ></app-question>
     <div>
-        <button class="button-start" *ngIf="answerValidated && !moduleParams.nextQuestionReady" disabled>
+        <button
+            class="button-start"
+            *ngIf="answerValidated && !moduleParams.nextQuestionReady"
+            disabled
+        >
             <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
             En attente de l'adversaire...
         </button>
-        <button class="button-start" *ngIf="answerValidated && moduleParams.nextQuestionReady" (click)="next()">
+        <button
+            class="button-start"
+            *ngIf="answerValidated && moduleParams.nextQuestionReady"
+            (click)="next()"
+        >
             Question suivante
         </button>
-        <button class="button-start" *ngIf="!answerValidated" (click)="validateAnswer()"
-            [disabled]="selectedAnswerIndex == -1">
+        <button
+            class="button-start"
+            *ngIf="!answerValidated"
+            (click)="validateAnswer()"
+            [disabled]="selectedAnswerIndex == -1"
+        >
             Valider
         </button>
     </div>
 </div>
-<div *ngIf="moduleType == 'match' && moduleParams.matchEnded" class="module-content-container">
+<div
+    *ngIf="moduleType == 'match' && moduleParams.matchEnded"
+    class="module-content-container"
+>
     <div class="results">
         Match terminé
         <br /><br />
-        <span *ngIf="moduleParams.matchObj.winner">Vainqueur : {{ moduleParams.matchObj.winner.username }}</span>
+        <span *ngIf="moduleParams.matchObj.winner"
+            >Vainqueur :
+            {{
+                moduleParams.matchObj.winner.displayName ||
+                    moduleParams.matchObj.winner.username
+            }}</span
+        >
         <span *ngIf="!moduleParams.matchObj.winner">Match nul</span>
         <br /><br />
         Scores :
         <br />
-        {{ moduleParams.matchObj.scores[0].user.username }} : {{ moduleParams.matchObj.scores[0].score }}/10
+        {{
+            moduleParams.matchObj.scores[0].user.displayName ||
+                moduleParams.matchObj.scores[0].user.username
+        }}
+        : {{ moduleParams.matchObj.scores[0].score }}/10
         <br />
-        {{ moduleParams.matchObj.scores[1].user.username }} : {{ moduleParams.matchObj.scores[1].score }}/10
+        {{
+            moduleParams.matchObj.scores[1].user.displayName ||
+                moduleParams.matchObj.scores[1].user.username
+        }}
+        : {{ moduleParams.matchObj.scores[1].score }}/10
     </div>
     <div>
-        <button class="button-start" (click)="next()">
-            Quitter le match
-        </button>
+        <button class="button-start" (click)="next()">Quitter le match</button>
     </div>
 </div>
-<div *ngIf="(moduleType == 'question' || moduleType == 'match') && !question" class="module-content-container spinner">
+<div
+    *ngIf="(moduleType == 'question' || moduleType == 'match') && !question"
+    class="module-content-container spinner"
+>
     <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
 </div>
-<div *ngIf="moduleType == 'ranking'" class="module-content-container" style="width: 90%;">
+<div
+    *ngIf="moduleType == 'ranking'"
+    class="module-content-container"
+    style="width: 90%"
+>
     <ul class="rankingmodule-slide-ranking">
         <li *ngFor="let user of ranking; let i = index">
-            <div class="rankingmodule-slide-ranking-position">{{i + 1}}</div>
-            <div class="rankingmodule-slide-ranking-name">{{user.username}}</div>
-            <div class="rankingmodule-slide-ranking-score">{{user.score}}</div>
+            <div class="rankingmodule-slide-ranking-position">{{ i + 1 }}</div>
+            <div class="rankingmodule-slide-ranking-name">
+                {{ user.username }}
+            </div>
+            <div class="rankingmodule-slide-ranking-score">
+                {{ user.score }}
+            </div>
         </li>
     </ul>
 </div>

@@ -35,10 +35,7 @@
             </button>
         </div>
         <div class="buttons" *ngIf="user && userObj && !isLoading">
-            <a
-                class="user-info"
-                href="/profile/{{ userObj.username || user.displayName }}"
-            >
+            <a class="user-info" href="/profile/{{ userObj.username }}">
                 <img
                     class="avatar"
                     [src]="userObj.avatarUrl"
@@ -47,12 +44,12 @@
                     height="40"
                     width="40"
                 />
-                <span
+                <b
                     class="username"
-                    *ngIf="user.displayName || userObj.username"
+                    *ngIf="userObj.displayName || userObj.username"
                 >
-                    <b>{{ user.displayName || userObj.username }}</b>
-                </span>
+                    {{ userObj.displayName || userObj.username }}
+                </b>
                 <span> {{ userObj.elo || "0" }}&nbsp;🏆 </span>
             </a>
             <button class="sign-out" (click)="logout()">
@@ -85,9 +82,9 @@
                 />
                 <span
                     class="username-mini"
-                    *ngIf="user.displayName || userObj.username"
+                    *ngIf="userObj.displayName || userObj.username"
                 >
-                    <b>{{ user.displayName || userObj.username }}</b>
+                    <b>{{ userObj.displayName || userObj.username }}</b>
                 </span>
             </div>
             <span class="username-mini"> {{ userObj.elo || "0" }} 🏆 </span>

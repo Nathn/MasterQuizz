@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
             if (user) {
                 this.user = user;
                 localStorage.setItem('user', JSON.stringify(user));
+                this.isLoading = true;
                 this.getUserInfo();
             } else {
                 this.user = null;
@@ -74,13 +75,19 @@ export class AppComponent implements OnInit {
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    this.userObj = null;
+                    if (
+                        response.message.startsWith('Utilisateur introuvable')
+                    ) {
+                        this.getUserInfo(); // try again
+                    }
                 } else {
                     this.userObj = response.user;
                     localStorage.setItem(
                         'userObj',
                         JSON.stringify(response.user)
                     );
+                    this.isLoading = false;
                 }
             });
     }

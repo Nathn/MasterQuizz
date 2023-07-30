@@ -3,58 +3,127 @@
         <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
     </div>
 </form>
-<form #registerForm="ngForm" *ngIf="!isAuthLoading && (action == 'add' || action == 'edit')"
-    (ngSubmit)="actionQuestion()">
-    <h2 *ngIf=" !isAuthLoading">Ajouter une question</h2>
+<form
+    #registerForm="ngForm"
+    *ngIf="!isAuthLoading && (action == 'add' || action == 'edit')"
+    (ngSubmit)="actionQuestion()"
+>
+    <h2 *ngIf="!isAuthLoading">Ajouter une question</h2>
     <div class="field-container">
         <div>
             <div class="form-group">
                 <label for="question">Question :</label><br />
-                <input type="text" class="form-control" id="question" name="question" [(ngModel)]="question" required
-                    autocomplete="off" spellcheck="true" />
+                <input
+                    type="text"
+                    class="form-control"
+                    id="question"
+                    name="question"
+                    [(ngModel)]="question"
+                    required
+                    autocomplete="off"
+                    spellcheck="true"
+                />
             </div>
             <div class="form-group">
                 <label for="nbAnswers">Nombre de réponses</label><br />
-                <input type="number" class="form-control" id="nbAnswers" name="nbAnswers" [(ngModel)]="nbAnswers"
-                    required min="2" max="6" />
+                <input
+                    type="number"
+                    class="form-control"
+                    id="nbAnswers"
+                    name="nbAnswers"
+                    [(ngModel)]="nbAnswers"
+                    required
+                    min="2"
+                    max="6"
+                />
             </div>
         </div>
         <div>
-            <div class="form-group" *ngFor="let _ of [].constructor(nbAnswers); let i = index;">
-                <label for="answer{{i}}">Réponse {{i + 1}}</label><br />
-                <input type="text" class="form-control" id="answer{{i}}" name="answer{{i}}" [(ngModel)]="answers[i]"
-                    spellcheck="true" required />
+            <div
+                class="form-group"
+                *ngFor="let _ of [].constructor(nbAnswers); let i = index"
+            >
+                <label for="answer{{ i }}">Réponse {{ i + 1 }}</label
+                ><br />
+                <input
+                    type="text"
+                    class="form-control"
+                    id="answer{{ i }}"
+                    name="answer{{ i }}"
+                    [(ngModel)]="answers[i]"
+                    spellcheck="true"
+                    required
+                />
             </div>
         </div>
         <div>
             <div class="form-group">
                 <label for="goodAnswer">Bonne réponse</label><br />
-                <select class="form-control" id="goodAnswer" name="goodAnswer" [(ngModel)]="goodAnswer" required>
-                    <option *ngFor="let _ of [].constructor(nbAnswers); let i = index;" [value]="i">Réponse {{i + 1}}
+                <select
+                    class="form-control"
+                    id="goodAnswer"
+                    name="goodAnswer"
+                    [(ngModel)]="goodAnswer"
+                    required
+                >
+                    <option
+                        *ngFor="
+                            let _ of [].constructor(nbAnswers);
+                            let i = index
+                        "
+                        [value]="i"
+                    >
+                        Réponse {{ i + 1 }}
                     </option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="theme">Thème</label><br />
-                <select class="form-control" id="theme" name="theme" [(ngModel)]="themeSelected" required>
-                    <option *ngFor="let theme of themes" [value]="theme.code">{{theme.name}}</option>
+                <select
+                    class="form-control"
+                    id="theme"
+                    name="theme"
+                    [(ngModel)]="themeSelected"
+                    required
+                >
+                    <option *ngFor="let theme of themes" [value]="theme.code">
+                        {{ theme.name }}
+                    </option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="difficulty">Difficulté</label><br />
-                <input type="number" class="form-control" id="difficulty" name="difficulty" [(ngModel)]="difficulty"
-                    required min="1" max="5" />
+                <input
+                    type="number"
+                    class="form-control"
+                    id="difficulty"
+                    name="difficulty"
+                    [(ngModel)]="difficulty"
+                    required
+                    min="1"
+                    max="5"
+                />
             </div>
         </div>
     </div>
-    <button type="submit" class="submit-button" [disabled]="!registerForm.valid || isRequestLoading">
+    <button
+        type="submit"
+        class="submit-button"
+        [disabled]="!registerForm.valid || isRequestLoading"
+    >
         <span *ngIf="!isRequestLoading">Enregistrer</span>
         <span *ngIf="isRequestLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon
+            >&nbsp;Chargement...
         </span>
     </button>
     <br />
-    <button type="button" class="back-button" [disabled]="isRequestLoading" (click)="backToList()">
+    <button
+        type="button"
+        class="back-button"
+        [disabled]="isRequestLoading"
+        (click)="backToList()"
+    >
         <span>Retourner à la liste des questions</span>
     </button>
 </form>
@@ -70,50 +139,95 @@
                     <fa-icon [icon]="faPlus"></fa-icon>
                     Ajouter une question
                 </button>
-                <input type="text" class="form-control" id="search" name="search" [(ngModel)]="search" required
-                    autocomplete="off" spellcheck="true" placeholder="Rechercher..." />
+                <input
+                    type="text"
+                    class="form-control"
+                    id="search"
+                    name="search"
+                    [(ngModel)]="search"
+                    required
+                    autocomplete="off"
+                    spellcheck="true"
+                    placeholder="Rechercher..."
+                />
             </div>
             <div class="question-subtoolbar">
-                <span *ngIf="getQuestionsFiltered().length > 0">{{getQuestionsFiltered().length}} questions
-                    trouvées</span>
-                <span *ngIf="getQuestionsFiltered().length == 0">Aucune question trouvée</span>
+                <span *ngIf="getQuestionsFiltered().length > 0"
+                    >{{ getQuestionsFiltered().length }} questions
+                    trouvées</span
+                >
+                <span *ngIf="getQuestionsFiltered().length == 0"
+                    >Aucune question trouvée</span
+                >
             </div>
             <ng-container *ngFor="let question of getQuestionsFiltered()">
                 <div class="question">
                     <div class="question-header">
                         <div class="question-title">
-                            <span>{{question.question}}</span>
+                            <span>{{ question.question }}</span>
                         </div>
                     </div>
                     <div class="question-body">
                         <ul class="question-answers">
-                            <li *ngFor="let answer of question.answers; let i = index;">
-                                <span [ngClass]="{'good-answer': answer.correct}">{{answer.answer}}</span>
+                            <li
+                                *ngFor="
+                                    let answer of question.answers;
+                                    let i = index
+                                "
+                            >
+                                <span
+                                    [ngClass]="{
+                                        'good-answer': answer.correct
+                                    }"
+                                    >{{ answer.answer }}</span
+                                >
                             </li>
                         </ul>
                         <div class="question-infos">
-                            <span>Thème : {{question.theme.name}}</span>
-                            <span>Difficulté : {{question.difficulty}}/5</span>
+                            <span>Thème : {{ question.theme.name }}</span>
+                            <span
+                                >Difficulté : {{ question.difficulty }}/5</span
+                            >
                             <span>
-                                Ajoutée le {{question.created | date:'dd/MM/yyyy'}} par
-                                <a href="/profile/{{question.user.username}}">
-                                    {{question.user.username}}
+                                Ajoutée le
+                                {{ question.created | date : "dd/MM/yyyy" }} par
+                                <a href="/profile/{{ question.user.username }}">
+                                    {{
+                                        question.user.displayName ||
+                                            question.user.username
+                                    }}
                                 </a>
                             </span>
-                            <span *ngIf="question.updated && question.userUpdated">
-                                Modifiée le {{question.updated | date:'dd/MM/yyyy'}} par
-                                <a href="/profile/{{question.userUpdated.username}}">
-                                    {{question.userUpdated.username}}
+                            <span
+                                *ngIf="question.updated && question.userUpdated"
+                            >
+                                Modifiée le
+                                {{ question.updated | date : "dd/MM/yyyy" }} par
+                                <a
+                                    href="/profile/{{
+                                        question.userUpdated.username
+                                    }}"
+                                >
+                                    {{
+                                        question.userUpdated.displayName ||
+                                            question.userUpdated.username
+                                    }}
                                 </a>
                             </span>
                         </div>
                     </div>
                     <div class="question-actions">
-                        <button class="btn btn-primary" [routerLink]="['/questions/edit', question._id]">
+                        <button
+                            class="btn btn-primary"
+                            [routerLink]="['/questions/edit', question._id]"
+                        >
                             <fa-icon [icon]="faEdit"></fa-icon>
                             Modifier
                         </button>
-                        <button class="btn btn-danger" (click)="deleteQuestion(question)">
+                        <button
+                            class="btn btn-danger"
+                            (click)="deleteQuestion(question)"
+                        >
                             <fa-icon [icon]="faTrash"></fa-icon>
                             Supprimer
                         </button>

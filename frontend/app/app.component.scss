@@ -1,5 +1,4 @@
-@import '../styles/variables';
-
+@import "../styles/variables";
 
 /* Top toolbar styles */
 .toolbar {
@@ -37,11 +36,8 @@
 
     h1 {
         font-size: 42px;
-        font-family: Epica Sans Pro Black,
-            Impact,
-            Haettenschweiler,
-            'Arial Narrow Bold',
-            sans-serif !important;
+        font-family: Epica Sans Pro Black, Impact, Haettenschweiler,
+            "Arial Narrow Bold", sans-serif !important;
         float: left;
         margin-left: 40px;
     }
@@ -78,7 +74,7 @@
                 transition: color 0.3s ease-in-out;
 
                 &::before {
-                    content: '';
+                    content: "";
                     position: absolute;
                     bottom: -2px;
                     left: 0;
@@ -168,7 +164,7 @@ button {
         transition: color 0.3s ease-in-out;
 
         &::before {
-            content: '';
+            content: "";
             position: absolute;
             bottom: -2px;
             left: 0;
@@ -195,9 +191,11 @@ button {
 }
 
 .username {
-    margin-right: 15px;
-    margin-left: 10px;
+    margin: auto 15px auto 10px;
     text-align: end;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: larger;
+    bottom: 2px;
 }
 
 .username-mini {
@@ -235,7 +233,7 @@ footer {
     left: 50%;
     transform: translateX(-50%);
     width: auto;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 300;
     border-radius: 12px 12px 0 0;
 }
@@ -307,7 +305,7 @@ footer {
                 transition: color 0.3s ease-in-out;
 
                 &::before {
-                    content: '';
+                    content: "";
                     position: absolute;
                     bottom: -2px;
                     left: 0;
@@ -345,7 +343,7 @@ footer {
         }
     }
 
-    .menu-mobile[aria-expanded='true'] {
+    .menu-mobile[aria-expanded="true"] {
         top: 75px;
     }
 }

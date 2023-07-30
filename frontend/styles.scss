@@ -1,17 +1,16 @@
-@import './styles/variables';
+@import "./styles/variables";
 
 @font-face {
-    font-family: 'Epica Sans Pro Black';
-    src: url('/assets/fonts/epica-sans-pro-black.otf') format('truetype');
+    font-family: "Epica Sans Pro Black";
+    src: url("/assets/fonts/epica-sans-pro-black.otf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'Averta';
-    src: url('/assets/fonts/averta-semibold.otf') format('truetype');
+    font-family: "Averta";
+    src: url("/assets/fonts/averta-semibold.otf") format("truetype");
     font-display: swap;
 }
-
 
 * {
     margin: 0;
@@ -21,7 +20,7 @@
 
 body {
     background: $primary-color;
-    font-family: 'Verdana', sans-serif;
+    font-family: "Verdana", sans-serif;
 }
 
 h1,
