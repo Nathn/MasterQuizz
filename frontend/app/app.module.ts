@@ -17,28 +17,30 @@ import { HomeModuleComponent } from './home-module/home-module.component';
 import { QuestionComponent } from './question/question.component';
 import { ProfileComponent } from './profile/profile.component';
 import { DuelComponent } from './duel/duel.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LoginComponent,
-    RegisterComponent,
-    QuestionsComponent,
-    HomeModuleComponent,
-    QuestionComponent,
-    ProfileComponent,
-    DuelComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    StoreModule.forRoot({}),
-    FontAwesomeModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LoginComponent,
+        RegisterComponent,
+        QuestionsComponent,
+        HomeModuleComponent,
+        QuestionComponent,
+        ProfileComponent,
+        DuelComponent,
+        AboutComponent,
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        StoreModule.forRoot({}),
+        FontAwesomeModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

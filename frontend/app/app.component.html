@@ -1,72 +1,104 @@
 <header>
-  <div class="toolbar">
-    <div class="title-bar" href="#">
-      <a class="logo" href="/">
-        <img src="../assets/logo.png" alt="MasterQuizz logo" width="60" height="60">
-        <h1>MasterQuizz</h1>
-      </a>
-      <button class="menu-icon" *ngIf="user && !isLoading">
-        <fa-icon [icon]="faBars" (click)="showMenu = !showMenu"></fa-icon>
-      </button>
-      <ul>
+    <div class="toolbar">
+        <div class="title-bar" href="#">
+            <a class="logo" href="/">
+                <img
+                    src="../assets/logo.png"
+                    alt="MasterQuizz logo"
+                    width="60"
+                    height="60"
+                />
+                <h1>MasterQuizz</h1>
+            </a>
+            <button class="menu-icon" *ngIf="user && !isLoading">
+                <fa-icon
+                    [icon]="faBars"
+                    (click)="showMenu = !showMenu"
+                ></fa-icon>
+            </button>
+            <ul>
+                <li *ngFor="let link of menuLinks">
+                    <a [routerLink]="link.path" routerLinkActive="active">{{
+                        link.text
+                    }}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="buttons" *ngIf="!user && !isLoading">
+            <button class="sign-in" (click)="navigateToLogin()">
+                <fa-icon [icon]="faSignInAlt"></fa-icon>
+                <span>Connection</span>
+            </button>
+            <button class="sign-up" (click)="navigateToRegister()">
+                <fa-icon [icon]="faUserPlus"></fa-icon>
+                <span>Inscription</span>
+            </button>
+        </div>
+        <div class="buttons" *ngIf="user && userObj && !isLoading">
+            <a
+                class="user-info"
+                href="/profile/{{ userObj.username || user.displayName }}"
+            >
+                <img
+                    class="avatar"
+                    [src]="userObj.avatarUrl"
+                    alt="Avatar"
+                    *ngIf="userObj.avatarUrl"
+                    height="40"
+                    width="40"
+                />
+                <span
+                    class="username"
+                    *ngIf="user.displayName || userObj.username"
+                >
+                    <b>{{ user.displayName || userObj.username }}</b>
+                </span>
+                <span> {{ userObj.elo || "0" }}&nbsp;🏆 </span>
+            </a>
+            <button class="sign-out" (click)="logout()">
+                <fa-icon [icon]="faSignOutAlt"></fa-icon>
+                <span>Déconnection</span>
+            </button>
+        </div>
+        <div class="buttons" *ngIf="isLoading">
+            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+        </div>
+    </div>
+    <ul
+        class="menu-mobile"
+        [attr.aria-expanded]="showMenu"
+        *ngIf="user && userObj && !isLoading"
+    >
+        <!-- displayed only on mobile -->
         <li *ngFor="let link of menuLinks">
-          <a [routerLink]="link.path" routerLinkActive="active">{{ link.text }}</a>
-      </ul>
-    </div>
-    <div class="buttons" *ngIf="!user && !isLoading">
-      <button class="sign-in" (click)="navigateToLogin()">
-        <fa-icon [icon]="faSignInAlt"></fa-icon>
-        <span>Connection</span>
-      </button>
-      <button class="sign-up" (click)="navigateToRegister()">
-        <fa-icon [icon]="faUserPlus"></fa-icon>
-        <span>Inscription</span>
-      </button>
-    </div>
-    <div class="buttons" *ngIf="user && userObj && !isLoading">
-      <a class="user-info" href="/profile/{{ userObj.username || user.displayName }}">
-        <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
-        <span class="username" *ngIf="user.displayName || userObj.username">
-          <b>{{ user.displayName || userObj.username }}</b>
-        </span>
-        <span>
-          {{ userObj.elo || "0" }}&nbsp;🏆
-        </span>
-      </a>
-      <button class="sign-out" (click)="logout()">
-        <fa-icon [icon]="faSignOutAlt"></fa-icon>
-        <span>Déconnection</span>
-      </button>
-    </div>
-    <div class="buttons" *ngIf="isLoading">
-      <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
-    </div>
-  </div>
-  <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="user && userObj && !isLoading">
-    <!-- displayed only on mobile -->
-    <li *ngFor="let link of menuLinks">
-      <a href="{{link.path}}">{{ link.text }}</a>
-    </li>
-    <div class="user-info-mobile">
-      <div class="user-info-header">
-        <img class="avatar" [src]="userObj.avatarUrl" alt="Avatar" *ngIf="userObj.avatarUrl" height="40" width="40">
-        <span class="username-mini" *ngIf="user.displayName || userObj.username">
-          <b>{{ user.displayName || userObj.username }}</b>
-        </span>
-      </div>
-      <span class="username-mini">
-        {{ userObj.elo || "0" }} 🏆
-      </span>
-    </div>
-  </ul>
+            <a href="{{ link.path }}">{{ link.text }}</a>
+        </li>
+        <div class="user-info-mobile">
+            <div class="user-info-header">
+                <img
+                    class="avatar"
+                    [src]="userObj.avatarUrl"
+                    alt="Avatar"
+                    *ngIf="userObj.avatarUrl"
+                    height="40"
+                    width="40"
+                />
+                <span
+                    class="username-mini"
+                    *ngIf="user.displayName || userObj.username"
+                >
+                    <b>{{ user.displayName || userObj.username }}</b>
+                </span>
+            </div>
+            <span class="username-mini"> {{ userObj.elo || "0" }} 🏆 </span>
+        </div>
+    </ul>
 </header>
 
 <main>
-  <section class="content">
-    <router-outlet></router-outlet>
-  </section>
+    <section class="content">
+        <router-outlet></router-outlet>
+    </section>
 </main>
 
-<footer>
-  © 2023 MasterQuizz. Tous droits réservés.
-</footer>
+<footer>© 2023 MasterQuizz. Tous droits réservés.</footer>
