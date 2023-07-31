@@ -60,6 +60,7 @@ router.post("/register", async (req, res) => {
             email: req.body.email,
             username: req.body.username,
             displayName: req.body.username,
+            avatarUrl: req.body.avatar,
         });
         await user.save();
         // And return a success message
@@ -70,9 +71,27 @@ router.post("/register", async (req, res) => {
         console.log(
             `[SERVER] An error occured while registering a new user: ${err}`
         );
-        res.status(500).json({
-            message: "Internal server error",
-        });
+        // if the error is duplicate email
+        if (err.code === 11000 && err.keyPattern.email) {
+            res.status(200).json({
+                message: "Utilisateur déjà enregistré.",
+            });
+        } else if (err.code === 11000 && err.keyPattern.username) {
+            user = new User({
+                email: req.body.email,
+                username: req.body.username + Math.floor(Math.random() * 1000),
+                displayName: req.body.username,
+                avatarUrl: req.body.avatar,
+            });
+            await user.save();
+            res.status(200).json({
+                message: "OK",
+            });
+        } else {
+            res.status(500).json({
+                message: "Internal server error",
+            });
+        }
     }
 });
 

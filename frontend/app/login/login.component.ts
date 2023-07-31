@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { initializeApp } from 'firebase/app';
 import {
     getAuth,
     onAuthStateChanged,
     signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
 } from 'firebase/auth';
 
 import { environment } from '../../environments/environment';
@@ -25,14 +28,21 @@ export class LoginComponent implements OnInit {
 
     auth: any;
     db: any;
+    googleProvider: any = new GoogleAuthProvider();
 
     faSpinner = faSpinner;
+    faGoogle = faGoogle;
 
     isLoading: boolean = false;
 
-    constructor(private router: Router, private http: HttpClient) {
+    constructor(
+        private router: Router,
+        private http: HttpClient,
+        private zone: NgZone
+    ) {
         let app = initializeApp(environment.firebaseConfig);
         this.auth = getAuth(app);
+        this.auth.languageCode = 'fr';
         onAuthStateChanged(this.auth, (user) => {
             if (user) this.router.navigate(['']);
         });
@@ -74,6 +84,40 @@ export class LoginComponent implements OnInit {
                         }
                         this.isLoading = false;
                     });
+            });
+    }
+
+    loginWithGoogle() {
+        this.isLoading = true;
+        signInWithPopup(this.auth, this.googleProvider)
+            .then((result) => {
+                this.zone.run(() => this.registerWithGoogle(result.user));
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log('error', errorCode, errorMessage);
+                this.isLoading = false;
+            });
+    }
+
+    registerWithGoogle(user: any) {
+        // Already signed in
+        // add user to database in case it doesn't exist
+        this.http
+            .post(environment.apiUrl + 'register', {
+                username: user.email.split('@')[0],
+                email: user.email,
+                avatar: user.photoURL,
+            })
+            .subscribe((response: any) => {
+                if (response.message != 'OK') {
+                    this.isLoading = false;
+                    return;
+                } else {
+                    this.isLoading = false;
+                    this.router.navigate(['']);
+                }
             });
     }
 }

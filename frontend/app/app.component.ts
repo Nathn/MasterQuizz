@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     isLoading: boolean = localStorage.getItem('user') ? false : true;
     showMenu: boolean = false;
     menuLinks: any = [];
+    retries: number = 0;
 
     faSpinner = faSpinner;
     faBars = faBars;
@@ -77,9 +78,20 @@ export class AppComponent implements OnInit {
                 if (response.message != 'OK') {
                     this.userObj = null;
                     if (
-                        response.message.startsWith('Utilisateur introuvable')
+                        response.message.startsWith(
+                            'Utilisateur introuvable'
+                        ) &&
+                        this.retries < 10
                     ) {
+                        this.retries++;
+                        this.isLoading = true;
                         this.getUserInfo(); // try again
+                    } else {
+                        this.user = null;
+                        this.userObj = null;
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('userObj');
+                        this.isLoading = false;
                     }
                 } else {
                     this.userObj = response.user;
