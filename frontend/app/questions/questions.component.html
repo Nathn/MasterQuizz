@@ -8,7 +8,7 @@
     *ngIf="!isAuthLoading && (action == 'add' || action == 'edit')"
     (ngSubmit)="actionQuestion()"
 >
-    <h2 *ngIf="!isAuthLoading">Ajouter une question</h2>
+    <h2>Ajouter une question</h2>
     <div class="field-container">
         <div>
             <div class="form-group">
@@ -24,7 +24,7 @@
                     spellcheck="true"
                 />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <label for="nbAnswers">Nombre de réponses</label><br />
                 <input
                     type="number"
@@ -36,12 +36,12 @@
                     min="2"
                     max="6"
                 />
-            </div>
+            </div> -->
         </div>
         <div>
             <div
                 class="form-group"
-                *ngFor="let _ of [].constructor(nbAnswers); let i = index"
+                *ngFor="let _ of [].constructor(nbAnswers / 2); let i = index"
             >
                 <label for="answer{{ i }}">Réponse {{ i + 1 }}</label
                 ><br />
@@ -51,6 +51,25 @@
                     id="answer{{ i }}"
                     name="answer{{ i }}"
                     [(ngModel)]="answers[i]"
+                    spellcheck="true"
+                    required
+                />
+            </div>
+        </div>
+        <div>
+            <div
+                class="form-group"
+                *ngFor="let _ of [].constructor(nbAnswers / 2); let i = index"
+            >
+                <label for="answer{{ i + nbAnswers / 2 }}"
+                    >Réponse {{ i + nbAnswers / 2 + 1 }}</label
+                ><br />
+                <input
+                    type="text"
+                    class="form-control"
+                    id="answer{{ i + nbAnswers / 2 }}"
+                    name="answer{{ i + nbAnswers / 2 }}"
+                    [(ngModel)]="answers[i + nbAnswers / 2]"
                     spellcheck="true"
                     required
                 />

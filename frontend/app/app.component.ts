@@ -59,8 +59,8 @@ export class AppComponent implements OnInit {
                 this.userObj = null;
                 localStorage.removeItem('user');
                 localStorage.removeItem('userObj');
+                this.getMenuLinks();
             }
-            this.getMenuLinks();
             this.isLoading = false;
         });
     }
@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
                         'userObj',
                         JSON.stringify(response.user)
                     );
+                    this.getMenuLinks();
                     this.isLoading = false;
                 }
             });

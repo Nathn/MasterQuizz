@@ -1,5 +1,4 @@
-@import '../../styles/variables';
-
+@import "../../styles/variables";
 
 h1,
 h2,
@@ -30,11 +29,17 @@ form {
             display: flex;
             flex-direction: row;
             margin: 10px 0;
+            align-items: end;
 
             .form-group {
                 display: flex;
                 flex-direction: column;
                 margin: 0 10px;
+                align-items: start;
+
+                * {
+                    max-width: none;
+                }
             }
         }
     }
