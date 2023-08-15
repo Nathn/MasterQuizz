@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, type Routes } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
@@ -10,22 +10,22 @@ import { DuelComponent } from './duel/duel.component';
 import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  {path: 'about', component: AboutComponent},
-  { path: 'profile/:username', component: ProfileComponent },
-  { path: 'questions', component: QuestionsComponent },
-  { path: 'questions/:action', component: QuestionsComponent },
-  { path: 'questions/:action/:id', component: QuestionsComponent },
-  { path: 'multiplayer', component: DuelComponent },
-  { path: 'multiplayer/:id', component: DuelComponent },
-  { path: 'duel/:id', component: DuelComponent },
-  { path: '**', redirectTo: '' }
+    { path: '', component: HomeComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent },
+    { path: 'about', component: AboutComponent },
+    { path: 'profile/:username', component: ProfileComponent },
+    { path: 'questions', component: QuestionsComponent },
+    { path: 'questions/:action', component: QuestionsComponent },
+    { path: 'questions/:action/:id', component: QuestionsComponent },
+    { path: 'multiplayer', component: DuelComponent },
+    { path: 'multiplayer/:id', component: DuelComponent },
+    { path: 'duel/:id', component: DuelComponent },
+    { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -96,25 +96,31 @@
     </div>
 </div>
 <div
-    *ngIf="(moduleType == 'question' || moduleType == 'match') && !question"
-    class="module-content-container spinner"
->
-    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
-</div>
-<div
-    *ngIf="moduleType == 'ranking'"
+    *ngIf="moduleType == 'ranking' && ranking && ranking.length > 0"
     class="module-content-container"
     style="width: 90%"
 >
     <ul class="rankingmodule-slide-ranking">
-        <li *ngFor="let user of ranking; let i = index">
+        <a
+            *ngFor="let user of ranking; let i = index"
+            href="/profile/{{ user.username }}"
+        >
             <div class="rankingmodule-slide-ranking-position">{{ i + 1 }}</div>
             <div class="rankingmodule-slide-ranking-name">
-                {{ user.username }}
+                {{ user.displayName }}
             </div>
             <div class="rankingmodule-slide-ranking-score">
-                {{ user.score }}
+                {{ user.elo }}&nbsp;🏆
             </div>
-        </li>
+        </a>
     </ul>
+</div>
+<div
+    *ngIf="
+        ((moduleType == 'question' || moduleType == 'match') && !question) ||
+        (moduleType == 'ranking' && (!ranking || ranking.length == 0))
+    "
+    class="module-content-container spinner"
+>
+    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
 </div>

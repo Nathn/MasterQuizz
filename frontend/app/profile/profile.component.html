@@ -14,7 +14,7 @@
         {{ displayedUser.displayName || displayedUser.username }}
     </h1>
     <span> Inscrit le {{ displayedUser.created | date : "dd/MM/yyyy" }} </span>
-    <span> {{ displayedUser.elo }} ELO </span>
+    <span> {{ displayedUser.elo }}&nbsp;🏆 </span>
     <span>
         {{ displayedUser.stats.duels.wins }} duels gagnés<br />
         {{ displayedUser.stats.duels.losses }} duels perdus<br />

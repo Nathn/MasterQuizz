@@ -1,5 +1,4 @@
-@import '../../styles/variables';
-
+@import "../../styles/variables";
 
 .qdjlogo {
     position: absolute;
@@ -9,7 +8,8 @@
     align-items: center;
     background: $tertiary-color;
     color: $tertiary-text-color;
-    font-family: Epica Sans Pro Black, Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    font-family: Epica Sans Pro Black, Impact, Haettenschweiler,
+        "Arial Narrow Bold", sans-serif !important;
     font-size: larger;
     letter-spacing: 0.03em;
     padding: 10px 37px 10px 40px;
@@ -17,7 +17,7 @@
     flex-direction: row;
     justify-content: center;
     border: solid 7px $secondary-color;
-    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, .2);
+    box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .module-content-container {
@@ -51,45 +51,48 @@
     padding: 3px 0;
 }
 
-.rankingmodule-slide-ranking li {
+.rankingmodule-slide-ranking a {
     list-style-type: none;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
     position: relative;
-    padding: 11px 30px 11px 20px;
+    padding: 11px 20px;
     border: 0 solid #ddd;
     border-radius: 40px;
     background-color: #fff;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    text-decoration: none;
     color: $primary-text-color;
     font-weight: 600;
 }
 
-.rankingmodule-slide-ranking li:last-child {
+.rankingmodule-slide-ranking a:last-child {
     margin-bottom: 0;
 }
 
 .rankingmodule-slide-ranking-position {
     font-size: 1.2rem;
-    font-weight: bold;
     margin-right: 10px;
 }
 
 .rankingmodule-slide-ranking-name {
-    flex: 1;
+    font-size: 1.1rem;
+    color: $primary-text-color;
     margin-right: 10px;
 }
 
+.rankingmodule-slide-ranking-name:hover {
+    cursor: pointer;
+}
+
 .rankingmodule-slide-ranking-score {
-    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .results {

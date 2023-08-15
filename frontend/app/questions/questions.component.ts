@@ -71,6 +71,7 @@ export class QuestionsComponent {
     goodAnswer: number = 0;
     themeSelected: string = '';
     difficulty: number = 3;
+    editSaved: boolean = false;
 
     constructor(
         private router: Router,
@@ -208,7 +209,7 @@ export class QuestionsComponent {
     }
 
     backToList() {
-        if (this.question != '') {
+        if (this.question != '' && !this.editSaved) {
             if (
                 confirm(
                     'Êtes-vous sûr de vouloir quitter cette page ? Les modifications non enregistrées seront perdues.'
@@ -286,6 +287,7 @@ export class QuestionsComponent {
                 } else {
                     alert('Question modifiée !');
                 }
+                this.editSaved = true;
                 this.isRequestLoading = false;
             });
     }

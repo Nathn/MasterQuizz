@@ -29,13 +29,13 @@ form {
             display: flex;
             flex-direction: row;
             margin: 10px 0;
-            align-items: end;
+            align-items: flex-end;
 
             .form-group {
                 display: flex;
                 flex-direction: column;
                 margin: 0 10px;
-                align-items: start;
+                align-items: flex-start;
 
                 * {
                     max-width: none;

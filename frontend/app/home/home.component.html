@@ -1,12 +1,21 @@
-<h1 class="home-title">Bienvenue sur
-    <span class="home-title-highlight">
-        MasterQuizz
-    </span>
+<h1 class="home-title">
+    Bienvenue sur
+    <span class="home-title-highlight"> MasterQuizz </span>
     !
 </h1>
 <div class="home-module-container">
-    <app-home-module class="home-module" [question]="randomQuestion" moduleTitle="Question aléatoire"
-        moduleType="question" (nextQuestion)="nextQuestion($event)"></app-home-module>
-    <app-home-module class="home-module" [question]="randomQuestion" moduleTitle="Classement Général"
-        moduleType="ranking"></app-home-module>
+    <app-home-module
+        class="home-module"
+        [question]="randomQuestion"
+        moduleTitle="Question aléatoire"
+        moduleType="question"
+        (nextQuestion)="nextQuestion($event)"
+    ></app-home-module>
+    <app-home-module
+        class="home-module"
+        [question]="randomQuestion"
+        moduleTitle="Classement Général"
+        moduleType="ranking"
+        [ranking]="rankedUsers"
+    ></app-home-module>
 </div>

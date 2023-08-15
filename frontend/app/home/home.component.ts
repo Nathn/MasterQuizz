@@ -5,29 +5,33 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+    randomQuestion: any;
+    rankedUsers: any = [];
 
-  randomQuestion: any;
+    constructor(private http: HttpClient) {
+        this.http
+            .post(environment.apiUrl + 'getRandomQuestion', {})
+            .subscribe((res: any) => {
+                this.randomQuestion = res.question;
+            });
+        this.http
+            .post(environment.apiUrl + 'getTopTenUsersByElo', {})
+            .subscribe((res: any) => {
+                if (res.users) this.rankedUsers = res.users.slice(0, 7);
+            });
+    }
 
-  constructor(
-    private router: Router,
-    private ar: ActivatedRoute,
-    private http: HttpClient
-  ) {
-    this.http.post(environment.apiUrl + "getRandomQuestion", {}).subscribe((res: any) => {
-      this.randomQuestion = res.question;
-    });
-  }
-
-  nextQuestion(event: any) {
-    this.randomQuestion = null;
-    this.http.post(environment.apiUrl + "getRandomQuestion", {}).subscribe((res: any) => {
-      this.randomQuestion = res.question;
-    });
-  }
-
+    nextQuestion(event: any) {
+        this.randomQuestion = null;
+        this.http
+            .post(environment.apiUrl + 'getRandomQuestion', {})
+            .subscribe((res: any) => {
+                this.randomQuestion = res.question;
+            });
+    }
 }
