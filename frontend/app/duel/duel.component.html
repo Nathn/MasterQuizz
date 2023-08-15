@@ -6,36 +6,84 @@
     <button type="button" (click)="findMatch()" *ngIf="!status && !duelId">
         Trouver un adversaire
     </button>
-    <button type="button" (click)="cancelSearch()" *ngIf="status && !duelId && !startedDuelId">
+    <button
+        type="button"
+        (click)="cancelSearch()"
+        *ngIf="status && !duelId && !startedDuelId"
+    >
         <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
         Annuler
     </button>
-    <button type="button" (click)="joinMatch()" *ngIf="startedDuelId && !duelId">
+    <button
+        type="button"
+        (click)="joinMatch()"
+        *ngIf="startedDuelId && !duelId"
+    >
         Rejoindre le duel en cours
     </button>
     <span class="status" *ngIf="status && !startedDuelId">{{ status }}</span>
 </div>
 <div class="main" *ngIf="duelId && duelObj">
     <h1>
+        <span> C'est l'heure du duel ! </span>
         <span>
-            C'est l'heure du duel !
-        </span>
-        <span>
-            <img src="{{ duelObj.users[0].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
+            <img
+                src="{{ duelObj.users[0].avatarUrl }}"
+                alt="Avatar"
+                height="50"
+                width="50"
+                class="avatar"
+            />
             <div class="vs">
-                <a href="/profile/{{ duelObj.users[0].username }}" target="_blank">
-                    {{ duelObj.users[0].displayName || duelObj.users[0].username }}
+                <a
+                    href="/profile/{{ duelObj.users[0].username }}"
+                    target="_blank"
+                >
+                    {{
+                        duelObj.users[0].displayName ||
+                            duelObj.users[0].username
+                    }}
                 </a>
                 VS
-                <a href="/profile/{{ duelObj.users[1].username }}" target="_blank">
-                    {{ duelObj.users[1].displayName || duelObj.users[1].username }}
+                <a
+                    href="/profile/{{ duelObj.users[1].username }}"
+                    target="_blank"
+                >
+                    {{
+                        duelObj.users[1].displayName ||
+                            duelObj.users[1].username
+                    }}
                 </a>
             </div>
-            <img src="{{ duelObj.users[1].avatarUrl }}" alt="Avatar" height="50" width="50" class="avatar" />
+            <img
+                src="{{ duelObj.users[1].avatarUrl }}"
+                alt="Avatar"
+                height="50"
+                width="50"
+                class="avatar"
+            />
         </span>
     </h1>
-    <app-home-module class="home-module" [question]="currentQuestion" [moduleTitle]="status == 'ended' ? 'Résultats' : 'Question ' + (currentQuestionIndex + 1)"
-        moduleType="match" [moduleParams]="{'nextQuestionReady': nextQuestionReady, 'matchEnded': status == 'ended', 'hideAnswers': !nextQuestionReady, 'matchObj': duelObj}"
-        (selectedAnswer)="selectedAnswer($event)" (validatedAnswer)="validatedAnswer($event)" (nextQuestion)="nextQuestionPressed($event)" *ngIf="currentQuestion">
+    <app-home-module
+        class="home-module"
+        [question]="currentQuestion"
+        [moduleTitle]="
+            status == 'ended'
+                ? 'Résultats'
+                : 'Question ' + (currentQuestionIndex + 1)
+        "
+        moduleType="match"
+        [moduleParams]="{
+            nextQuestionReady: nextQuestionReady,
+            matchEnded: status == 'ended',
+            hideAnswers: !nextQuestionReady,
+            matchObj: duelObj,
+            eloChange: eloChange
+        }"
+        (selectedAnswer)="selectedAnswer($event)"
+        (validatedAnswer)="validatedAnswer($event)"
+        (nextQuestion)="nextQuestionPressed($event)"
+        *ngIf="currentQuestion"
+    >
     </app-home-module>
 </div>

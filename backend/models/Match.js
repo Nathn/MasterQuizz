@@ -46,6 +46,11 @@ const matchSchema = new mongoose.Schema({
             },
         },
     ],
+    eloChanges: {
+        type: Map,
+        of: Number,
+        default: {},
+    },
     users: [
         {
             type: mongoose.Schema.ObjectId,

@@ -176,6 +176,7 @@ function start(request, ws, userWebSockets) {
                             type: "duel",
                             status: "ended",
                             match: match.toObject(),
+                            eloChanges: match.eloChanges,
                         })
                     );
                     return;
@@ -425,6 +426,8 @@ function answer(request, ws, userWebSockets) {
                                             User.findById(
                                                 match.users[1]._id
                                             ).then((user2) => {
+                                                let user1EloChange = 0;
+                                                let user2EloChange = 0;
                                                 if (match.winner) {
                                                     if (
                                                         match.winner._id.toString() ===
@@ -434,6 +437,10 @@ function answer(request, ws, userWebSockets) {
                                                             .wins++;
                                                         user2.stats.duels
                                                             .losses++;
+                                                        user1EloChange =
+                                                            user1.elo;
+                                                        user2EloChange =
+                                                            user2.elo;
                                                         user1.elo = getNewElo(
                                                             user1.elo,
                                                             user2.elo,
@@ -444,11 +451,21 @@ function answer(request, ws, userWebSockets) {
                                                             user1.elo,
                                                             -1
                                                         );
+                                                        user1EloChange =
+                                                            user1.elo -
+                                                            user1EloChange;
+                                                        user2EloChange =
+                                                            user2.elo -
+                                                            user2EloChange;
                                                     } else {
                                                         user1.stats.duels
                                                             .losses++;
                                                         user2.stats.duels
                                                             .wins++;
+                                                        user2EloChange =
+                                                            user2.elo;
+                                                        user1EloChange =
+                                                            user1.elo;
                                                         user1.elo = getNewElo(
                                                             user1.elo,
                                                             user2.elo,
@@ -459,10 +476,18 @@ function answer(request, ws, userWebSockets) {
                                                             user1.elo,
                                                             1
                                                         );
+                                                        user2EloChange =
+                                                            user2.elo -
+                                                            user2EloChange;
+                                                        user1EloChange =
+                                                            user1.elo -
+                                                            user1EloChange;
                                                     }
                                                 } else {
                                                     user1.stats.duels.draws++;
                                                     user2.stats.duels.draws++;
+                                                    user1EloChange = user1.elo;
+                                                    user2EloChange = user2.elo;
                                                     user1.elo = getNewElo(
                                                         user1.elo,
                                                         user2.elo,
@@ -473,33 +498,57 @@ function answer(request, ws, userWebSockets) {
                                                         user1.elo,
                                                         0
                                                     );
+                                                    user1EloChange =
+                                                        user1.elo -
+                                                        user1EloChange;
+                                                    user2EloChange =
+                                                        user2.elo -
+                                                        user2EloChange;
                                                 }
+                                                match.eloChanges.set(
+                                                    user1._id,
+                                                    user1EloChange
+                                                );
+                                                match.eloChanges.set(
+                                                    user2._id,
+                                                    user2EloChange
+                                                );
                                                 user1.save().then(() => {
                                                     user2.save().then(() => {
                                                         match
-                                                            .populate(
-                                                                "users winner scores.user"
-                                                            )
-                                                            .then((match) => {
-                                                                // Send a message to both users
-                                                                const message =
-                                                                    {
-                                                                        message:
-                                                                            "OK",
-                                                                        type: "duel",
-                                                                        status: "ended",
-                                                                        match: match.toObject(), // Convert the Mongoose document to a plain JavaScript object
-                                                                    };
-                                                                userWs1.send(
-                                                                    JSON.stringify(
-                                                                        message
+                                                            .save()
+                                                            .then(() => {
+                                                                match
+                                                                    .populate(
+                                                                        "users winner scores.user"
                                                                     )
-                                                                );
-                                                                userWs2.send(
-                                                                    JSON.stringify(
-                                                                        message
-                                                                    )
-                                                                );
+                                                                    .then(
+                                                                        (
+                                                                            match
+                                                                        ) => {
+                                                                            // Send a message to both users
+                                                                            const message =
+                                                                                {
+                                                                                    message:
+                                                                                        "OK",
+                                                                                    type: "duel",
+                                                                                    status: "ended",
+                                                                                    match: match.toObject(), // Convert the Mongoose document to a plain JavaScript object
+                                                                                    eloChanges:
+                                                                                        match.eloChanges,
+                                                                                };
+                                                                            userWs1.send(
+                                                                                JSON.stringify(
+                                                                                    message
+                                                                                )
+                                                                            );
+                                                                            userWs2.send(
+                                                                                JSON.stringify(
+                                                                                    message
+                                                                                )
+                                                                            );
+                                                                        }
+                                                                    );
                                                             });
                                                     });
                                                 });

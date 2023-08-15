@@ -89,7 +89,11 @@
             moduleParams.matchObj.scores[1].user.displayName ||
                 moduleParams.matchObj.scores[1].user.username
         }}
-        : {{ moduleParams.matchObj.scores[1].score }}/10
+        : {{ moduleParams.matchObj.scores[1].score }}/10 <br /><br />
+        <span *ngIf="moduleParams.eloChange">
+            {{ moduleParams.eloChange > 0 ? "+" : ""
+            }}{{ moduleParams.eloChange }}&nbsp;🏆
+        </span>
     </div>
     <div>
         <button class="button-start" (click)="next()">Quitter le match</button>
