@@ -35,17 +35,11 @@ const matchSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    scores: [
-        {
-            user: {
-                type: mongoose.Schema.ObjectId,
-                ref: "User",
-            },
-            score: {
-                type: Number,
-            },
-        },
-    ],
+    scores: {
+        type: Map,
+        of: Number,
+        default: {},
+    },
     eloChanges: {
         type: Map,
         of: Number,

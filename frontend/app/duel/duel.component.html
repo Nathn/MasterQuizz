@@ -78,7 +78,8 @@
             matchEnded: status == 'ended',
             hideAnswers: !nextQuestionReady,
             matchObj: duelObj,
-            eloChange: eloChange
+            eloChange: eloChange,
+            scores: scores,
         }"
         (selectedAnswer)="selectedAnswer($event)"
         (validatedAnswer)="validatedAnswer($event)"

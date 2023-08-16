@@ -80,16 +80,19 @@
         Scores :
         <br />
         {{
-            moduleParams.matchObj.scores[0].user.displayName ||
-                moduleParams.matchObj.scores[0].user.username
+            moduleParams.matchObj.users[0].displayName ||
+                moduleParams.matchObj.users[0].username
         }}
-        : {{ moduleParams.matchObj.scores[0].score }}/10
+        :
+        {{ moduleParams.scores[moduleParams.matchObj.users[0]._id] }}/10
         <br />
         {{
-            moduleParams.matchObj.scores[1].user.displayName ||
-                moduleParams.matchObj.scores[1].user.username
+            moduleParams.matchObj.users[1].displayName ||
+                moduleParams.matchObj.users[1].username
         }}
-        : {{ moduleParams.matchObj.scores[1].score }}/10 <br /><br />
+        :
+        {{ moduleParams.scores[moduleParams.matchObj.users[1]._id] }}/10
+        <br /><br />
         <span *ngIf="moduleParams.eloChange">
             {{ moduleParams.eloChange > 0 ? "+" : ""
             }}{{ moduleParams.eloChange }}&nbsp;🏆

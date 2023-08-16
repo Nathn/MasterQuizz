@@ -177,6 +177,7 @@ function start(request, ws, userWebSockets) {
                             status: "ended",
                             match: match.toObject(),
                             eloChanges: match.eloChanges,
+                            scores: match.scores,
                         })
                     );
                     return;
@@ -382,12 +383,8 @@ function answer(request, ws, userWebSockets) {
                             if (match.currentQuestion === 9) {
                                 console.log(`[WS] Match ended`);
                                 // Calculate the score of both users
-                                for (let j = 0; j < 2; j++) {
-                                    match.scores.push({
-                                        user: null,
-                                        score: 0,
-                                    });
-                                }
+                                match.scores.set(match.users[0]._id, 0);
+                                match.scores.set(match.users[1]._id, 0);
                                 for (let i = 0; i < 10; i++) {
                                     for (let j = 0; j < 2; j++) {
                                         if (
@@ -395,25 +392,26 @@ function answer(request, ws, userWebSockets) {
                                                 match.answers[i][j].answerIndex
                                             ].correct
                                         ) {
-                                            match.scores[j].score++;
-                                            if (!match.scores[j].user) {
-                                                match.scores[j].user =
-                                                    match.answers[i][j].user;
-                                            }
+                                            match.scores.set(
+                                                match.answers[i][j].user._id,
+                                                match.scores.get(
+                                                    match.answers[i][j].user._id
+                                                ) + 1
+                                            );
                                         }
                                     }
                                 }
                                 // Set the winner
                                 if (
-                                    match.scores[0].score >
-                                    match.scores[1].score
+                                    match.scores.get(match.users[0]._id) >
+                                    match.scores.get(match.users[1]._id)
                                 ) {
-                                    match.winner = match.scores[0].user;
+                                    match.winner = match.users[0];
                                 } else if (
-                                    match.scores[0].score <
-                                    match.scores[1].score
+                                    match.scores.get(match.users[0]._id) <
+                                    match.scores.get(match.users[1]._id)
                                 ) {
-                                    match.winner = match.scores[1].user;
+                                    match.winner = match.users[1];
                                 } else {
                                     match.winner = null;
                                 }
@@ -536,6 +534,7 @@ function answer(request, ws, userWebSockets) {
                                                                                     match: match.toObject(), // Convert the Mongoose document to a plain JavaScript object
                                                                                     eloChanges:
                                                                                         match.eloChanges,
+                                                                                    scores: match.scores,
                                                                                 };
                                                                             userWs1.send(
                                                                                 JSON.stringify(

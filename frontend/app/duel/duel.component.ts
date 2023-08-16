@@ -48,6 +48,7 @@ export class DuelComponent implements OnInit, OnDestroy {
     hideAnswers: boolean = false;
 
     eloChange: any;
+    scores: any;
 
     constructor(
         private router: Router,
@@ -132,6 +133,7 @@ export class DuelComponent implements OnInit, OnDestroy {
                         this.currentQuestionIndex =
                             message.match.currentQuestion;
                         this.eloChange = message.eloChanges[this.userObj._id];
+                        this.scores = message.scores;
                     } else if (message.status == 'waitingforanswer') {
                         if (
                             message.match.currentQuestion ==
