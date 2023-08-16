@@ -27,13 +27,22 @@
     <h1>
         <span> C'est l'heure du duel ! </span>
         <span>
-            <img
-                src="{{ duelObj.users[0].avatarUrl }}"
-                alt="Avatar"
-                height="50"
-                width="50"
-                class="avatar"
-            />
+            <a
+                class="avatar-container"
+                href="/profile/{{ duelObj.users[0].username }}"
+                target="_blank"
+            >
+                <img
+                    src="{{ duelObj.users[0].avatarUrl }}"
+                    alt="Avatar"
+                    height="50"
+                    width="50"
+                    class="avatar"
+                />
+                <span class="elo">
+                    {{ duelObj.users[0].elo }}
+                </span>
+            </a>
             <div class="vs">
                 <a
                     href="/profile/{{ duelObj.users[0].username }}"
@@ -55,13 +64,22 @@
                     }}
                 </a>
             </div>
-            <img
-                src="{{ duelObj.users[1].avatarUrl }}"
-                alt="Avatar"
-                height="50"
-                width="50"
-                class="avatar"
-            />
+            <a
+                class="avatar-container"
+                href="/profile/{{ duelObj.users[1].username }}"
+                target="_blank"
+            >
+                <img
+                    src="{{ duelObj.users[1].avatarUrl }}"
+                    alt="Avatar"
+                    height="50"
+                    width="50"
+                    class="avatar"
+                />
+                <span class="elo">
+                    {{ duelObj.users[1].elo }}
+                </span>
+            </a>
         </span>
     </h1>
     <app-home-module
