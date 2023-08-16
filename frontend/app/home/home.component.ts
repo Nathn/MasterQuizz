@@ -10,6 +10,13 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+    user: any = localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user') || '')
+        : null;
+    userObj: any = localStorage.getItem('userObj')
+        ? JSON.parse(localStorage.getItem('userObj') || '')
+        : null;
+
     randomQuestion: any;
     rankedUsers: any = [];
 

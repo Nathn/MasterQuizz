@@ -111,6 +111,9 @@
         <a
             *ngFor="let user of ranking; let i = index"
             href="/profile/{{ user.username }}"
+            [ngClass]="{
+                'rankingmodule-is-current-user': user._id == moduleParams.userId
+            }"
         >
             <div class="rankingmodule-slide-ranking-position">{{ i + 1 }}</div>
             <div class="rankingmodule-slide-ranking-name">

@@ -17,5 +17,8 @@
         moduleTitle="Classement Général"
         moduleType="ranking"
         [ranking]="rankedUsers"
+        [moduleParams]="{
+            userId: userObj._id,
+        }"
     ></app-home-module>
 </div>
