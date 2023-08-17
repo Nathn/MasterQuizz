@@ -18,7 +18,7 @@
         moduleType="ranking"
         [ranking]="rankedUsers"
         [moduleParams]="{
-            userId: userObj._id,
+            userId: userObj ? userObj._id : null,
         }"
     ></app-home-module>
 </div>

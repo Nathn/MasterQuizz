@@ -11,11 +11,15 @@
         (selectedAnswer)="selectAnswer($event)"
     ></app-question>
     <div>
-        <button class="button-start" *ngIf="answerValidated" (click)="next()">
+        <button
+            class="button-start transparent"
+            *ngIf="answerValidated"
+            (click)="next()"
+        >
             Une autre !
         </button>
         <button
-            class="button-start"
+            class="button-start transparent"
             *ngIf="!answerValidated"
             (click)="validateAnswer()"
             [disabled]="selectedAnswerIndex == -1"
