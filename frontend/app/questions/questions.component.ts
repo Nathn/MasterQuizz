@@ -282,13 +282,13 @@ export class QuestionsComponent {
                 user: this.userObj._id,
             })
             .subscribe((response: any) => {
+                this.editSaved = true;
+                this.isRequestLoading = false;
                 if (response.message != 'OK') {
                     alert(response.message);
                 } else {
                     alert('Question modifiée !');
                 }
-                this.editSaved = true;
-                this.isRequestLoading = false;
             });
     }
 

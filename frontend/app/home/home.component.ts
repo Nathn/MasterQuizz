@@ -16,16 +16,24 @@ export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
+    randomQuestion: any = localStorage.getItem('randomQuestion')
+        ? JSON.parse(localStorage.getItem('randomQuestion') || '')
+        : null;
 
-    randomQuestion: any;
     rankedUsers: any = [];
 
     constructor(private http: HttpClient) {
-        this.http
-            .post(environment.apiUrl + 'getRandomQuestion', {})
-            .subscribe((res: any) => {
-                this.randomQuestion = res.question;
-            });
+        if (!this.randomQuestion) {
+            this.http
+                .post(environment.apiUrl + 'getRandomQuestion', {})
+                .subscribe((res: any) => {
+                    this.randomQuestion = res.question;
+                    localStorage.setItem(
+                        'randomQuestion',
+                        JSON.stringify(res.question)
+                    );
+                });
+        }
         this.http
             .post(environment.apiUrl + 'getTopTenUsersByElo', {})
             .subscribe((res: any) => {
@@ -39,6 +47,10 @@ export class HomeComponent {
             .post(environment.apiUrl + 'getRandomQuestion', {})
             .subscribe((res: any) => {
                 this.randomQuestion = res.question;
+                localStorage.setItem(
+                    'randomQuestion',
+                    JSON.stringify(res.question)
+                );
             });
     }
 }
