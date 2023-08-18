@@ -78,7 +78,10 @@ export class QuestionsComponent {
         private ar: ActivatedRoute,
         private http: HttpClient
     ) {
-        if (!this.user) this.router.navigate(['']);
+        if (!this.user)
+            this.router.navigate([`/login`], {
+                queryParams: { redirectUrl: router.url },
+            });
         this.http
             .post(environment.apiUrl + 'getUserFromEmail', {
                 email: this.user.email,

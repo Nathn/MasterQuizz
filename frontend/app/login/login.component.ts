@@ -1,5 +1,5 @@
 import { Component, NgZone, type OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -35,7 +35,10 @@ export class LoginComponent implements OnInit {
 
     isLoading: boolean = false;
 
+    redirectUrl: string = '';
+
     constructor(
+        private ar: ActivatedRoute,
         private router: Router,
         private http: HttpClient,
         private zone: NgZone
@@ -43,14 +46,44 @@ export class LoginComponent implements OnInit {
         let app = initializeApp(environment.firebaseConfig);
         this.auth = getAuth(app);
         this.auth.languageCode = 'fr';
+        this.redirectUrl = this.ar.snapshot.queryParams['redirectUrl'] || '';
         onAuthStateChanged(this.auth, (user) => {
-            if (user) this.router.navigate(['']);
+            if (user) {
+                localStorage.setItem('user', JSON.stringify(user));
+                this.isLoading = true;
+                this.getUserInfo(user.email);
+            } else {
+                localStorage.removeItem('user');
+                localStorage.removeItem('userObj');
+            }
+            this.isLoading = false;
         });
     }
 
     ngOnInit(): void {
         // gives focus to the first input
         document.getElementById('username')?.focus();
+    }
+
+    getUserInfo(email: string | null) {
+        this.http
+            .post(environment.apiUrl + 'getUserFromEmail', {
+                email: email,
+            })
+            .subscribe((response: any) => {
+                if (response.message != 'OK') {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('userObj');
+                    this.isLoading = false;
+                } else {
+                    localStorage.setItem(
+                        'userObj',
+                        JSON.stringify(response.user)
+                    );
+                    this.isLoading = false;
+                    this.router.navigate([this.redirectUrl]);
+                }
+            });
     }
 
     login() {
@@ -70,7 +103,7 @@ export class LoginComponent implements OnInit {
                     .then((userCredential) => {
                         // Signed in
                         const user = userCredential.user;
-                        this.router.navigate(['']);
+                        this.router.navigate([this.redirectUrl]);
                     })
                     .catch((error) => {
                         const errorCode = error.code;
@@ -116,7 +149,7 @@ export class LoginComponent implements OnInit {
                     return;
                 } else {
                     this.isLoading = false;
-                    this.router.navigate(['']);
+                    this.router.navigate([this.redirectUrl]);
                 }
             });
     }

@@ -37,6 +37,8 @@ export class DuelComponent implements OnInit, OnDestroy {
     faTrash = faTrash;
     faPlus = faPlus;
 
+    auth: any;
+
     isRequestLoading: boolean = true;
 
     status: string = '';
@@ -56,11 +58,13 @@ export class DuelComponent implements OnInit, OnDestroy {
         private http: HttpClient,
         private ws: WebSocketService
     ) {
-        if (!this.user) {
-            this.router.navigate(['/login']);
+        if (!this.user || !this.userObj) {
+            this.router.navigate([`/login`], {
+                queryParams: { redirectUrl: this.router.url },
+            });
             return;
         }
-        ar.params.subscribe((params) => {
+        this.ar.params.subscribe((params) => {
             if (params['id']) {
                 this.duelId = params['id'];
                 this.status = "Match trouvé ! En attente de l'adversaire...";

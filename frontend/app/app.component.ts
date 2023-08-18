@@ -131,11 +131,15 @@ export class AppComponent implements OnInit {
     }
 
     navigateToLogin() {
-        this.router.navigate(['login']);
+        this.router.navigate([`/login`], {
+            queryParams: { redirectUrl: this.router.url },
+        });
     }
 
     navigateToRegister() {
-        this.router.navigate(['register']);
+        this.router.navigate(['register'], {
+            queryParams: { redirectUrl: this.router.url },
+        });
     }
 
     logout() {
