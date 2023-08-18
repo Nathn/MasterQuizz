@@ -36,6 +36,17 @@ h1 {
     color: #1d1735;
 }
 
+.qdj-difficulty {
+    margin: 0px auto 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .active {
+        color: #ffb921;
+    }
+}
+
 .photo-answer {
     margin-bottom: 0;
     display: flex;
