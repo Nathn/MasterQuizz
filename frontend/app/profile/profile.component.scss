@@ -1,5 +1,4 @@
-@import '../../styles/variables';
-
+@import "../../styles/variables";
 
 .profile {
     display: flex;
@@ -12,5 +11,17 @@
     h1 {
         float: left;
         font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+
+        input {
+            font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 24px;
+            width: 130px;
+            padding: 0 5px !important;
+            margin: 0 !important;
+        }
+
+        fa-icon {
+            float: right;
+        }
     }
 }

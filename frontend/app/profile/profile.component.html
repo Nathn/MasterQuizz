@@ -11,7 +11,25 @@
         *ngIf="displayedUser.avatarUrl"
     />
     <h1>
-        {{ displayedUser.displayName || displayedUser.username }}
+        <span *ngIf="!usernameEdit">{{
+            displayedUser.displayName || displayedUser.username
+        }}</span>
+        <input
+            *ngIf="usernameEdit"
+            type="text"
+            [(ngModel)]="tempUsername"
+            (keyup.enter)="editUsername()"
+        />
+        <fa-icon
+            *ngIf="displayedUser._id === userObj._id && !usernameEdit"
+            [icon]="faEdit"
+            (click)="enableEditUsername()"
+        ></fa-icon>
+        <fa-icon
+            *ngIf="displayedUser._id === userObj._id && usernameEdit"
+            [icon]="faCheck"
+            (click)="editUsername()"
+        ></fa-icon>
     </h1>
     <span> Inscrit le {{ displayedUser.created | date : "dd/MM/yyyy" }} </span>
     <span> {{ displayedUser.elo }}&nbsp;🏆 </span>

@@ -231,4 +231,74 @@ router.post("/getUserFromUsername", async (req, res) => {
     }
 });
 
+router.post("/editUsername", async (req, res) => {
+    /*
+    This route is used to edit the username of a user.
+    */
+    try {
+        console.log("[SERVER] Editing username");
+        // Check if the username is valid
+        if (
+            !req.body.username ||
+            !req.body.username.match(/^[a-zA-Z0-9_]{1,18}$/)
+        ) {
+            return res.status(200).json({
+                message:
+                    "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores",
+            });
+        }
+        // Check if the username is already taken
+        let userTest = await User.findOne({
+            username: req.body.username,
+        });
+        if (userTest && userTest._id.toString() !== req.body.userId) {
+            return res.status(200).json({
+                message: "Le pseudo n'est pas disponible.",
+            });
+        }
+        console.log(
+            `[SERVER] Editing username of user ${req.body.userId} to ${req.body.username}`
+        );
+        await User.findOneAndUpdate(
+            {
+                _id: req.body.userId,
+            },
+            {
+                username: req.body.username.toLowerCase(),
+                displayName: req.body.username,
+            }
+        )
+            .exec()
+            .then((user) => {
+                if (!user) {
+                    console.log(
+                        `[SERVER] User not found while editing username`
+                    );
+                    res.status(200).json({
+                        message: "Utilisateur introuvable.",
+                    });
+                } else {
+                    console.log(`[SERVER] Username edited: ${user.username}`);
+                    res.status(200).json({
+                        message: "OK",
+                        user,
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while editing username: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error",
+                });
+            });
+    } catch (err) {
+        console.log(`[SERVER] An error occured while editing username: ${err}`);
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 module.exports = router;
