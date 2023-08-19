@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
@@ -16,11 +18,16 @@ export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
+    longModuleShown: boolean = localStorage.getItem('longModuleShown')
+        ? localStorage.getItem('longModuleShown') == '1'
+        : true;
     randomQuestion: any = localStorage.getItem('randomQuestion')
         ? JSON.parse(localStorage.getItem('randomQuestion') || '')
         : null;
 
     rankedUsers: any = [];
+
+    faCircleXmark = faCircleXmark;
 
     constructor(private http: HttpClient) {
         if (!this.randomQuestion) {
@@ -52,5 +59,10 @@ export class HomeComponent {
                     JSON.stringify(res.question)
                 );
             });
+    }
+
+    closeLongModule() {
+        this.longModuleShown = false;
+        localStorage.setItem('longModuleShown', '0');
     }
 }

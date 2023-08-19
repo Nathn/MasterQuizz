@@ -6,7 +6,18 @@ import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+    FontAwesomeModule,
+    FaIconLibrary,
+} from '@fortawesome/angular-fontawesome';
+
+import {
+    faSpinner,
+    faCheck,
+    faTimes,
+    faCircleXmark,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -43,4 +54,8 @@ import { AboutComponent } from './about/about.component';
     providers: [],
     bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+    constructor(library: FaIconLibrary) {
+        library.addIcons(faSpinner, faCheck, faTimes, faCircleXmark, faXmark);
+    }
+}

@@ -102,7 +102,7 @@ export class LoginComponent implements OnInit {
                 signInWithEmailAndPassword(this.auth, this.email, this.password)
                     .then((userCredential) => {
                         // Signed in
-                        const user = userCredential.user;
+                        localStorage.setItem('longModuleShown', '1'); // home screen closeable module
                         this.router.navigate([this.redirectUrl]);
                     })
                     .catch((error) => {
@@ -148,6 +148,7 @@ export class LoginComponent implements OnInit {
                     this.isLoading = false;
                     return;
                 } else {
+                    localStorage.setItem('longModuleShown', '1'); // home screen closeable module
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 }
