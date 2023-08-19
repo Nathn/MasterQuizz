@@ -4,8 +4,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 
-import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
-
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
@@ -26,8 +24,6 @@ export class HomeComponent {
         : null;
 
     rankedUsers: any = [];
-
-    faCircleXmark = faCircleXmark;
 
     constructor(private http: HttpClient) {
         if (!this.randomQuestion) {
