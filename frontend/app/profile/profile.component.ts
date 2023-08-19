@@ -91,7 +91,7 @@ export class ProfileComponent {
                     ) {
                         window.location.href =
                             '/profile/' + this.tempUsername.toLowerCase();
-                    } else {
+                    } else if (oldDisplayName != this.userObj.displayName) {
                         window.location.reload();
                     }
                 } else {
