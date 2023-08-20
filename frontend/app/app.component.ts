@@ -2,16 +2,7 @@ import { Component, type OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import {
-    faSpinner,
-    faBars,
-    faSignInAlt,
-    faUserPlus,
-    faSignOutAlt,
-} from '@fortawesome/free-solid-svg-icons';
-
-import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { AuthService } from './auth.service';
 
 import { environment } from '../environments/environment';
 
@@ -25,9 +16,6 @@ export class AppComponent implements OnInit {
 
     auth: any;
 
-    user: any = localStorage.getItem('user')
-        ? JSON.parse(localStorage.getItem('user') || '')
-        : null;
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
@@ -36,73 +24,32 @@ export class AppComponent implements OnInit {
     menuLinks: any = [];
     retries: number = 0;
 
-    faSpinner = faSpinner;
-    faBars = faBars;
-    faSignInAlt = faSignInAlt;
-    faUserPlus = faUserPlus;
-    faSignOutAlt = faSignOutAlt;
-
-    constructor(private router: Router, private http: HttpClient) {
-        if (this.user) {
-            this.getUserInfo();
-        }
-        initializeApp(environment.firebaseConfig);
-        this.auth = getAuth();
-        onAuthStateChanged(this.auth, (user) => {
-            if (user) {
-                this.user = user;
-                localStorage.setItem('user', JSON.stringify(user));
-                this.isLoading = true;
-                this.getUserInfo();
-            } else {
-                this.user = null;
-                this.userObj = null;
-                localStorage.removeItem('user');
-                localStorage.removeItem('userObj');
-                this.getMenuLinks();
+    constructor(
+        private router: Router,
+        private http: HttpClient,
+        private authService: AuthService
+    ) {
+        this.authService.initAuth();
+        this.authService.onAuthStateChanged(
+            this.authService.getAuth(),
+            async (user) => {
+                if (user) {
+                    this.authService
+                        .getCurrentUserInfo()
+                        .subscribe((userObj: any) => {
+                            this.userObj = userObj ? userObj : null;
+                            this.getMenuLinks();
+                        });
+                } else {
+                    this.userObj = null;
+                    this.getMenuLinks();
+                }
             }
-            this.isLoading = false;
-        });
+        );
     }
 
     ngOnInit() {
         this.getMenuLinks();
-    }
-
-    getUserInfo() {
-        this.http
-            .post(environment.apiUrl + 'getUserFromEmail', {
-                email: this.user.email,
-            })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    this.userObj = null;
-                    if (
-                        response.message.startsWith(
-                            'Utilisateur introuvable'
-                        ) &&
-                        this.retries < 10
-                    ) {
-                        this.retries++;
-                        this.isLoading = true;
-                        this.getUserInfo(); // try again
-                    } else {
-                        this.user = null;
-                        this.userObj = null;
-                        localStorage.removeItem('user');
-                        localStorage.removeItem('userObj');
-                        this.isLoading = false;
-                    }
-                } else {
-                    this.userObj = response.user;
-                    localStorage.setItem(
-                        'userObj',
-                        JSON.stringify(response.user)
-                    );
-                    this.getMenuLinks();
-                    this.isLoading = false;
-                }
-            });
     }
 
     getMenuLinks() {
@@ -143,6 +90,6 @@ export class AppComponent implements OnInit {
     }
 
     logout() {
-        this.auth.signOut();
+        this.authService.logout();
     }
 }

@@ -1,6 +1,7 @@
 <form *ngIf="isAuthLoading">
     <div>
-        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+        >&nbsp;Chargement...
     </div>
 </form>
 <form
@@ -132,7 +133,7 @@
     >
         <span *ngIf="!isRequestLoading">Enregistrer</span>
         <span *ngIf="isRequestLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
         </span>
     </button>
@@ -148,7 +149,8 @@
 </form>
 <div *ngIf="!isAuthLoading && action == 'manage'" class="manage-container">
     <div *ngIf="isRequestLoading">
-        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+        >&nbsp;Chargement...
     </div>
     <div *ngIf="!isRequestLoading" class="manage-container-subclass">
         <h2>Gestion des questions</h2>

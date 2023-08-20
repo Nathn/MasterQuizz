@@ -1,6 +1,7 @@
 <div *ngIf="isRequestLoading" class="profile">
     <div>
-        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>&nbsp;Chargement...
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+        >&nbsp;Chargement...
     </div>
 </div>
 <div *ngIf="!isRequestLoading && displayedUser" class="profile">

@@ -10,9 +10,9 @@
                 />
                 <h1>MasterQuizz</h1>
             </a>
-            <button class="menu-icon" *ngIf="user && !isLoading">
+            <button class="menu-icon" *ngIf="userObj">
                 <fa-icon
-                    [icon]="faBars"
+                    [icon]="['fas', 'bars']"
                     (click)="showMenu = !showMenu"
                 ></fa-icon>
             </button>
@@ -24,17 +24,17 @@
                 </li>
             </ul>
         </div>
-        <div class="buttons" *ngIf="!user && !isLoading">
+        <div class="buttons" *ngIf="!userObj">
             <button class="sign-in" (click)="navigateToLogin()">
-                <fa-icon [icon]="faSignInAlt"></fa-icon>
+                <fa-icon [icon]="['fas', 'sign-in-alt']"></fa-icon>
                 <span>Connection</span>
             </button>
             <button class="sign-up" (click)="navigateToRegister()">
-                <fa-icon [icon]="faUserPlus"></fa-icon>
+                <fa-icon [icon]="['fas', 'user-plus']"></fa-icon>
                 <span>Inscription</span>
             </button>
         </div>
-        <div class="buttons" *ngIf="user && userObj && !isLoading">
+        <div class="buttons" *ngIf="userObj">
             <a class="user-info" href="/profile/{{ userObj.username }}">
                 <img
                     class="avatar"
@@ -53,19 +53,12 @@
                 <span> {{ userObj.elo || "0" }}&nbsp;🏆 </span>
             </a>
             <button class="sign-out" (click)="logout()">
-                <fa-icon [icon]="faSignOutAlt"></fa-icon>
+                <fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon>
                 <span>Déconnection</span>
             </button>
         </div>
-        <div class="buttons" *ngIf="isLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
-        </div>
     </div>
-    <ul
-        class="menu-mobile"
-        [attr.aria-expanded]="showMenu"
-        *ngIf="user && userObj && !isLoading"
-    >
+    <ul class="menu-mobile" [attr.aria-expanded]="showMenu" *ngIf="userObj">
         <!-- displayed only on mobile -->
         <li *ngFor="let link of menuLinks">
             <a href="{{ link.path }}">{{ link.text }}</a>

@@ -28,9 +28,12 @@
         class="submit-button"
         [disabled]="!registerForm.valid || isLoading"
     >
-        <span *ngIf="!isLoading">Se connecter</span>
+        <span *ngIf="!isLoading"
+            ><fa-icon [icon]="['fas', 'sign-in-alt']"></fa-icon>Se
+            connecter</span
+        >
         <span *ngIf="isLoading">
-            <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
         </span>
     </button>
@@ -42,6 +45,6 @@
         class="google-button"
         (click)="loginWithGoogle()"
     >
-        <fa-icon [icon]="faGoogle"></fa-icon>Se connecter avec Google
+        <fa-icon [icon]="['fab', 'google']"></fa-icon>Se connecter avec Google
     </button>
 </form>

@@ -1,5 +1,5 @@
 <div class="main row" *ngIf="isRequestLoading">
-    <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+    <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
     Chargement...
 </div>
 <div class="main" *ngIf="(!duelId || !duelObj) && !isRequestLoading">
@@ -11,7 +11,7 @@
         (click)="cancelSearch()"
         *ngIf="status && !duelId && !startedDuelId"
     >
-        <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
         Annuler
     </button>
     <button

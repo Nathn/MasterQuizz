@@ -2,17 +2,9 @@ import { Component, type OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-
 import { initializeApp } from 'firebase/app';
-import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    onAuthStateChanged,
-    signInWithPopup,
-    GoogleAuthProvider,
-} from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
 
@@ -22,15 +14,13 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
+    userObj: any = localStorage.getItem('userObj')
+        ? JSON.parse(localStorage.getItem('userObj') || '')
+        : null;
+
     email: string = '';
     username: string = '';
     password: string = '';
-
-    auth: any;
-    googleProvider: any = new GoogleAuthProvider();
-
-    faSpinner = faSpinner;
-    faGoogle = faGoogle;
 
     isLoading: boolean = false;
 
@@ -40,23 +30,13 @@ export class RegisterComponent implements OnInit {
         private ar: ActivatedRoute,
         private router: Router,
         private http: HttpClient,
-        private zone: NgZone
+        private zone: NgZone,
+        private authService: AuthService
     ) {
-        let app = initializeApp(environment.firebaseConfig);
-        this.auth = getAuth(app);
-        this.auth.languageCode = 'fr';
         this.redirectUrl = this.ar.snapshot.queryParams['redirectUrl'] || '';
-        onAuthStateChanged(this.auth, (user) => {
-            if (user) {
-                localStorage.setItem('user', JSON.stringify(user));
-                this.isLoading = true;
-                this.getUserInfo(user.email);
-            } else {
-                localStorage.removeItem('user');
-                localStorage.removeItem('userObj');
-            }
-            this.isLoading = false;
-        });
+        if (this.userObj) {
+            this.router.navigate([this.redirectUrl]);
+        }
     }
 
     ngOnInit(): void {
@@ -90,6 +70,7 @@ export class RegisterComponent implements OnInit {
         // check password length
         if (this.password.length < 6) {
             alert('Le mot de passe doit contenir au moins 6 caractères.');
+            this.isLoading = false;
             return;
         }
         // check if all the info is valid through api
@@ -105,7 +86,7 @@ export class RegisterComponent implements OnInit {
                     return;
                 }
                 createUserWithEmailAndPassword(
-                    this.auth,
+                    this.authService.getAuth(),
                     this.email,
                     this.password
                 )
@@ -151,7 +132,10 @@ export class RegisterComponent implements OnInit {
 
     enableRegisterWithGoogle() {
         this.isLoading = true;
-        signInWithPopup(this.auth, this.googleProvider)
+        signInWithPopup(
+            this.authService.getAuth(),
+            this.authService.getGoogleProvider()
+        )
             .then((result) => {
                 // store result
                 this.zone.run(() => this.registerWithGoogle(result.user));
