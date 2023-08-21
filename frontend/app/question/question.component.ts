@@ -1,12 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import {
-    faSpinner,
-    faCheck,
-    faTimes,
-    faStar,
-} from '@fortawesome/free-solid-svg-icons';
-
 @Component({
     selector: 'app-question',
     templateUrl: './question.component.html',
@@ -19,11 +12,6 @@ export class QuestionComponent {
     @Input('questionOptions') questionOptions: any = {} as any;
 
     @Output() selectedAnswer = new EventEmitter();
-
-    faSpinner = faSpinner;
-    faCheck = faCheck;
-    faTimes = faTimes;
-    faStar = faStar;
 
     constructor() {}
 

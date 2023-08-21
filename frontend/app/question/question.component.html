@@ -9,7 +9,7 @@
 >
     <div *ngFor="let i of [1, 2, 3, 4, 5]" class="difficulty-icon">
         <fa-icon
-            [icon]="faStar"
+            [icon]="['fas', 'star']"
             [class]="i <= question.difficulty ? 'active' : ''"
         ></fa-icon>
     </div>
@@ -50,7 +50,9 @@
                     *ngIf="!questionOptions.hideAnswers"
                 >
                     <fa-icon
-                        [icon]="answer.correct ? faCheck : faTimes"
+                        [icon]="
+                            answer.correct ? ['fas', 'check'] : ['fas', 'times']
+                        "
                     ></fa-icon>
                 </span>
                 {{ answer.answer }}

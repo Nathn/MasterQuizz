@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+
+import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
 
@@ -10,9 +11,6 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-    user: any = localStorage.getItem('user')
-        ? JSON.parse(localStorage.getItem('user') || '')
-        : null;
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
@@ -25,7 +23,7 @@ export class HomeComponent {
 
     rankedUsers: any = [];
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private authService: AuthService) {
         if (!this.randomQuestion) {
             this.http
                 .post(environment.apiUrl + 'getRandomQuestion', {})
@@ -42,6 +40,20 @@ export class HomeComponent {
             .subscribe((res: any) => {
                 if (res.users) this.rankedUsers = res.users.slice(0, 7);
             });
+        this.authService.onAuthStateChanged(
+            this.authService.getAuth(),
+            async (user) => {
+                if (user) {
+                    this.authService
+                        .getCurrentUserInfo()
+                        .subscribe((userObj: any) => {
+                            this.userObj = userObj ? userObj : null;
+                        });
+                } else {
+                    this.userObj = null;
+                }
+            }
+        );
     }
 
     nextQuestion(event: any) {

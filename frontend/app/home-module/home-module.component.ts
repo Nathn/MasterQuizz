@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { faSpinner, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-
 @Component({
     selector: 'app-home-module',
     templateUrl: './home-module.component.html',
@@ -17,10 +15,6 @@ export class HomeModuleComponent {
     @Output() selectedAnswer = new EventEmitter();
     @Output() validatedAnswer = new EventEmitter();
     @Output() nextQuestion = new EventEmitter();
-
-    faSpinner = faSpinner;
-    faCheck = faCheck;
-    faTimes = faTimes;
 
     selectedAnswerIndex: number = -1;
     answerValidated: boolean = false;

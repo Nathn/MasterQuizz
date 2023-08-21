@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { faSpinner, faEdit, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
 
@@ -12,9 +12,6 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
-    user: any = localStorage.getItem('user')
-        ? JSON.parse(localStorage.getItem('user') || '')
-        : null;
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
@@ -22,18 +19,29 @@ export class ProfileComponent {
 
     isRequestLoading: boolean = true;
 
-    faSpinner = faSpinner;
-    faEdit = faEdit;
-    faCheck = faCheck;
-
     tempUsername: string = '';
     usernameEdit: boolean = false;
 
     constructor(
         private router: Router,
         private ar: ActivatedRoute,
-        private http: HttpClient
+        private http: HttpClient,
+        private authService: AuthService
     ) {
+        this.authService.onAuthStateChanged(
+            this.authService.getAuth(),
+            async (user) => {
+                if (user) {
+                    this.authService
+                        .getCurrentUserInfo()
+                        .subscribe((userObj: any) => {
+                            this.userObj = userObj ? userObj : null;
+                        });
+                } else {
+                    this.userObj = null;
+                }
+            }
+        );
         this.ar.params.subscribe((params) => {
             this.getUser(params['username']);
         });

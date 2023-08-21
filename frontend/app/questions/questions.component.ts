@@ -2,12 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import {
-    faSpinner,
-    faEdit,
-    faTrash,
-    faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
 
@@ -17,19 +12,10 @@ import { environment } from '../../environments/environment';
     styleUrls: ['./questions.component.scss'],
 })
 export class QuestionsComponent {
-    user: any = localStorage.getItem('user')
-        ? JSON.parse(localStorage.getItem('user') || '')
+    userObj: any = localStorage.getItem('userObj')
+        ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
-    userObj: any;
     action: string = '';
-
-    auth: any;
-    db: any;
-
-    faSpinner = faSpinner;
-    faEdit = faEdit;
-    faTrash = faTrash;
-    faPlus = faPlus;
 
     isAuthLoading: boolean = true;
     isRequestLoading: boolean = false;
@@ -76,49 +62,63 @@ export class QuestionsComponent {
     constructor(
         private router: Router,
         private ar: ActivatedRoute,
-        private http: HttpClient
+        private http: HttpClient,
+        private authService: AuthService
     ) {
-        if (!this.user)
+        if (!this.authService.isAuthenticated()) {
             this.router.navigate([`/login`], {
-                queryParams: { redirectUrl: router.url },
+                queryParams: { redirectUrl: this.router.url },
             });
+            return;
+        } else {
+            this.authService.getCurrentUserInfo().subscribe((userObj: any) => {
+                this.userObj = userObj ? userObj : null; // Update userObj (in case user just logged in)
+                if (!this.userObj) {
+                    this.router.navigate([`/login`], {
+                        queryParams: { redirectUrl: this.router.url },
+                    });
+                    return;
+                }
+                if (!this.userObj.admin) {
+                    this.router.navigate(['']);
+                    return;
+                }
+                this.authService.onAuthStateChanged(
+                    this.authService.getAuth(),
+                    async (user) => {
+                        if (user) {
+                            if (!this.userObj.admin) {
+                                this.router.navigate(['']);
+                                return;
+                            }
+                        } else {
+                            this.router.navigate([`/login`], {
+                                queryParams: { redirectUrl: this.router.url },
+                            });
+                            return;
+                        }
+                    }
+                );
+            });
+        }
         this.http
-            .post(environment.apiUrl + 'getUserFromEmail', {
-                email: this.user.email,
-            })
+            .post(environment.apiUrl + 'getAllThemes', {})
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
                     alert(response.message);
                 } else {
-                    this.userObj = response.user;
-                    if (!this.userObj.admin) this.router.navigate(['']);
-                    this.http
-                        .post(environment.apiUrl + 'getAllThemes', {})
-                        .subscribe((response: any) => {
-                            if (response.message != 'OK') {
-                                alert(response.message);
-                            } else {
-                                this.themes = response.themes;
-                                ar.params.subscribe((params) => {
-                                    this.action = params['action'];
-                                    if (
-                                        !this.validActions.includes(this.action)
-                                    )
-                                        this.router.navigate([
-                                            '/questions/manage',
-                                        ]);
-                                    if (this.action == 'manage')
-                                        this.getQuestions();
-                                    if (this.action == 'edit') {
-                                        this.questionEditedId = params['id'];
-                                        this.getQuestionInfo(
-                                            this.questionEditedId
-                                        );
-                                    }
-                                    this.isAuthLoading = false;
-                                });
-                            }
-                        });
+                    this.themes = response.themes;
+                    this.ar.params.subscribe((params) => {
+                        this.action = params['action'];
+                        if (!this.validActions.includes(this.action))
+                            this.router.navigate(['/questions/manage']);
+                        if (this.action == 'manage') this.getQuestions();
+                        if (this.action == 'edit') {
+                            this.questionEditedId = params['id'];
+                            this.getQuestionInfo(this.questionEditedId);
+                        }
+                        this.isAuthLoading = false;
+                    });
                 }
             });
     }

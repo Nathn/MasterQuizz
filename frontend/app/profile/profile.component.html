@@ -23,12 +23,12 @@
         />
         <fa-icon
             *ngIf="displayedUser._id === userObj._id && !usernameEdit"
-            [icon]="faEdit"
+            [icon]="['fas', 'edit']"
             (click)="enableEditUsername()"
         ></fa-icon>
         <fa-icon
             *ngIf="displayedUser._id === userObj._id && usernameEdit"
-            [icon]="faCheck"
+            [icon]="['fas', 'check']"
             (click)="editUsername()"
         ></fa-icon>
     </h1>
