@@ -1,16 +1,10 @@
 import { Component, type OnDestroy, type OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Subscription, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 import { WebSocketService } from '../websocket.service';
-
-import {
-    faSpinner,
-    faEdit,
-    faTrash,
-    faPlus,
-} from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
 
@@ -19,10 +13,7 @@ import { environment } from '../../environments/environment';
     templateUrl: './duel.component.html',
     styleUrls: ['./duel.component.scss'],
 })
-export class DuelComponent implements OnInit, OnDestroy {
-    user: any = localStorage.getItem('user')
-        ? JSON.parse(localStorage.getItem('user') || '')
-        : null;
+export class DuelComponent implements OnDestroy {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
@@ -31,13 +22,6 @@ export class DuelComponent implements OnInit, OnDestroy {
     startedDuelId: string = '';
 
     destroyed$ = new Subject();
-
-    faSpinner = faSpinner;
-    faEdit = faEdit;
-    faTrash = faTrash;
-    faPlus = faPlus;
-
-    auth: any;
 
     isRequestLoading: boolean = true;
 
@@ -56,59 +40,64 @@ export class DuelComponent implements OnInit, OnDestroy {
         private router: Router,
         private ar: ActivatedRoute,
         private http: HttpClient,
-        private ws: WebSocketService
+        private ws: WebSocketService,
+        private authService: AuthService
     ) {
-        if (!this.user || !this.userObj) {
+        if (!this.authService.isAuthenticated()) {
             this.router.navigate([`/login`], {
                 queryParams: { redirectUrl: this.router.url },
             });
             return;
-        }
-        this.ar.params.subscribe((params) => {
-            if (params['id']) {
-                this.duelId = params['id'];
-                this.status = "Match trouvé ! En attente de l'adversaire...";
-            }
-            this.http
-                .post(environment.apiUrl + 'getUserFromEmail', {
-                    email: this.user.email,
-                })
-                .subscribe((response: any) => {
-                    if (response.message != 'OK') {
-                        alert(response.message);
-                    } else {
-                        this.userObj = response.user;
-                        if (!this.userObj) this.router.navigate(['']);
-                        if (!this.duelId) {
-                            this.http
-                                .post(
-                                    environment.apiUrl +
-                                        'getCurrentDuelFromUser',
-                                    {
-                                        user: this.userObj._id,
-                                    }
-                                )
-                                .subscribe((response: any) => {
-                                    if (response.message != 'OK') {
-                                        alert(response.message);
-                                    } else {
-                                        if (response.match) {
-                                            this.startedDuelId =
-                                                response.match._id;
-                                            this.status = 'Match en cours...';
-                                        }
-                                        this.isRequestLoading = false;
-                                    }
-                                });
-                        } else {
-                            this.isRequestLoading = false;
+        } else {
+            this.authService.getCurrentUserInfo().subscribe((userObj: any) => {
+                this.userObj = userObj ? userObj : null; // Update userObj (in case user just logged in)
+                this.authService.onAuthStateChanged(
+                    this.authService.getAuth(),
+                    async (user) => {
+                        if (!user) {
+                            this.router.navigate([`/login`], {
+                                queryParams: { redirectUrl: this.router.url },
+                            });
+                            return;
                         }
                     }
+                );
+                this.ar.params.subscribe((params) => {
+                    if (params['id']) {
+                        this.duelId = params['id'];
+                        this.status =
+                            "Match trouvé ! En attente de l'adversaire...";
+                    }
+                    if (!this.duelId) {
+                        this.http
+                            .post(
+                                environment.apiUrl + 'getCurrentDuelFromUser',
+                                {
+                                    user: this.userObj._id,
+                                }
+                            )
+                            .subscribe((response: any) => {
+                                if (response.message != 'OK') {
+                                    alert(response.message);
+                                } else {
+                                    if (response.match) {
+                                        this.startedDuelId = response.match._id;
+                                        this.status = 'Match en cours...';
+                                    }
+                                    this.isRequestLoading = false;
+                                    this.initDuel();
+                                }
+                            });
+                    } else {
+                        this.isRequestLoading = false;
+                        this.initDuel();
+                    }
                 });
-        });
+            });
+        }
     }
 
-    ngOnInit(): void {
+    initDuel(): void {
         this.ws
             .connect()
             .pipe(takeUntil(this.destroyed$))
@@ -155,9 +144,7 @@ export class DuelComponent implements OnInit, OnDestroy {
                     }
                 }
             });
-        if (this.duelId) {
-            this.startMatch();
-        }
+        if (this.duelId) this.startMatch();
     }
 
     ngOnDestroy() {

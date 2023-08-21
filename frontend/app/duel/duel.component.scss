@@ -5,8 +5,13 @@
     flex-direction: column;
     width: max-content;
     max-width: 90%;
+    min-width: 70%;
     padding: 15px;
     margin: auto;
+
+    .status {
+        text-align: center;
+    }
 
     h1 {
         font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
@@ -76,6 +81,10 @@
 
     * {
         margin: 0 10px;
+    }
+
+    .loading {
+        margin: auto;
     }
 }
 

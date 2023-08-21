@@ -32,6 +32,9 @@ import {
     faSignInAlt,
     faUserPlus,
     faSignOutAlt,
+    faEdit,
+    faTrash,
+    faPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -71,7 +74,10 @@ export class AppModule {
             faSignInAlt,
             faUserPlus,
             faSignOutAlt,
-            faGoogle
+            faGoogle,
+            faEdit,
+            faTrash,
+            faPlus
         );
     }
 }

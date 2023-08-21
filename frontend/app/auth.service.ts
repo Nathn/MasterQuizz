@@ -5,8 +5,8 @@ import { initializeApp } from 'firebase/app';
 import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
 
 import { environment } from '../environments/environment';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -24,17 +24,23 @@ export class AuthService {
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
 
+    isUserAuthenticated: boolean = this.userObj && this.user ? true : false;
+
     initAuth() {
         initializeApp(environment.firebaseConfig);
         this.auth = getAuth();
         this.auth.languageCode = 'fr';
         onAuthStateChanged(this.auth, (user) => {
             if (user) {
+                this.isUserAuthenticated = true;
                 this.user = user;
                 this.userObj = this.getCurrentUserInfo();
+                localStorage.setItem('user', JSON.stringify(user));
             } else {
+                this.isUserAuthenticated = false;
                 this.user = null;
                 this.userObj = null;
+                localStorage.removeItem('user');
                 localStorage.removeItem('userObj');
             }
         });
@@ -49,6 +55,10 @@ export class AuthService {
     }
 
     onAuthStateChanged = onAuthStateChanged;
+
+    isAuthenticated() {
+        return this.isUserAuthenticated;
+    }
 
     getCurrentUserInfo(): Observable<any> {
         return this.http
@@ -68,6 +78,11 @@ export class AuthService {
                         );
                         return response.user;
                     }
+                }),
+                catchError((error: any) => {
+                    console.error(error);
+                    localStorage.removeItem('userObj');
+                    return throwError(error);
                 })
             );
     }
@@ -75,6 +90,7 @@ export class AuthService {
     logout() {
         localStorage.removeItem('user');
         localStorage.removeItem('userObj');
+        this.isUserAuthenticated = false;
         this.user = null;
         this.userObj = null;
         this.auth.signOut();

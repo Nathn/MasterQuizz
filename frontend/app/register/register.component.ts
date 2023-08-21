@@ -2,7 +2,6 @@ import { Component, type OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
-import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { AuthService } from '../auth.service';
 
@@ -34,35 +33,27 @@ export class RegisterComponent implements OnInit {
         private authService: AuthService
     ) {
         this.redirectUrl = this.ar.snapshot.queryParams['redirectUrl'] || '';
-        if (this.userObj) {
-            this.router.navigate([this.redirectUrl]);
-        }
+        if (this.userObj) this.router.navigate([this.redirectUrl]);
+        this.authService.onAuthStateChanged(
+            this.authService.getAuth(),
+            async (user) => {
+                if (this.authService.isAuthenticated()) {
+                    if (
+                        !this.redirectUrl.includes('login') &&
+                        !this.redirectUrl.includes('register')
+                    ) {
+                        this.router.navigate([this.redirectUrl]);
+                    } else {
+                        this.router.navigate(['/']);
+                    }
+                }
+            }
+        );
     }
 
     ngOnInit(): void {
         // gives focus to the first input
         document.getElementById('username')?.focus();
-    }
-
-    getUserInfo(email: string | null) {
-        this.http
-            .post(environment.apiUrl + 'getUserFromEmail', {
-                email: email,
-            })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('userObj');
-                    this.isLoading = false;
-                } else {
-                    localStorage.setItem(
-                        'userObj',
-                        JSON.stringify(response.user)
-                    );
-                    this.isLoading = false;
-                    this.router.navigate([this.redirectUrl]);
-                }
-            });
     }
 
     register() {

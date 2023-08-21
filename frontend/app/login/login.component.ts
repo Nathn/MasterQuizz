@@ -32,9 +32,22 @@ export class LoginComponent implements OnInit {
         private authService: AuthService
     ) {
         this.redirectUrl = this.ar.snapshot.queryParams['redirectUrl'] || '';
-        if (this.userObj) {
-            this.router.navigate([this.redirectUrl]);
-        }
+        if (this.userObj) this.router.navigate([this.redirectUrl]);
+        this.authService.onAuthStateChanged(
+            this.authService.getAuth(),
+            async (user) => {
+                if (this.authService.isAuthenticated()) {
+                    if (
+                        !this.redirectUrl.includes('login') &&
+                        !this.redirectUrl.includes('register')
+                    ) {
+                        this.router.navigate([this.redirectUrl]);
+                    } else {
+                        this.router.navigate(['/']);
+                    }
+                }
+            }
+        );
     }
 
     ngOnInit(): void {

@@ -1,6 +1,8 @@
 <div class="main row" *ngIf="isRequestLoading">
-    <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
-    Chargement...
+    <div class="loading">
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+        <span class="status">Chargement...</span>
+    </div>
 </div>
 <div class="main" *ngIf="(!duelId || !duelObj) && !isRequestLoading">
     <button type="button" (click)="findMatch()" *ngIf="!status && !duelId">
