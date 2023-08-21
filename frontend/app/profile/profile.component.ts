@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { AuthService } from '../auth.service';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { environment } from '../../environments/environment';
 
@@ -17,10 +18,17 @@ export class ProfileComponent {
         : null;
     displayedUser: any;
 
+    storage: any;
+
     isRequestLoading: boolean = true;
 
+    profileEdit: boolean = false;
+
     tempUsername: string = '';
-    usernameEdit: boolean = false;
+
+    avatarName: string = '';
+    avatarFile: any = null;
+    tempAvatar: string = '';
 
     constructor(
         private router: Router,
@@ -28,6 +36,7 @@ export class ProfileComponent {
         private http: HttpClient,
         private authService: AuthService
     ) {
+        this.storage = getStorage(this.authService.getApp());
         this.authService.onAuthStateChanged(
             this.authService.getAuth(),
             async (user) => {
@@ -65,15 +74,15 @@ export class ProfileComponent {
 
     enableEditUsername() {
         this.tempUsername = this.displayedUser.displayName;
-        this.usernameEdit = true;
+        this.profileEdit = true;
     }
 
     editUsername() {
-        if (this.userObj._id != this.displayedUser._id) {
-            return;
-        }
-        if (this.tempUsername == this.userObj.displayedName) {
-            this.usernameEdit = false;
+        if (
+            this.userObj._id != this.displayedUser._id ||
+            this.tempUsername == this.userObj.displayedName
+        ) {
+            this.profileEdit = false;
             return;
         }
         let oldDisplayName = this.userObj.displayName;
@@ -92,7 +101,7 @@ export class ProfileComponent {
                         'userObj',
                         JSON.stringify(this.userObj)
                     );
-                    this.usernameEdit = false;
+                    this.profileEdit = false;
                     if (
                         oldDisplayName.toLowerCase() !=
                         this.userObj.displayName.toLowerCase()
@@ -107,6 +116,51 @@ export class ProfileComponent {
                 }
             });
 
-        this.usernameEdit = false;
+        this.profileEdit = false;
+    }
+
+    onAvatarSelected(event: any) {
+        this.avatarName = event.target.files[0].name;
+        this.avatarFile = event.target.files[0];
+        const file = this.avatarFile;
+        const storageRef = ref(this.storage, 'avatars/' + file['name']);
+        uploadBytes(storageRef, file)
+            .then((snapshot) => {
+                return getDownloadURL(snapshot.ref);
+            })
+            .then((downloadURL) => {
+                this.tempAvatar = downloadURL; // Store the downloadURL at the correct index
+            })
+            .catch((error) => {
+                console.error('Error uploading image:', error);
+            });
+    }
+
+    editAvatar() {
+        if (this.userObj._id != this.displayedUser._id || !this.avatarFile) {
+            this.profileEdit = false;
+            return;
+        }
+        this.http
+            .post(environment.apiUrl + 'editAvatar', {
+                userId: this.userObj._id,
+                avatar: this.tempAvatar,
+            })
+            .subscribe((res: any) => {
+                if (res.message == 'OK') {
+                    this.userObj.avatarUrl = this.tempAvatar;
+                    this.displayedUser.avatarUrl = this.userObj.avatarUrl;
+                    localStorage.setItem(
+                        'userObj',
+                        JSON.stringify(this.userObj)
+                    );
+                    this.tempAvatar = '';
+                    this.avatarFile = null;
+                    this.avatarName = '';
+                    this.profileEdit = false;
+                } else {
+                    alert(res.message);
+                }
+            });
     }
 }

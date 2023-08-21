@@ -54,7 +54,8 @@ select {
     color: $input-text-color;
 }
 
-button {
+button,
+.label-button {
     color: $button-text-color;
     font-weight: 300;
     font-size: 16px;
@@ -69,12 +70,15 @@ button {
     transition: box-shadow 0.3s ease-in-out;
 }
 
-button *:not(fa-icon):not(svg):not(path) {
+button *:not(fa-icon):not(svg):not(path),
+.label-button *:not(fa-icon):not(svg):not(path) {
     color: $button-text-color;
 }
 
 button:not([disabled]):hover,
-button:not([disabled]):focus {
+button:not([disabled]):focus,
+.label-button:not([disabled]):hover,
+.label-button:not([disabled]):focus {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 

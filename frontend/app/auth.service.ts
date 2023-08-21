@@ -14,6 +14,7 @@ import { Observable, throwError } from 'rxjs';
 export class AuthService {
     constructor(private http: HttpClient) {}
 
+    app: any;
     auth: any;
     googleProvider: any = new GoogleAuthProvider();
 
@@ -27,7 +28,7 @@ export class AuthService {
     isUserAuthenticated: boolean = this.userObj && this.user ? true : false;
 
     initAuth() {
-        initializeApp(environment.firebaseConfig);
+        this.app = initializeApp(environment.firebaseConfig);
         this.auth = getAuth();
         this.auth.languageCode = 'fr';
         onAuthStateChanged(this.auth, (user) => {
@@ -52,6 +53,10 @@ export class AuthService {
 
     getGoogleProvider() {
         return this.googleProvider;
+    }
+
+    getApp() {
+        return this.app;
     }
 
     onAuthStateChanged = onAuthStateChanged;

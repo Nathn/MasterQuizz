@@ -301,4 +301,52 @@ router.post("/editUsername", async (req, res) => {
     }
 });
 
+router.post("/editAvatar", async (req, res) => {
+    /*
+    This route is used to edit the avatar of a user.
+    */
+    try {
+        console.log("[SERVER] Editing avatar");
+        console.log(
+            `[SERVER] Editing avatar of user ${req.body.userId} to ${req.body.avatar}`
+        );
+        await User.findOneAndUpdate(
+            {
+                _id: req.body.userId,
+            },
+            {
+                avatarUrl: req.body.avatar,
+            }
+        )
+            .exec()
+            .then((user) => {
+                if (!user) {
+                    console.log(`[SERVER] User not found while editing avatar`);
+                    res.status(200).json({
+                        message: "Utilisateur introuvable.",
+                    });
+                } else {
+                    console.log(`[SERVER] Avatar edited: ${user.avatarUrl}`);
+                    res.status(200).json({
+                        message: "OK",
+                        user,
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while editing avatar: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error",
+                });
+            });
+    } catch (err) {
+        console.log(`[SERVER] An error occured while editing avatar: ${err}`);
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 module.exports = router;

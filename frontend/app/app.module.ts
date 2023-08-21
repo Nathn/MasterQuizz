@@ -36,6 +36,7 @@ import {
     faTrash,
     faPlus,
     faStar,
+    faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -79,7 +80,8 @@ export class AppModule {
             faEdit,
             faTrash,
             faPlus,
-            faStar
+            faStar,
+            faUpload
         );
     }
 }

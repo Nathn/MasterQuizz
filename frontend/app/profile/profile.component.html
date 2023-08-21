@@ -5,32 +5,83 @@
     </div>
 </div>
 <div *ngIf="!isRequestLoading && displayedUser" class="profile">
-    <img
-        [src]="displayedUser.avatarUrl"
-        width="100"
-        height="100"
-        *ngIf="displayedUser.avatarUrl"
-    />
+    <div class="edit-button-container">
+        <fa-icon
+            *ngIf="displayedUser._id === userObj._id && !profileEdit"
+            [icon]="['fas', 'edit']"
+            class="edit-button"
+            (click)="enableEditUsername()"
+        ></fa-icon>
+        <fa-icon
+            *ngIf="displayedUser._id === userObj._id && profileEdit"
+            [icon]="['fas', 'check']"
+            class="edit-button"
+            (click)="editUsername()"
+        ></fa-icon>
+    </div>
+    <div class="avatar-container">
+        <img
+            [src]="tempAvatar || displayedUser.avatarUrl"
+            width="100"
+            height="100"
+            *ngIf="displayedUser.avatarUrl"
+        />
+        <div class="edit-avatar">
+            <input
+                *ngIf="displayedUser._id === userObj._id && profileEdit"
+                id="avatar"
+                type="file"
+                accept="image/*"
+                (change)="onAvatarSelected($event)"
+            />
+            <span
+                *ngIf="
+                    displayedUser._id === userObj._id &&
+                    profileEdit &&
+                    avatarName
+                "
+                class="filename"
+            >
+                {{ avatarName }}
+            </span>
+            <label
+                for="avatar"
+                class="label-button button-file"
+                *ngIf="displayedUser._id === userObj._id && profileEdit"
+            >
+                <fa-icon [icon]="['fas', 'upload']"></fa-icon>
+                &nbsp;Sélectionner un fichier
+            </label>
+            <button
+                *ngIf="displayedUser._id === userObj._id && profileEdit"
+                class="button-save"
+                (click)="editAvatar()"
+            >
+                <fa-icon [icon]="['fas', 'check']"></fa-icon>
+                &nbsp;Sauvegarder
+            </button>
+        </div>
+    </div>
     <h1>
-        <span *ngIf="!usernameEdit">{{
+        <span *ngIf="!profileEdit">{{
             displayedUser.displayName || displayedUser.username
         }}</span>
         <input
-            *ngIf="usernameEdit"
+            *ngIf="profileEdit"
             type="text"
             [(ngModel)]="tempUsername"
             (keyup.enter)="editUsername()"
         />
-        <fa-icon
-            *ngIf="displayedUser._id === userObj._id && !usernameEdit"
+        <!-- <fa-icon
+            *ngIf="displayedUser._id === userObj._id && !profileEdit"
             [icon]="['fas', 'edit']"
             (click)="enableEditUsername()"
         ></fa-icon>
         <fa-icon
-            *ngIf="displayedUser._id === userObj._id && usernameEdit"
+            *ngIf="displayedUser._id === userObj._id && profileEdit"
             [icon]="['fas', 'check']"
             (click)="editUsername()"
-        ></fa-icon>
+        ></fa-icon> -->
     </h1>
     <span> Inscrit le {{ displayedUser.created | date : "dd/MM/yyyy" }} </span>
     <span> {{ displayedUser.elo }}&nbsp;🏆 </span>
