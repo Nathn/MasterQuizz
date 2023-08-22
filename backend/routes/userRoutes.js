@@ -1,4 +1,5 @@
 const express = require("express");
+//const { AES } = require("crypto-js");
 
 const router = express.Router();
 
@@ -119,7 +120,10 @@ router.post("/getEmailFromUsername", async (req, res) => {
                     console.log(`[SERVER] Email found: ${user.email}`);
                     res.status(200).json({
                         message: "OK",
-                        email: user.email,
+                        email: AES.encrypt(
+                            user.email,
+                            process.env.ENCRYPTION_KEY || "secret key"
+                        ).toString(),
                     });
                 }
             })

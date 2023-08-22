@@ -2,6 +2,8 @@ import { Component, NgZone, type OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+import { AES } from 'crypto-js';
+
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { AuthService } from '../auth.service';
 
@@ -67,7 +69,10 @@ export class LoginComponent implements OnInit {
                     this.isLoading = false;
                     return;
                 }
-                this.email = response.email;
+                this.email = AES.decrypt(
+                    response.email,
+                    environment.encryptionKey
+                ).toString(CryptoJS.enc.Utf8);
                 signInWithEmailAndPassword(
                     this.authService.getAuth(),
                     this.email,
