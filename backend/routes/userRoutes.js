@@ -1,5 +1,5 @@
 const express = require("express");
-//const { AES } = require("crypto-js");
+const { AES } = require("crypto-js");
 
 const router = express.Router();
 

@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 import { AES } from 'crypto-js';
+import * as CryptoJS from 'crypto-js';
 
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { AuthService } from '../auth.service';
@@ -20,7 +21,6 @@ export class LoginComponent implements OnInit {
         : null;
 
     username: string = '';
-    email: string = '';
     password: string = '';
 
     isLoading: boolean = false;
@@ -69,13 +69,12 @@ export class LoginComponent implements OnInit {
                     this.isLoading = false;
                     return;
                 }
-                this.email = AES.decrypt(
-                    response.email,
-                    environment.encryptionKey
-                ).toString(CryptoJS.enc.Utf8);
                 signInWithEmailAndPassword(
                     this.authService.getAuth(),
-                    this.email,
+                    AES.decrypt(
+                        response.email,
+                        environment.encryptionKey
+                    ).toString(CryptoJS.enc.Utf8),
                     this.password
                 )
                     .then((userCredential) => {
