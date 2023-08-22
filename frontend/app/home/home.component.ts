@@ -36,7 +36,7 @@ export class HomeComponent {
                 });
         }
         this.http
-            .post(environment.apiUrl + 'getTopTenUsersByElo', {})
+            .post(environment.apiUrl + 'getTopUsersByElo', {})
             .subscribe((res: any) => {
                 if (res.users) this.rankedUsers = res.users.slice(0, 7);
             });

@@ -23,12 +23,12 @@
     ></app-home-module>
     <app-home-module
         class="home-module"
-        [question]="randomQuestion"
         moduleTitle="Classement Général"
         moduleType="ranking"
         [ranking]="rankedUsers"
         [moduleParams]="{
             userId: userObj ? userObj._id : null,
+            rankBy: 'elo',
         }"
     ></app-home-module>
 </div>

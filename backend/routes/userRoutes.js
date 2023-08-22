@@ -18,10 +18,10 @@ router.post("/validateRegister", async (req, res) => {
         });
     }
     // Check if the username is valid
-    if (!username || !username.match(/^[a-zA-Z0-9_]{1,18}$/)) {
+    if (!username || !username.match(/^[a-zA-Z0-9_]{1,14}$/)) {
         return res.status(200).json({
             message:
-                "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores",
+                "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores, et doit faire moins de 15 caractères.",
         });
     }
     // Check if the username is already taken
@@ -245,11 +245,11 @@ router.post("/editUsername", async (req, res) => {
         // Check if the username is valid
         if (
             !req.body.username ||
-            !req.body.username.match(/^[a-zA-Z0-9_]{1,18}$/)
+            !req.body.username.match(/^[a-zA-Z0-9_]{1,14}$/)
         ) {
             return res.status(200).json({
                 message:
-                    "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores",
+                    "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores, et doit faire moins de 15 caractères.",
             });
         }
         // Check if the username is already taken

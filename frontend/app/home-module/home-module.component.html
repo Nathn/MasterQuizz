@@ -108,7 +108,7 @@
 </div>
 <div
     *ngIf="moduleType == 'ranking' && ranking && ranking.length > 0"
-    class="module-content-container"
+    class="module-content-container not-centered"
     style="width: 90%"
 >
     <ul class="rankingmodule-slide-ranking">
@@ -123,8 +123,27 @@
             <div class="rankingmodule-slide-ranking-name">
                 {{ user.displayName }}
             </div>
-            <div class="rankingmodule-slide-ranking-score">
+            <div
+                class="rankingmodule-slide-ranking-score"
+                *ngIf="moduleParams.rankBy == 'elo'"
+            >
                 {{ user.elo }}&nbsp;🏆
+            </div>
+            <div
+                class="rankingmodule-slide-ranking-score"
+                *ngIf="moduleParams.rankBy == 'nbGames' && user.stats"
+            >
+                {{
+                    user.stats.duels.wins +
+                        user.stats.duels.losses +
+                        user.stats.duels.draws
+                }}
+            </div>
+            <div
+                class="rankingmodule-slide-ranking-score"
+                *ngIf="moduleParams.rankBy == 'nbWins' && user.stats"
+            >
+                {{ user.stats.duels.wins }}
             </div>
         </a>
     </ul>

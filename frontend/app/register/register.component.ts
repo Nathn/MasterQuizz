@@ -144,7 +144,10 @@ export class RegisterComponent implements OnInit {
         // add user to database
         this.http
             .post(environment.apiUrl + 'register', {
-                username: user.email.split('@')[0],
+                username:
+                    user.email.split('@')[0].length > 14
+                        ? user.email.split('@')[0].substring(0, 14)
+                        : user.email.split('@')[0],
                 email: user.email,
                 avatar: user.photoURL,
             })

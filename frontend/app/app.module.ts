@@ -39,6 +39,7 @@ import {
     faUpload,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
         ProfileComponent,
         DuelComponent,
         AboutComponent,
+        LeaderboardComponent,
     ],
     imports: [
         BrowserModule,

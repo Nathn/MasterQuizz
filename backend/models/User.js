@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     elo: {
         type: Number,
-        default: 100,
+        default: 800,
     },
     email: {
         type: String,

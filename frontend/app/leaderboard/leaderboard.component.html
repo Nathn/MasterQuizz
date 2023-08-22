@@ -1,0 +1,33 @@
+<h1>Classements</h1>
+<div class="home-module-container">
+    <app-home-module
+        class="home-module"
+        moduleTitle="ELO 🏆"
+        moduleType="ranking"
+        [ranking]="rankedUsersByElo"
+        [moduleParams]="{
+            userId: userObj ? userObj._id : null,
+            rankBy: 'elo',
+        }"
+    ></app-home-module>
+    <app-home-module
+        class="home-module"
+        moduleTitle="Parties jouées"
+        moduleType="ranking"
+        [ranking]="rankedUsersByNbGames"
+        [moduleParams]="{
+            userId: userObj ? userObj._id : null,
+            rankBy: 'nbGames',
+        }"
+    ></app-home-module>
+    <app-home-module
+        class="home-module"
+        moduleTitle="Parties gagnées"
+        moduleType="ranking"
+        [ranking]="rankedUsersByNbWins"
+        [moduleParams]="{
+            userId: userObj ? userObj._id : null,
+            rankBy: 'nbWins',
+        }"
+    ></app-home-module>
+</div>

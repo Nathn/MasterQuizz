@@ -71,16 +71,6 @@
             [(ngModel)]="tempUsername"
             (keyup.enter)="editUsername()"
         />
-        <!-- <fa-icon
-            *ngIf="displayedUser._id === userObj._id && !profileEdit"
-            [icon]="['fas', 'edit']"
-            (click)="enableEditUsername()"
-        ></fa-icon>
-        <fa-icon
-            *ngIf="displayedUser._id === userObj._id && profileEdit"
-            [icon]="['fas', 'check']"
-            (click)="editUsername()"
-        ></fa-icon> -->
     </h1>
     <span> Inscrit le {{ displayedUser.created | date : "dd/MM/yyyy" }} </span>
     <span> {{ displayedUser.elo }}&nbsp;🏆 </span>
