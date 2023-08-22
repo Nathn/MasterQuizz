@@ -210,6 +210,7 @@ router.post("/getUserFromUsername", async (req, res) => {
                         message: "Utilisateur introuvable.",
                     });
                 } else {
+                    delete user.email;
                     console.log(`[SERVER] User found: ${user.username}`);
                     res.status(200).json({
                         message: "OK",

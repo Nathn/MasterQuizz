@@ -152,7 +152,7 @@ router.post("/getRandomQuestion", async (req, res) => {
                     });
                 } else {
                     Question.populate(question, {
-                        path: "theme user userUpdated",
+                        path: "theme",
                     })
                         .then((populatedQuestion) => {
                             console.log(
@@ -209,7 +209,7 @@ router.post("/getQuestionFromId", async (req, res) => {
                         message: "Question introuvable.",
                     });
                 } else {
-                    Question.populate(question, { path: "theme user" }).then(
+                    Question.populate(question, { path: "theme" }).then(
                         (populatedQuestion) => {
                             console.log(
                                 `[SERVER] Question found: ${populatedQuestion._id}`
