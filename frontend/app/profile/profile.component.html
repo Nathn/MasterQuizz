@@ -5,7 +5,10 @@
     </div>
 </div>
 <div *ngIf="!isRequestLoading && displayedUser" class="profile">
-    <div class="edit-button-container">
+    <div
+        class="edit-button-container"
+        *ngIf="userObj && displayedUser._id === userObj._id"
+    >
         <fa-icon
             *ngIf="displayedUser._id === userObj._id && !profileEdit"
             [icon]="['fas', 'edit']"
@@ -26,34 +29,30 @@
             height="100"
             *ngIf="displayedUser.avatarUrl"
         />
-        <div class="edit-avatar">
+        <div
+            class="edit-avatar"
+            *ngIf="userObj && displayedUser._id === userObj._id"
+        >
             <input
-                *ngIf="displayedUser._id === userObj._id && profileEdit"
+                *ngIf="profileEdit"
                 id="avatar"
                 type="file"
                 accept="image/*"
                 (change)="onAvatarSelected($event)"
             />
-            <span
-                *ngIf="
-                    displayedUser._id === userObj._id &&
-                    profileEdit &&
-                    avatarName
-                "
-                class="filename"
-            >
+            <span *ngIf="profileEdit && avatarName" class="filename">
                 {{ avatarName }}
             </span>
             <label
                 for="avatar"
                 class="label-button button-file"
-                *ngIf="displayedUser._id === userObj._id && profileEdit"
+                *ngIf="profileEdit"
             >
                 <fa-icon [icon]="['fas', 'upload']"></fa-icon>
                 &nbsp;Sélectionner un fichier
             </label>
             <button
-                *ngIf="displayedUser._id === userObj._id && profileEdit"
+                *ngIf="profileEdit"
                 class="button-save"
                 (click)="editAvatar()"
             >
