@@ -27,6 +27,16 @@ const userSchema = new mongoose.Schema({
         trim: true,
     },
     stats: {
+        questions: {
+            right: {
+                type: Number,
+                default: 0,
+            },
+            wrong: {
+                type: Number,
+                default: 0,
+            },
+        },
         duels: {
             wins: {
                 type: Number,

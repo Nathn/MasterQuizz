@@ -52,10 +52,10 @@ export class AppComponent implements OnInit {
 
     getMenuLinks() {
         this.menuLinks = [];
-        this.menuLinks.push({
+        /*this.menuLinks.push({
             text: 'Entraînement',
             path: '/practice',
-        });
+        });*/
         this.menuLinks.push({
             text: 'Multijoueur',
             path: '/multiplayer',
