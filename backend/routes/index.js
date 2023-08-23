@@ -4,6 +4,7 @@ const path = require("path");
 const router = express.Router();
 
 const matchRoutes = require("./matchRoutes");
+const practiceRoutes = require("./practiceRoutes");
 const questionRoutes = require("./questionRoutes");
 const rankingRoutes = require("./rankingRoutes");
 const themeRoutes = require("./themeRoutes");
@@ -16,11 +17,12 @@ router.use((req, res, next) => {
 });
 
 // Routes
-router.use("/", userRoutes);
-router.use("/", questionRoutes);
-router.use("/", themeRoutes);
 router.use("/", matchRoutes);
+router.use("/", practiceRoutes);
+router.use("/", questionRoutes);
 router.use("/", rankingRoutes);
+router.use("/", themeRoutes);
+router.use("/", userRoutes);
 
 // Serve static files from the Angular app
 router.get("/*", (req, res) => {

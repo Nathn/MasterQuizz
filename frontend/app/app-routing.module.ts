@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PracticeComponent } from './practice/practice.component';
 import { DuelComponent } from './duel/duel.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { AboutComponent } from './about/about.component';
@@ -14,8 +15,9 @@ const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'about', component: AboutComponent },
+    { path: 'practice', component: PracticeComponent },
     { path: 'leaderboard', component: LeaderboardComponent },
+    { path: 'about', component: AboutComponent },
     { path: 'profile/:username', component: ProfileComponent },
     { path: 'questions', component: QuestionsComponent },
     { path: 'questions/:action', component: QuestionsComponent },

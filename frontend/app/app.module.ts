@@ -40,6 +40,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { PracticeComponent } from './practice/practice.component';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
         DuelComponent,
         AboutComponent,
         LeaderboardComponent,
+        PracticeComponent,
     ],
     imports: [
         BrowserModule,
