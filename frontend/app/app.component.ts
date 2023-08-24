@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
-    isLoading: boolean = localStorage.getItem('user') ? false : true;
     showMenu: boolean = false;
     menuLinks: any = [];
     retries: number = 0;

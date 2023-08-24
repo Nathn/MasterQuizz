@@ -13,7 +13,7 @@ router.post("/getCurrentDuelFromUser", async (req, res) => {
     const userId = req.body.user;
     try {
         const match = await Match.findOne({
-            users: { $in: [userId] },
+            users: { $size: 2, $in: [userId] },
             ended: false,
         }).populate({
             path: "users",
