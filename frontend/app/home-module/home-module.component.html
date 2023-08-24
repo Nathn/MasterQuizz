@@ -120,8 +120,17 @@
             }"
         >
             <div class="rankingmodule-slide-ranking-position">{{ i + 1 }}</div>
-            <div class="rankingmodule-slide-ranking-name">
-                {{ user.displayName }}
+            <div class="rankingmodule-slide-ranking-user-info">
+                <img
+                    [src]="user.avatarUrl"
+                    class="rankingmodule-slide-ranking-avatar"
+                    alt="Avatar"
+                    height="26"
+                    width="26"
+                />
+                <div class="rankingmodule-slide-ranking-name">
+                    {{ user.displayName }}
+                </div>
             </div>
             <div
                 class="rankingmodule-slide-ranking-score"

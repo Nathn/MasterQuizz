@@ -14,7 +14,7 @@ router.post("/getTopUsersByElo", async (req, res) => {
         const users = await User.find({})
             .sort({ elo: -1 })
             .limit(50)
-            .select("displayName username elo") // Only return the displayName, username and elo
+            .select("displayName username avatarUrl elo") // Only return the displayName, username and elo
             .exec();
         res.status(200).json({
             message: "OK",
@@ -59,6 +59,7 @@ router.post("/getTopUsersByNbGames", async (req, res) => {
                 $project: {
                     displayName: 1,
                     username: 1,
+                    avatarUrl: 1,
                     stats: 1,
                 },
             },
@@ -87,7 +88,7 @@ router.post("/getTopUsersByNbWins", async (req, res) => {
         const users = await User.find({})
             .sort({ "stats.duels.wins": -1 })
             .limit(50)
-            .select("displayName username stats")
+            .select("displayName username avatarUrl stats")
             .exec();
         res.status(200).json({
             message: "OK",

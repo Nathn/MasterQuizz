@@ -87,10 +87,22 @@
     margin-right: 10px;
 }
 
-.rankingmodule-slide-ranking-name {
-    font-size: 1.1rem;
-    color: $primary-text-color;
-    margin-right: 10px;
+.rankingmodule-slide-ranking-user-info {
+    display: flex;
+    align-items: center;
+
+    .rankingmodule-slide-ranking-avatar {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .rankingmodule-slide-ranking-name {
+        font-size: 1.1rem;
+        color: $primary-text-color;
+        margin-right: 10px;
+    }
 }
 
 .rankingmodule-slide-ranking-name:hover {
