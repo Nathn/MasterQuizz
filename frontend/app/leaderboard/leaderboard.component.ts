@@ -19,6 +19,7 @@ export class LeaderboardComponent {
     rankedUsersByElo: any = [];
     rankedUsersByNbGames: any = [];
     rankedUsersByNbWins: any = [];
+    rankedUsersByNbGoodAnswers: any = [];
 
     constructor(
         private router: Router,
@@ -43,19 +44,25 @@ export class LeaderboardComponent {
         this.http
             .post(environment.apiUrl + 'getTopUsersByElo', {})
             .subscribe((res: any) => {
-                if (res.users) this.rankedUsersByElo = res.users.slice(0, 50);
+                if (res.users) this.rankedUsersByElo = res.users.slice(0, 15);
             });
         this.http
             .post(environment.apiUrl + 'getTopUsersByNbGames', {})
             .subscribe((res: any) => {
                 if (res.users)
-                    this.rankedUsersByNbGames = res.users.slice(0, 50);
+                    this.rankedUsersByNbGames = res.users.slice(0, 15);
             });
         this.http
             .post(environment.apiUrl + 'getTopUsersByNbWins', {})
             .subscribe((res: any) => {
                 if (res.users)
-                    this.rankedUsersByNbWins = res.users.slice(0, 50);
+                    this.rankedUsersByNbWins = res.users.slice(0, 15);
+            });
+        this.http
+            .post(environment.apiUrl + 'getTopUsersByNbGoodAnswers', {})
+            .subscribe((res: any) => {
+                if (res.users)
+                    this.rankedUsersByNbGoodAnswers = res.users.slice(0, 15);
             });
     }
 }

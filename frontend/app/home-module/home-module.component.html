@@ -8,6 +8,7 @@
     <app-question
         [question]="question"
         [answerValidated]="answerValidated"
+        [selectedAnswerIndex]="selectedAnswerIndex"
         (selectedAnswer)="selectAnswer($event)"
     ></app-question>
     <div>
@@ -153,6 +154,12 @@
                 *ngIf="moduleParams.rankBy == 'nbWins' && user.stats"
             >
                 {{ user.stats.duels.wins }}
+            </div>
+            <div
+                class="rankingmodule-slide-ranking-score"
+                *ngIf="moduleParams.rankBy == 'nbGoodAnswers' && user.stats"
+            >
+                {{ user.stats.questions.right }}
             </div>
         </a>
     </ul>

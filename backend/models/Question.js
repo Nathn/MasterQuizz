@@ -30,6 +30,16 @@ const questionSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    stats: {
+        right: {
+            type: Number,
+            default: 0,
+        },
+        wrong: {
+            type: Number,
+            default: 0,
+        },
+    },
     theme: {
         type: mongoose.Schema.ObjectId,
         ref: "Theme",

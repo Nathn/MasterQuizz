@@ -30,4 +30,14 @@
             rankBy: 'nbWins',
         }"
     ></app-home-module>
+    <app-home-module
+        class="home-module"
+        moduleTitle="Bonnes réponses"
+        moduleType="ranking"
+        [ranking]="rankedUsersByNbGoodAnswers"
+        [moduleParams]="{
+            userId: userObj ? userObj._id : null,
+            rankBy: 'nbGoodAnswers',
+        }"
+    ></app-home-module>
 </div>

@@ -19,6 +19,7 @@
         [question]="randomQuestion"
         moduleTitle="Question aléatoire"
         moduleType="question"
+        (validatedAnswer)="validatedAnswer($event)"
         (nextQuestion)="nextQuestion($event)"
     ></app-home-module>
     <app-home-module

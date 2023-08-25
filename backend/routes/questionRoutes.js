@@ -283,4 +283,95 @@ router.post("/getAllQuestions", async (req, res) => {
     }
 });
 
+router.post("/updateQuestionStats", async (req, res) => {
+    /*
+     *   Update both the question object and the user object
+     *   @Input req.body.user_id
+     *   @Input req.body.question_id
+     *   @Input req.body.answer_status (true or false)
+     * */
+    try {
+        console.log(
+            `[SERVER] Updating question stats: ${req.body.question_id}`
+        );
+        await Question.updateOne(
+            {
+                _id: req.body.question_id,
+            },
+            {
+                $inc: {
+                    "stats.right": req.body.answer_status ? 1 : 0,
+                    "stats.wrong": req.body.answer_status ? 0 : 1,
+                },
+            }
+        )
+            .exec()
+            .then(async (question) => {
+                if (!question) {
+                    console.log(
+                        `[SERVER] Question not found while updating question stats`
+                    );
+                } else {
+                    console.log(`[SERVER] Question updated: ${question._id}`);
+                    await User.updateOne(
+                        {
+                            _id: req.body.user_id,
+                        },
+                        {
+                            $inc: {
+                                "stats.questions.right": req.body.answer_status
+                                    ? 1
+                                    : 0,
+                                "stats.questions.wrong": req.body.answer_status
+                                    ? 0
+                                    : 1,
+                            },
+                        }
+                    )
+                        .exec()
+                        .then((user) => {
+                            if (!user) {
+                                console.log(
+                                    `[SERVER] User not found while updating question stats`
+                                );
+                                res.status(200).json({
+                                    message: "User introuvable.",
+                                });
+                            } else {
+                                console.log(
+                                    `[SERVER] User updated: ${user._id}`
+                                );
+                                res.status(200).json({
+                                    message: "OK",
+                                });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(
+                                `[SERVER] An error occured while updating question stats: ${err}`
+                            );
+                            res.status(500).json({
+                                message: "Internal server error",
+                            });
+                        });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while updating question stats: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error",
+                });
+            });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occured while updating question stats: ${err}`
+        );
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 module.exports = router;

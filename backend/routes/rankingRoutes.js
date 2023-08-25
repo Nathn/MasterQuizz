@@ -104,4 +104,30 @@ router.post("/getTopUsersByNbWins", async (req, res) => {
     }
 });
 
+router.post("/getTopUsersByNbGoodAnswers", async (req, res) => {
+    /*
+     *   Get the top ten users by nbGoodAnswers
+     *   @return {object} users
+     * */
+    try {
+        console.log(`[SERVER] Getting top ten users by nbGoodAnswers`);
+        const users = await User.find({})
+            .sort({ "stats.questions.right": -1 })
+            .limit(50)
+            .select("displayName username avatarUrl stats")
+            .exec();
+        res.status(200).json({
+            message: "OK",
+            users: users,
+        });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occurred while getting top ten users by nbGoodAnswers: ${err.stack}`
+        );
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 module.exports = router;

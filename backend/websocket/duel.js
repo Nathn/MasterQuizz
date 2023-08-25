@@ -508,6 +508,17 @@ function answer(request, ws, userWebSockets) {
                                                     user2._id,
                                                     user2EloChange
                                                 );
+                                                // Updating questions stats for both users
+                                                user1.stats.questions.right +=
+                                                    match.scores.get(user1._id);
+                                                user1.stats.questions.wrong +=
+                                                    10 -
+                                                    match.scores.get(user1._id);
+                                                user2.stats.questions.right +=
+                                                    match.scores.get(user2._id);
+                                                user2.stats.questions.wrong +=
+                                                    10 -
+                                                    match.scores.get(user2._id);
                                                 user1.save().then(() => {
                                                     user2.save().then(() => {
                                                         match

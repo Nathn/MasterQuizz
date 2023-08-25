@@ -20,6 +20,7 @@ export class HomeComponent {
     randomQuestion: any = localStorage.getItem('randomQuestion')
         ? JSON.parse(localStorage.getItem('randomQuestion') || '')
         : null;
+    nextRandomQuestion: any;
 
     rankedUsers: any = [];
 
@@ -56,17 +57,42 @@ export class HomeComponent {
         );
     }
 
-    nextQuestion(event: any) {
-        this.randomQuestion = null;
+    validatedAnswer(event: any) {
+        if (this.userObj) {
+            this.http
+                .post(environment.apiUrl + 'updateQuestionStats', {
+                    user_id: this.userObj._id,
+                    question_id: this.randomQuestion._id,
+                    answer_status: this.randomQuestion.answers[event].correct,
+                })
+                .subscribe((res: any) => {});
+        }
         this.http
             .post(environment.apiUrl + 'getRandomQuestion', {})
             .subscribe((res: any) => {
-                this.randomQuestion = res.question;
+                this.nextRandomQuestion = res.question;
                 localStorage.setItem(
                     'randomQuestion',
                     JSON.stringify(res.question)
                 );
             });
+    }
+
+    nextQuestion(event: any) {
+        if (this.nextRandomQuestion) {
+            this.randomQuestion = this.nextRandomQuestion;
+            this.nextRandomQuestion = null;
+        } else {
+            this.http
+                .post(environment.apiUrl + 'getRandomQuestion', {})
+                .subscribe((res: any) => {
+                    this.randomQuestion = res.question;
+                    localStorage.setItem(
+                        'randomQuestion',
+                        JSON.stringify(res.question)
+                    );
+                });
+        }
     }
 
     closeLongModule() {
