@@ -1,7 +1,12 @@
-import { Component, type OnInit } from '@angular/core';
+import { Component, type OnInit, type OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
+import {
+    NgcCookieConsentService,
+    NgcStatusChangeEvent,
+} from 'ngx-cookieconsent';
 import { AuthService } from './auth.service';
 
 @Component({
@@ -9,17 +14,27 @@ import { AuthService } from './auth.service';
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
     title = 'MasterQuizz';
     waiting: boolean = window.location.href.includes('masterquizz.fr');
     countDownDate: number = new Date('Sep 05, 2023 12:00:00').getTime();
     waitingMessage: string = '';
 
-    auth: any;
+    //keep refs to subscriptions to be able to unsubscribe later
+    private popupOpenSubscription!: Subscription;
+    private popupCloseSubscription!: Subscription;
+    private initializingSubscription!: Subscription;
+    private initializedSubscription!: Subscription;
+    private initializationErrorSubscription!: Subscription;
+    private statusChangeSubscription!: Subscription;
+    private revokeChoiceSubscription!: Subscription;
+    private noCookieLawSubscription!: Subscription;
 
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
+    auth: any;
+
     showMenu: boolean = false;
     menuLinks: any = [];
     retries: number = 0;
@@ -27,7 +42,8 @@ export class AppComponent implements OnInit {
     constructor(
         private router: Router,
         private http: HttpClient,
-        private authService: AuthService
+        private authService: AuthService,
+        private cookieService: NgcCookieConsentService
     ) {
         if (this.waiting) {
             let x = setInterval(() => {
@@ -78,6 +94,12 @@ export class AppComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.statusChangeSubscription =
+            this.cookieService.statusChange$.subscribe(
+                (event: NgcStatusChangeEvent) => {
+                    // you can use this.cookieService.getConfig() to do stuff...
+                }
+            );
         this.getMenuLinks();
     }
 
@@ -120,5 +142,17 @@ export class AppComponent implements OnInit {
 
     logout() {
         this.authService.logout();
+    }
+
+    ngOnDestroy() {
+        // unsubscribe to cookieconsent observables to prevent memory leaks
+        this.popupOpenSubscription.unsubscribe();
+        this.popupCloseSubscription.unsubscribe();
+        this.initializingSubscription.unsubscribe();
+        this.initializedSubscription.unsubscribe();
+        this.initializationErrorSubscription.unsubscribe();
+        this.statusChangeSubscription.unsubscribe();
+        this.revokeChoiceSubscription.unsubscribe();
+        this.noCookieLawSubscription.unsubscribe();
     }
 }
