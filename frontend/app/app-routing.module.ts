@@ -14,6 +14,7 @@ import { QuestionsComponent } from './questions/questions.component';
 const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'login/:action', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'practice', component: PracticeComponent },
     { path: 'leaderboard', component: LeaderboardComponent },

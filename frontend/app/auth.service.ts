@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { initializeApp } from 'firebase/app';
-import { GoogleAuthProvider, getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+    Auth,
+    GoogleAuthProvider,
+    getAuth,
+    onAuthStateChanged,
+} from 'firebase/auth';
 
 import { environment } from '../environments/environment';
 import { catchError, map } from 'rxjs/operators';
@@ -47,7 +52,7 @@ export class AuthService {
         });
     }
 
-    getAuth() {
+    getAuth(): Auth {
         return this.auth;
     }
 

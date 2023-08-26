@@ -1,4 +1,4 @@
-<form (ngSubmit)="login()" #registerForm="ngForm">
+<form (ngSubmit)="login()" #registerForm="ngForm" *ngIf="screen === 'login'">
     <h2>Connection à votre compte</h2>
     <div class="form-group">
         <label for="username">Pseudo :</label><br />
@@ -47,4 +47,44 @@
     >
         <fa-icon [icon]="['fab', 'google']"></fa-icon>Se connecter avec Google
     </button>
+    <div class="form-links">
+        <span (click)="navigateToReset()">Mot de passe oublié ?</span>
+        <span (click)="navigateToRegister()">Pas encore inscrit ?</span>
+    </div>
+</form>
+<form
+    (ngSubmit)="sendResetEmail()"
+    #resetForm="ngForm"
+    *ngIf="screen === 'reset'"
+>
+    <h2>Mot de passe oublié</h2>
+    <div class="form-group">
+        <label for="email">Adresse email associée au compte :</label><br />
+        <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            [(ngModel)]="email"
+            required
+            autofocus
+        />
+    </div>
+    <button
+        type="submit"
+        class="submit-button"
+        [disabled]="!resetForm.valid || isLoading"
+    >
+        <span *ngIf="!isLoading"
+            ><fa-icon [icon]="['fas', 'paper-plane']"></fa-icon>Envoyer un lien
+            de récupération</span
+        >
+        <span *ngIf="isLoading">
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+            >&nbsp;Chargement...
+        </span>
+    </button>
+    <div class="form-links">
+        <span (click)="navigateToLogin()">Retour à l'écran de connexion</span>
+    </div>
 </form>

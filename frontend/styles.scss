@@ -120,6 +120,38 @@ form {
         width: 100%;
     }
 
+    .form-links {
+        margin-top: 15px;
+
+        span {
+            color: $link-color;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+            position: relative;
+            display: block;
+            margin-top: 5px;
+            width: fit-content;
+
+            &::before {
+                content: "";
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: $link-color;
+                transition: width 0.3s ease-in-out;
+            }
+
+            &:hover {
+                &::before {
+                    width: 100%;
+                }
+            }
+        }
+    }
+
     * {
         text-align: left;
     }

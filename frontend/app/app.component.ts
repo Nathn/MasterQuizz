@@ -129,14 +129,20 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     navigateToLogin() {
+        let redirectUrl = this.router.url;
+        if (redirectUrl.includes('login') || redirectUrl.includes('register'))
+            redirectUrl = '/';
         this.router.navigate([`/login`], {
-            queryParams: { redirectUrl: this.router.url },
+            queryParams: { redirectUrl: redirectUrl },
         });
     }
 
     navigateToRegister() {
+        let redirectUrl = this.router.url;
+        if (redirectUrl.includes('register') || redirectUrl.includes('login'))
+            redirectUrl = '/';
         this.router.navigate(['register'], {
-            queryParams: { redirectUrl: this.router.url },
+            queryParams: { redirectUrl: redirectUrl },
         });
     }
 

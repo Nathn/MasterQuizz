@@ -162,4 +162,13 @@ export class RegisterComponent implements OnInit {
                 }
             });
     }
+
+    navigateToLogin() {
+        let redirectUrl = this.redirectUrl;
+        if (redirectUrl.includes('login') || redirectUrl.includes('register'))
+            redirectUrl = '/';
+        this.router.navigate([`/login`], {
+            queryParams: { redirectUrl: redirectUrl },
+        });
+    }
 }

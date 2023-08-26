@@ -58,6 +58,7 @@ import {
     faPlus,
     faStar,
     faUpload,
+    faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -118,7 +119,8 @@ export class AppModule {
             faTrash,
             faPlus,
             faStar,
-            faUpload
+            faUpload,
+            faPaperPlane
         );
     }
 }

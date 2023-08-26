@@ -5,7 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { AES } from 'crypto-js';
 import * as CryptoJS from 'crypto-js';
 
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import {
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    sendPasswordResetEmail,
+} from 'firebase/auth';
 import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
@@ -20,6 +24,9 @@ export class LoginComponent implements OnInit {
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
 
+    screen: string = 'login';
+
+    email: string = '';
     username: string = '';
     password: string = '';
 
@@ -50,6 +57,9 @@ export class LoginComponent implements OnInit {
                 }
             }
         );
+        if (this.ar.snapshot.params['action'] == 'forgotPassword') {
+            this.screen = 'reset';
+        }
     }
 
     ngOnInit(): void {
@@ -133,6 +143,60 @@ export class LoginComponent implements OnInit {
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 }
+            });
+    }
+
+    navigateToReset() {
+        let redirectUrl = this.redirectUrl;
+        if (redirectUrl.includes('login') || redirectUrl.includes('register'))
+            redirectUrl = '/';
+        this.router.navigate(['/login/forgotPassword'], {
+            queryParams: { redirectUrl: redirectUrl },
+        });
+    }
+
+    navigateToLogin() {
+        let redirectUrl = this.redirectUrl;
+        if (redirectUrl.includes('login') || redirectUrl.includes('register'))
+            redirectUrl = '/';
+        this.router.navigate(['/login'], {
+            queryParams: { redirectUrl: redirectUrl },
+        });
+    }
+
+    navigateToRegister() {
+        let redirectUrl = this.redirectUrl;
+        if (redirectUrl.includes('login') || redirectUrl.includes('register'))
+            redirectUrl = '/';
+        this.router.navigate(['/register'], {
+            queryParams: { redirectUrl: redirectUrl },
+        });
+    }
+
+    sendResetEmail() {
+        console.log(this.email);
+        this.isLoading = true;
+        sendPasswordResetEmail(this.authService.getAuth(), this.email)
+            .then(() => {
+                alert(
+                    "Un email de réinitialisation de mot de passe a été envoyé à l'addresse" +
+                        this.email +
+                        '.'
+                );
+                this.isLoading = false;
+                this.router.navigate(['/login']);
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log('error', errorCode, errorMessage);
+                if (errorCode == 'auth/user-not-found') {
+                    alert("Aucun compte n'est associé à cet email.");
+                }
+                if (errorCode == 'auth/invalid-email') {
+                    alert('Email invalide.');
+                }
+                this.isLoading = false;
             });
     }
 }
