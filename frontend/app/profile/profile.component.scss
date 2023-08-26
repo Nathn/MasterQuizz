@@ -1,5 +1,13 @@
 @import "../../styles/variables";
 
+.edit-error {
+    display: block;
+    color: $error-color;
+    font-size: larger;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
 .profile {
     display: flex;
     flex-direction: column;
@@ -8,6 +16,10 @@
     max-width: 90%;
     padding: 15px;
     margin: auto;
+
+    .loading {
+        margin: auto;
+    }
 
     .edit-button-container {
         position: absolute;

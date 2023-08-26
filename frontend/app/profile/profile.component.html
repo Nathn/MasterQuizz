@@ -1,9 +1,14 @@
 <div *ngIf="isRequestLoading" class="profile">
-    <div>
+    <div class="loading">
         <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
         >&nbsp;Chargement...
     </div>
 </div>
+<span
+    class="edit-error"
+    *ngIf="!isRequestLoading && displayedUser && profileEdit && error"
+    >{{ error }}</span
+>
 <div *ngIf="!isRequestLoading && displayedUser" class="profile">
     <div
         class="edit-button-container"

@@ -78,7 +78,7 @@ export class DuelComponent implements OnDestroy {
                             )
                             .subscribe((response: any) => {
                                 if (response.message != 'OK') {
-                                    alert(response.message);
+                                    console.error(response.message);
                                 } else {
                                     if (response.match) {
                                         this.startedDuelId = response.match._id;

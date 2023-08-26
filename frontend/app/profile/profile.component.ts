@@ -18,6 +18,8 @@ export class ProfileComponent {
         : null;
     displayedUser: any;
 
+    error: string = '';
+
     storage: any;
 
     isRequestLoading: boolean = true;
@@ -66,7 +68,7 @@ export class ProfileComponent {
                     this.displayedUser = res.user;
                     this.isRequestLoading = false;
                 } else {
-                    alert(res.message);
+                    console.warn(res.message);
                     this.router.navigate(['/']);
                 }
             });
@@ -112,11 +114,9 @@ export class ProfileComponent {
                         window.location.reload();
                     }
                 } else {
-                    alert(res.message);
+                    this.error = res.message;
                 }
             });
-
-        this.profileEdit = false;
     }
 
     onAvatarSelected(event: any) {
@@ -159,7 +159,7 @@ export class ProfileComponent {
                     this.avatarName = '';
                     this.profileEdit = false;
                 } else {
-                    alert(res.message);
+                    this.error = res.message;
                 }
             });
     }

@@ -21,6 +21,8 @@ export class RegisterComponent implements OnInit {
     username: string = '';
     password: string = '';
 
+    error: string = '';
+
     isLoading: boolean = false;
 
     redirectUrl: string = '';
@@ -60,7 +62,7 @@ export class RegisterComponent implements OnInit {
         this.isLoading = true;
         // check password length
         if (this.password.length < 6) {
-            alert('Le mot de passe doit contenir au moins 6 caractères.');
+            this.error = 'Le mot de passe doit contenir au moins 6 caractères.';
             this.isLoading = false;
             return;
         }
@@ -72,7 +74,7 @@ export class RegisterComponent implements OnInit {
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    this.error = response.message;
                     this.isLoading = false;
                     return;
                 }
@@ -91,7 +93,7 @@ export class RegisterComponent implements OnInit {
                             })
                             .subscribe((response: any) => {
                                 if (response.message != 'OK') {
-                                    alert(response.message);
+                                    this.error = response.message;
                                     this.isLoading = false;
                                     return;
                                 } else {
@@ -105,17 +107,15 @@ export class RegisterComponent implements OnInit {
                         const errorMessage = error.message;
                         console.log('error', errorCode, errorMessage);
                         if (errorCode == 'auth/email-already-in-use') {
-                            alert(
-                                "L'adresse email est déjà utilisée par un autre compte."
-                            );
+                            this.error =
+                                "L'adresse email est déjà utilisée par un autre compte.";
                         }
                         if (errorCode == 'auth/invalid-email') {
-                            alert("L'adresse email n'est pas valide.");
+                            this.error = "L'adresse email n'est pas valide.";
                         }
                         if (errorCode == 'auth/weak-password') {
-                            alert(
-                                'Le mot de passe doit contenir au moins 6 caractères.'
-                            );
+                            this.error =
+                                'Le mot de passe doit contenir au moins 6 caractères.';
                         }
                         this.isLoading = false;
                     });

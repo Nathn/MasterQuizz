@@ -68,6 +68,7 @@ button,
     outline: none;
     box-shadow: none;
     transition: box-shadow 0.3s ease-in-out;
+    text-align: center;
 }
 
 button *:not(fa-icon):not(svg):not(path),
@@ -120,6 +121,14 @@ form {
         width: 100%;
     }
 
+    .form-error {
+        display: block;
+        color: $error-color;
+        font-size: larger;
+        font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+        margin-bottom: 15px;
+    }
+
     .form-links {
         margin-top: 15px;
 
@@ -155,4 +164,11 @@ form {
     * {
         text-align: left;
     }
+}
+
+.success-message {
+    color: $success-color;
+    font-size: larger;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
 }

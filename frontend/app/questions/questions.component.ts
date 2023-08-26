@@ -17,6 +17,8 @@ export class QuestionsComponent {
         : null;
     action: string = '';
 
+    successMessage: string = '';
+
     isAuthLoading: boolean = true;
     isRequestLoading: boolean = false;
 
@@ -105,10 +107,11 @@ export class QuestionsComponent {
             .post(environment.apiUrl + 'getAllThemes', {})
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    console.error(response.message);
                 } else {
                     this.themes = response.themes;
                     this.ar.params.subscribe((params) => {
+                        this.successMessage = '';
                         this.action = params['action'];
                         if (!this.validActions.includes(this.action))
                             this.router.navigate(['/questions/manage']);
@@ -131,7 +134,7 @@ export class QuestionsComponent {
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    console.error(response.message);
                 } else {
                     this.questionsList = response.questions;
                     this.isRequestLoading = false;
@@ -147,7 +150,7 @@ export class QuestionsComponent {
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    console.error(response.message);
                 } else {
                     this.question = response.question.question;
                     this.nbAnswers = response.question.answers.length;
@@ -249,9 +252,9 @@ export class QuestionsComponent {
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    console.error(response.message);
                 } else {
-                    alert('Question ajoutée !');
+                    this.successMessage = 'La question a bien été ajoutée.';
                     // reset form
                     this.question = '';
                     this.nbAnswers = 4;
@@ -288,9 +291,9 @@ export class QuestionsComponent {
                 this.editSaved = true;
                 this.isRequestLoading = false;
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    console.error(response.message);
                 } else {
-                    alert('Question modifiée !');
+                    this.successMessage = 'La question a bien été modifiée.';
                 }
             });
     }
@@ -303,9 +306,10 @@ export class QuestionsComponent {
                 })
                 .subscribe((response: any) => {
                     if (response.message != 'OK') {
-                        alert(response.message);
+                        console.error(response.message);
                     } else {
-                        alert('La question a été supprimée.');
+                        this.successMessage =
+                            'La question a bien été supprimée.';
                         this.questionsList.splice(
                             this.questionsList.indexOf(question),
                             1

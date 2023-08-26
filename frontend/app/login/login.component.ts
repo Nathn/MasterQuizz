@@ -30,6 +30,8 @@ export class LoginComponent implements OnInit {
     username: string = '';
     password: string = '';
 
+    error: string = '';
+
     isLoading: boolean = false;
     redirectUrl: string = '';
 
@@ -75,7 +77,7 @@ export class LoginComponent implements OnInit {
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
-                    alert(response.message);
+                    this.error = response.message;
                     this.isLoading = false;
                     return;
                 }
@@ -97,10 +99,10 @@ export class LoginComponent implements OnInit {
                         const errorMessage = error.message;
                         console.log('error', errorCode, errorMessage);
                         if (errorCode == 'auth/wrong-password') {
-                            alert('Mot de passe incorrect.');
+                            this.error = 'Mot de passe incorrect.';
                         }
                         if (errorCode == 'auth/user-not-found') {
-                            alert("Nom d'utilisateur introuvable.");
+                            this.error = "Nom d'utilisateur introuvable.";
                         }
                         this.isLoading = false;
                     });
@@ -178,11 +180,10 @@ export class LoginComponent implements OnInit {
         this.isLoading = true;
         sendPasswordResetEmail(this.authService.getAuth(), this.email)
             .then(() => {
-                alert(
+                this.error =
                     "Un email de réinitialisation de mot de passe a été envoyé à l'addresse" +
-                        this.email +
-                        '.'
-                );
+                    this.email +
+                    '.';
                 let redirectUrl = this.redirectUrl;
                 if (
                     redirectUrl.includes('login') ||
@@ -199,10 +200,10 @@ export class LoginComponent implements OnInit {
                 const errorMessage = error.message;
                 console.log('error', errorCode, errorMessage);
                 if (errorCode == 'auth/user-not-found') {
-                    alert("Aucun compte n'est associé à cet email.");
+                    this.error = "Aucun compte n'est associé à cet email.";
                 }
                 if (errorCode == 'auth/invalid-email') {
-                    alert('Email invalide.');
+                    this.error = 'Email invalide.';
                 }
                 this.isLoading = false;
             });
