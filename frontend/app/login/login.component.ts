@@ -183,8 +183,16 @@ export class LoginComponent implements OnInit {
                         this.email +
                         '.'
                 );
+                let redirectUrl = this.redirectUrl;
+                if (
+                    redirectUrl.includes('login') ||
+                    redirectUrl.includes('register')
+                )
+                    redirectUrl = '/';
                 this.isLoading = false;
-                this.router.navigate(['/login']);
+                this.router.navigate(['/login'], {
+                    queryParams: { redirectUrl: redirectUrl },
+                });
             })
             .catch((error) => {
                 const errorCode = error.code;

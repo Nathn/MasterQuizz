@@ -17,18 +17,11 @@ import { AuthService } from './auth.service';
 export class AppComponent implements OnInit, OnDestroy {
     title = 'MasterQuizz';
     waiting: boolean = window.location.href.includes('masterquizz.fr');
-    countDownDate: number = new Date('Sep 05, 2023 12:00:00').getTime();
+    countDownDate: number = new Date('Sep 05, 2023 14:00:00').getTime();
     waitingMessage: string = '';
 
     //keep refs to subscriptions to be able to unsubscribe later
-    private popupOpenSubscription!: Subscription;
-    private popupCloseSubscription!: Subscription;
-    private initializingSubscription!: Subscription;
-    private initializedSubscription!: Subscription;
-    private initializationErrorSubscription!: Subscription;
     private statusChangeSubscription!: Subscription;
-    private revokeChoiceSubscription!: Subscription;
-    private noCookieLawSubscription!: Subscription;
 
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
@@ -71,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 if (distance < 0) {
                     clearInterval(x);
                     this.waitingMessage = ':)';
+                    this.waiting = false;
                 }
             }, 1000);
         }
@@ -152,13 +146,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         // unsubscribe to cookieconsent observables to prevent memory leaks
-        this.popupOpenSubscription.unsubscribe();
-        this.popupCloseSubscription.unsubscribe();
-        this.initializingSubscription.unsubscribe();
-        this.initializedSubscription.unsubscribe();
-        this.initializationErrorSubscription.unsubscribe();
         this.statusChangeSubscription.unsubscribe();
-        this.revokeChoiceSubscription.unsubscribe();
-        this.noCookieLawSubscription.unsubscribe();
     }
 }
