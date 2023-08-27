@@ -354,4 +354,97 @@ router.post("/editAvatar", async (req, res) => {
     }
 });
 
+router.post("/updateRemainingQuestions", async (req, res) => {
+    /*
+    This route is used to update the remaining questions of a user.
+    If the user has no remaining questions, set the value of timeBeforeQuestionRefill to Date.now + 24h.
+    */
+    try {
+        console.log("[SERVER] Updating remaining questions");
+        console.log(
+            `[SERVER] Updating remaining questions of user ${req.body.userId} to ${req.body.remainingQuestions}`
+        );
+        await User.findOneAndUpdate(
+            {
+                _id: req.body.userId,
+            },
+            {
+                remainingQuestions: req.body.remainingQuestions,
+            }
+        )
+            .exec()
+            .then((user) => {
+                if (!user) {
+                    console.log(
+                        `[SERVER] User not found while updating remaining questions`
+                    );
+                    res.status(200).json({
+                        message: "Utilisateur introuvable.",
+                    });
+                } else {
+                    console.log(
+                        `[SERVER] Remaining questions updated: ${user.remainingQuestions}`
+                    );
+                    if (user.remainingQuestions === 0) {
+                        console.log(
+                            `[SERVER] Setting refillQuestionsTime to ${
+                                Date.now() + 86400000
+                            }`
+                        );
+                        User.findOneAndUpdate(
+                            {
+                                _id: req.body.userId,
+                            },
+                            {
+                                timeBeforeQuestionRefill: Date.now() + 86400000,
+                            }
+                        )
+                            .exec()
+                            .then((user) => {
+                                if (!user) {
+                                    console.log(
+                                        `[SERVER] User not found while setting refillQuetimeBeforeQuestionRefillstionsTime`
+                                    );
+                                    res.status(200).json({
+                                        message: "Utilisateur introuvable.",
+                                    });
+                                } else {
+                                    console.log(
+                                        `[SERVER] refillQuestionsTime set: ${user.timeBeforeQuestionRefill}`
+                                    );
+                                    res.status(200).json({
+                                        message: "OK",
+                                        userObj: user,
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log(
+                                    `[SERVER] An error occured while setting refillQuestionsTime: ${err}`
+                                );
+                                res.status(500).json({
+                                    message: "Internal server error",
+                                });
+                            });
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while updating remaining questions: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error",
+                });
+            });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occured while updating remaining questions: ${err}`
+        );
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 module.exports = router;

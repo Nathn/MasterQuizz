@@ -133,7 +133,7 @@ form {
         margin-top: 15px;
 
         span {
-            color: $link-color;
+            color: $primary-link-color;
             cursor: pointer;
             text-decoration: none;
             transition: color 0.3s ease-in-out;
@@ -149,7 +149,7 @@ form {
                 left: 0;
                 width: 0;
                 height: 2px;
-                background-color: $link-color;
+                background-color: $primary-link-color;
                 transition: width 0.3s ease-in-out;
             }
 

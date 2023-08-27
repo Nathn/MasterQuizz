@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true,
     },
+    remainingQuestions: {
+        type: Number,
+        default: 15,
+    },
+    timeBeforeQuestionRefill: {
+        type: Date,
+    },
     stats: {
         questions: {
             right: {

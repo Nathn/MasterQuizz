@@ -21,6 +21,14 @@
         moduleType="question"
         (validatedAnswer)="validatedAnswer($event)"
         (nextQuestion)="nextQuestion($event)"
+        [moduleParams]="{
+            userIsLogged: userObj ? true : false,
+            noMoreAllowedQuestions: noMoreAllowedQuestions,
+            timeBeforeQuestionRefill: userObj && noMoreAllowedQuestions
+                ? userObj.timeBeforeQuestionRefill
+                : null,
+            waitingMessage: waitingMessage,
+        }"
     ></app-home-module>
     <app-home-module
         class="home-module"

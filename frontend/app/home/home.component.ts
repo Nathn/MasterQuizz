@@ -21,15 +21,36 @@ export class HomeComponent {
         ? JSON.parse(localStorage.getItem('randomQuestion') || '')
         : null;
     nextRandomQuestion: any;
+    noMoreAllowedQuestions: boolean = false;
+    waitingMessage: string = '';
 
     rankedUsers: any = [];
 
     constructor(private http: HttpClient, private authService: AuthService) {
-        if (!this.randomQuestion) {
+        if (this.userObj) {
+            if (this.userObj.remainingQuestions <= 0) {
+                this.noMoreAllowedQuestions = true;
+                localStorage.setItem('remainingQuestions', '0');
+                this.calculateRemainingTime();
+            }
+        } else {
+            if (localStorage.getItem('remainingQuestions')) {
+                if (
+                    parseInt(
+                        localStorage.getItem('remainingQuestions') || ''
+                    ) <= 0
+                )
+                    this.noMoreAllowedQuestions = true;
+            } else {
+                localStorage.setItem('remainingQuestions', '6');
+            }
+        }
+        if (!this.randomQuestion && !this.noMoreAllowedQuestions) {
             this.http
                 .post(environment.apiUrl + 'getRandomQuestion', {})
                 .subscribe((res: any) => {
                     this.randomQuestion = res.question;
+                    this.updateRemainingQuestions();
                     localStorage.setItem(
                         'randomQuestion',
                         JSON.stringify(res.question)
@@ -49,6 +70,13 @@ export class HomeComponent {
                         .getCurrentUserInfo()
                         .subscribe((userObj: any) => {
                             this.userObj = userObj ? userObj : null;
+                            if (this.userObj) {
+                                this.noMoreAllowedQuestions =
+                                    this.userObj.remainingQuestions <= 0;
+                                if (this.noMoreAllowedQuestions) {
+                                    this.calculateRemainingTime();
+                                }
+                            }
                         });
                 } else {
                     this.userObj = null;
@@ -80,6 +108,7 @@ export class HomeComponent {
 
     nextQuestion(event: any) {
         if (this.nextRandomQuestion) {
+            this.updateRemainingQuestions();
             this.randomQuestion = this.nextRandomQuestion;
             this.nextRandomQuestion = null;
         } else {
@@ -87,12 +116,82 @@ export class HomeComponent {
                 .post(environment.apiUrl + 'getRandomQuestion', {})
                 .subscribe((res: any) => {
                     this.randomQuestion = res.question;
+                    this.updateRemainingQuestions();
                     localStorage.setItem(
                         'randomQuestion',
                         JSON.stringify(res.question)
                     );
                 });
         }
+    }
+
+    updateRemainingQuestions() {
+        if (this.userObj) {
+            this.userObj.remainingQuestions--;
+            this.http
+                .post(environment.apiUrl + 'updateRemainingQuestions', {
+                    userId: this.userObj._id,
+                    remainingQuestions: this.userObj.remainingQuestions,
+                })
+                .subscribe((res: any) => {
+                    if (res.userObj) {
+                        this.userObj = res.userObj;
+                        if (this.userObj.remainingQuestions <= 0) {
+                            this.noMoreAllowedQuestions = true;
+                            localStorage.setItem('remainingQuestions', '0');
+                            this.calculateRemainingTime();
+                        }
+                    }
+                });
+        } else {
+            localStorage.setItem(
+                'remainingQuestions',
+                (
+                    parseInt(localStorage.getItem('remainingQuestions') || '') -
+                    1
+                ).toString()
+            );
+            if (parseInt(localStorage.getItem('remainingQuestions') || '') <= 0)
+                this.noMoreAllowedQuestions = true;
+        }
+    }
+
+    calculateRemainingTime() {
+        let x = setInterval(() => {
+            try {
+                let now = new Date().getTime();
+                let target = new Date(
+                    this.userObj.timeBeforeQuestionRefill
+                ).getTime();
+                let distance = target - now;
+                let hours = Math.floor(
+                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+                );
+                let minutes = Math.floor(
+                    (distance % (1000 * 60 * 60)) / (1000 * 60)
+                );
+                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+                    this.waitingMessage = '';
+                } else {
+                    this.waitingMessage =
+                        (hours < 10 ? '0' : '') +
+                        hours +
+                        ':' +
+                        (minutes < 10 ? '0' : '') +
+                        minutes +
+                        ':' +
+                        (seconds < 10 ? '0' : '') +
+                        seconds;
+                }
+                if (distance < 0) {
+                    clearInterval(x);
+                }
+            } catch (e) {
+                console.log(e);
+                clearInterval(x);
+            }
+        }, 1000);
     }
 
     closeLongModule() {

@@ -2,7 +2,11 @@
     {{ moduleTitle }}
 </div>
 <div
-    *ngIf="moduleType == 'question' && question"
+    *ngIf="
+        moduleType == 'question' &&
+        question &&
+        !moduleParams.noMoreAllowedQuestions
+    "
     class="module-content-container"
 >
     <app-question
@@ -27,6 +31,25 @@
         >
             Valider
         </button>
+    </div>
+</div>
+<div
+    *ngIf="moduleType == 'question' && moduleParams.noMoreAllowedQuestions"
+    class="module-content-container"
+>
+    <div class="results">
+        Vous avez répondu à toutes les questions autorisées pour aujourd'hui.
+        <br />
+        <span *ngIf="moduleParams.userIsLogged">
+            Revenez demain pour continuer à jouer !
+            <br />
+            <span *ngIf="moduleParams.waitingMessage">Temps restant :</span>
+            {{ moduleParams.waitingMessage }}
+        </span>
+        <span *ngIf="!moduleParams.userIsLogged">
+            <a routerLink="/register">Créez un compte</a> pour continuer à jouer
+            et grimper dans les classements !
+        </span>
     </div>
 </div>
 <div

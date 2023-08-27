@@ -117,4 +117,9 @@
     margin: 20px auto;
     color: $secondary-text-color;
     font-size: 1.2rem;
+    text-wrap: balance;
+
+    a {
+        color: $secondary-link-color;
+    }
 }
