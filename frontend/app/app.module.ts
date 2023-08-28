@@ -59,6 +59,7 @@ import {
     faStar,
     faUpload,
     faPaperPlane,
+    faCircleCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -108,6 +109,7 @@ export class AppModule {
             faSpinner,
             faCheck,
             faTimes,
+            faCircleCheck,
             faCircleXmark,
             faXmark,
             faBars,

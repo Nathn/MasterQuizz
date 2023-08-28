@@ -27,7 +27,8 @@
 </div>
 <div class="main" *ngIf="duelId && duelObj">
     <h1>
-        <span> C'est l'heure du duel ! </span>
+        <span *ngIf="status != 'ended'"> C'est l'heure du duel ! </span>
+        <span *ngIf="status == 'ended'"> Duel terminé ! </span>
         <span>
             <a
                 class="avatar-container"
@@ -100,6 +101,7 @@
             matchObj: duelObj,
             eloChange: eloChange,
             scores: scores,
+            answers: answers,
         }"
         (selectedAnswer)="selectedAnswer($event)"
         (validatedAnswer)="validatedAnswer($event)"

@@ -123,7 +123,7 @@ form {
 
     .form-error {
         display: block;
-        color: $error-color;
+        color: $primary-error-color;
         font-size: larger;
         font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
         margin-bottom: 15px;
@@ -167,7 +167,7 @@ form {
 }
 
 .success-message {
-    color: $success-color;
+    color: $primary-success-color;
     font-size: larger;
     font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
     text-align: center;

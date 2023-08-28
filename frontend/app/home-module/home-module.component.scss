@@ -114,12 +114,31 @@
 }
 
 .results {
-    margin: 20px auto;
+    margin: 25px auto;
     color: $secondary-text-color;
     font-size: 1.2rem;
     text-wrap: balance;
 
     a {
         color: $secondary-link-color;
+    }
+
+    .answers {
+        margin: 5px auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        fa-icon {
+            margin: 0 3px;
+        }
+
+        .correct {
+            color: $secondary-success-color;
+        }
+
+        .incorrect {
+            color: $secondary-error-color;
+        }
     }
 }

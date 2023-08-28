@@ -17,15 +17,11 @@ const matchSchema = new mongoose.Schema({
         default: 0,
     },
     answers: [
-        [
-            {
-                user: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: "User",
-                },
-                answerIndex: Number,
-            },
-        ],
+        {
+            type: Map,
+            of: Number,
+            default: {},
+        },
     ],
     started: {
         type: Number,

@@ -108,7 +108,9 @@ var userWebSockets = {};
 wss.on("connection", (ws) => {
     console.log("[WS] Connected to a client");
     ws.on("message", (message) => {
-        console.log(`[WS] Request received: ${message}`);
+        console.log(
+            `[WS] [${new Date().toLocaleString()}] Request received: ${message}`
+        );
         // example message : {
         //   type: "duel",
         //   action: "find",
