@@ -186,6 +186,20 @@ export class HomeComponent {
                 }
                 if (distance < 0) {
                     clearInterval(x);
+                    this.noMoreAllowedQuestions = false;
+                    this.waitingMessage = '';
+                    this.http
+                        .post(environment.apiUrl + 'updateRemainingQuestions', {
+                            userId: this.userObj._id,
+                            remainingQuestions: 15,
+                        })
+                        .subscribe((res: any) => {
+                            if (res.userObj) {
+                                this.userObj = res.userObj;
+                            }
+                            this.userObj.remainingQuestions = 15;
+                            this.nextQuestion(null);
+                        });
                 }
             } catch (e) {
                 console.log(e);
