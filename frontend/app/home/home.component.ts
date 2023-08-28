@@ -47,7 +47,9 @@ export class HomeComponent {
         }
         if (!this.randomQuestion && !this.noMoreAllowedQuestions) {
             this.http
-                .post(environment.apiUrl + 'getRandomQuestion', {})
+                .post(environment.apiUrl + 'getRandomQuestion', {
+                    user_id: this.userObj ? this.userObj._id : null,
+                })
                 .subscribe((res: any) => {
                     this.randomQuestion = res.question;
                     this.updateRemainingQuestions();
@@ -96,7 +98,9 @@ export class HomeComponent {
                 .subscribe((res: any) => {});
         }
         this.http
-            .post(environment.apiUrl + 'getRandomQuestion', {})
+            .post(environment.apiUrl + 'getRandomQuestion', {
+                user_id: this.userObj ? this.userObj._id : null,
+            })
             .subscribe((res: any) => {
                 this.nextRandomQuestion = res.question;
                 localStorage.setItem(
@@ -113,14 +117,20 @@ export class HomeComponent {
             this.nextRandomQuestion = null;
         } else {
             this.http
-                .post(environment.apiUrl + 'getRandomQuestion', {})
+                .post(environment.apiUrl + 'getRandomQuestion', {
+                    user_id: this.userObj ? this.userObj._id : null,
+                })
                 .subscribe((res: any) => {
-                    this.randomQuestion = res.question;
-                    this.updateRemainingQuestions();
-                    localStorage.setItem(
-                        'randomQuestion',
-                        JSON.stringify(res.question)
-                    );
+                    if (res.question) {
+                        this.randomQuestion = res.question;
+                        this.updateRemainingQuestions();
+                        localStorage.setItem(
+                            'randomQuestion',
+                            JSON.stringify(res.question)
+                        );
+                    } else {
+                        this.noMoreAllowedQuestions = true;
+                    }
                 });
         }
     }

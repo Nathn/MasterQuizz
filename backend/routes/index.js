@@ -12,7 +12,11 @@ const userRoutes = require("./userRoutes");
 
 // console.log each request
 router.use((req, res, next) => {
-    console.log("[SERVER] Request received: " + req.method + " " + req.url);
+    console.log(
+        `[SERVER] [${new Date().toLocaleString()}] Request received: ${
+            req.method
+        } ${req.url}`
+    );
     next();
 });
 

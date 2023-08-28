@@ -134,6 +134,30 @@ router.post("/deleteQuestion", async (req, res) => {
 router.post("/getRandomQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Getting a random question`);
+        if (req.body.user_id) {
+            // Get the user
+            await User.findOne({
+                _id: req.body.user_id,
+            })
+                .exec()
+                .then((user) => {
+                    if (user && user.remainingQuestions <= 0) {
+                        console.log(`[SERVER] User has no remaining questions`);
+                        res.status(200).json({
+                            message: "OK",
+                            question: null,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log(
+                        `[SERVER] An error occured while getting a random question: ${err}`
+                    );
+                    res.status(500).json({
+                        message: "Internal server error",
+                    });
+                });
+        }
         await Question.aggregate([
             {
                 $sample: {
@@ -312,7 +336,9 @@ router.post("/updateQuestionStats", async (req, res) => {
                         `[SERVER] Question not found while updating question stats`
                     );
                 } else {
-                    console.log(`[SERVER] Question updated: ${question._id}`);
+                    console.log(
+                        `[SERVER] Question updated: ${req.body.question_id}`
+                    );
                     await User.updateOne(
                         {
                             _id: req.body.user_id,
@@ -339,7 +365,7 @@ router.post("/updateQuestionStats", async (req, res) => {
                                 });
                             } else {
                                 console.log(
-                                    `[SERVER] User updated: ${user._id}`
+                                    `[SERVER] User updated: ${req.body.user_id}`
                                 );
                                 res.status(200).json({
                                     message: "OK",
