@@ -94,90 +94,68 @@
     class="module-content-container"
 >
     <div class="results">
+        <h3 *ngIf="moduleParams.matchObj.winner">Vainqueur :</h3>
         <h2 *ngIf="moduleParams.matchObj.winner">
-            Vainqueur :<br />
+            <img
+                [src]="moduleParams.matchObj.winner.avatarUrl"
+                alt="Avatar"
+                height="32"
+                width="232"
+                class="avatar"
+            />
             {{
                 moduleParams.matchObj.winner.displayName ||
                     moduleParams.matchObj.winner.username
             }}
         </h2>
         <h2 *ngIf="!moduleParams.matchObj.winner">Match nul</h2>
-        <br />
-        {{
-            moduleParams.matchObj.users[0].displayName ||
-                moduleParams.matchObj.users[0].username
-        }}
-        :
-        {{ moduleParams.scores[moduleParams.matchObj.users[0]._id] }}/10
-        <br />
-        <div class="answers">
-            <div
-                class="icon"
-                *ngFor="let answer of moduleParams.answers; let i = index"
-            >
-                <fa-icon
-                    *ngIf="
-                        moduleParams.matchObj.questions[i].answers[
-                            moduleParams.answers[i][
-                                moduleParams.matchObj.users[0]._id
-                            ]
-                        ].correct
-                    "
-                    [icon]="['fas', 'circle-check']"
-                    class="correct"
-                ></fa-icon>
-                <fa-icon
-                    *ngIf="
-                        !moduleParams.matchObj.questions[i].answers[
-                            moduleParams.answers[i][
-                                moduleParams.matchObj.users[0]._id
-                            ]
-                        ].correct
-                    "
-                    [icon]="['fas', 'circle-xmark']"
-                    class="incorrect"
-                ></fa-icon>
+        <div
+            class="individual-results"
+            *ngFor="let user of moduleParams.matchObj.users"
+        >
+            <br />
+            {{ user.displayName || user.username }}
+            :
+            {{ moduleParams.scores[user._id] }}/10
+            <br />
+            <div class="answers">
+                <div
+                    class="icon"
+                    *ngFor="let answer of moduleParams.answers; let i = index"
+                    [title]="moduleParams.matchObj.questions[i].question"
+                >
+                    <fa-icon
+                        *ngIf="
+                            moduleParams.matchObj.questions[i].answers[
+                                moduleParams.answers[i][user._id]
+                            ].correct
+                        "
+                        [icon]="['fas', 'circle-check']"
+                        class="correct"
+                    ></fa-icon>
+                    <fa-icon
+                        *ngIf="
+                            !moduleParams.matchObj.questions[i].answers[
+                                moduleParams.answers[i][user._id]
+                            ].correct
+                        "
+                        [icon]="['fas', 'circle-xmark']"
+                        class="incorrect"
+                    ></fa-icon>
+                </div>
             </div>
         </div>
-        <br /><br />
-        {{
-            moduleParams.matchObj.users[1].displayName ||
-                moduleParams.matchObj.users[1].username
-        }}
-        :
-        {{ moduleParams.scores[moduleParams.matchObj.users[1]._id] }}/10
-        <br />
-        <div class="answers">
-            <div
-                class="icon"
-                *ngFor="let answer of moduleParams.answers; let i = index"
-            >
-                <fa-icon
-                    *ngIf="
-                        moduleParams.matchObj.questions[i].answers[
-                            moduleParams.answers[i][
-                                moduleParams.matchObj.users[0]._id
-                            ]
-                        ].correct
-                    "
-                    [icon]="['fas', 'circle-check']"
-                    class="correct"
-                ></fa-icon>
-                <fa-icon
-                    *ngIf="
-                        !moduleParams.matchObj.questions[i].answers[
-                            moduleParams.answers[i][
-                                moduleParams.matchObj.users[0]._id
-                            ]
-                        ].correct
-                    "
-                    [icon]="['fas', 'circle-xmark']"
-                    class="incorrect"
-                ></fa-icon>
-            </div>
-        </div>
-        <br />
-        <span *ngIf="moduleParams.eloChange">
+        <span
+            *ngIf="moduleParams.eloChange"
+            [class]="
+                'elo-change' +
+                (moduleParams.eloChange > 0
+                    ? ' positive'
+                    : moduleParams.eloChange < 0
+                    ? ' negative'
+                    : '')
+            "
+        >
             {{ moduleParams.eloChange > 0 ? "+" : ""
             }}{{ moduleParams.eloChange }}&nbsp;🏆
         </span>

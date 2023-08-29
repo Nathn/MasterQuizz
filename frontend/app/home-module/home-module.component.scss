@@ -119,8 +119,20 @@
     font-size: 1.2rem;
     text-wrap: balance;
 
-    a {
-        color: $secondary-link-color;
+    h2 {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 5px;
+
+        img {
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            border: 1px solid $secondary-text-color;
+        }
     }
 
     .answers {
@@ -140,5 +152,23 @@
         .incorrect {
             color: $secondary-error-color;
         }
+    }
+
+    .elo-change {
+        display: block;
+        margin: 25px auto;
+        background-color: $quaternary-color;
+        color: $quaternary-text-color;
+        padding: 5px 14px;
+        width: min-content;
+        border-radius: 16px;
+    }
+
+    .elo-change.positive {
+        border: 1px solid $secondary-success-color;
+    }
+
+    .elo-change.negative {
+        border: 1px solid $secondary-error-color;
     }
 }
