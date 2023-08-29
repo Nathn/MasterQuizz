@@ -137,11 +137,10 @@ export class HomeComponent {
 
     updateRemainingQuestions() {
         if (this.userObj) {
-            this.userObj.remainingQuestions--;
             this.http
                 .post(environment.apiUrl + 'updateRemainingQuestions', {
                     userId: this.userObj._id,
-                    remainingQuestions: this.userObj.remainingQuestions,
+                    remainingQuestions: this.userObj.remainingQuestions - 1,
                 })
                 .subscribe((res: any) => {
                     if (res.userObj) {
@@ -198,18 +197,23 @@ export class HomeComponent {
                     clearInterval(x);
                     this.noMoreAllowedQuestions = false;
                     this.waitingMessage = '';
-                    this.http
-                        .post(environment.apiUrl + 'updateRemainingQuestions', {
-                            userId: this.userObj._id,
-                            remainingQuestions: 15,
-                        })
-                        .subscribe((res: any) => {
-                            if (res.userObj) {
-                                this.userObj = res.userObj;
-                            }
-                            this.userObj.remainingQuestions = 15;
-                            this.nextQuestion(null);
-                        });
+                    if (this.userObj.timeBeforeQuestionRefill) {
+                        this.http
+                            .post(
+                                environment.apiUrl + 'updateRemainingQuestions',
+                                {
+                                    userId: this.userObj._id,
+                                    remainingQuestions: 15,
+                                }
+                            )
+                            .subscribe((res: any) => {
+                                if (res.userObj) {
+                                    this.userObj = res.userObj;
+                                }
+                                this.userObj.remainingQuestions = 15;
+                                this.nextQuestion(null);
+                            });
+                    }
                 }
             } catch (e) {
                 console.log(e);

@@ -383,9 +383,9 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                     });
                 } else {
                     console.log(
-                        `[SERVER] Remaining questions updated: ${user.remainingQuestions}`
+                        `[SERVER] Remaining questions updated: ${req.body.remainingQuestions}`
                     );
-                    if (user.remainingQuestions === 0) {
+                    if (user.remainingQuestions <= 1) {
                         console.log(
                             `[SERVER] Setting refillQuestionsTime to ${
                                 Date.now() + 86400000
@@ -410,7 +410,9 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                     });
                                 } else {
                                     console.log(
-                                        `[SERVER] refillQuestionsTime set: ${user.timeBeforeQuestionRefill}`
+                                        `[SERVER] refillQuestionsTime set: ${
+                                            Date.now() + 86400000
+                                        }`
                                     );
                                     res.status(200).json({
                                         message: "OK",
@@ -425,6 +427,35 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                 res.status(500).json({
                                     message: "Internal server error",
                                 });
+                            });
+                    } else if (user.timeBeforeQuestionRefill) {
+                        console.log(`[SERVER] Removing refillQuestionsTime`);
+                        User.findOneAndUpdate(
+                            {
+                                _id: req.body.userId,
+                            },
+                            {
+                                timeBeforeQuestionRefill: null,
+                            }
+                        )
+                            .exec()
+                            .then((user) => {
+                                if (!user) {
+                                    console.log(
+                                        `[SERVER] User not found while removing refillQuestionsTime`
+                                    );
+                                    res.status(200).json({
+                                        message: "Utilisateur introuvable.",
+                                    });
+                                } else {
+                                    console.log(
+                                        `[SERVER] refillQuestionsTime removed`
+                                    );
+                                    res.status(200).json({
+                                        message: "OK",
+                                        userObj: user,
+                                    });
+                                }
                             });
                     }
                 }
