@@ -199,6 +199,7 @@ function start(request, ws, userWebSockets) {
                                 {
                                     $match: {
                                         difficulty: { $in: [1, 2] },
+                                        online: true,
                                     },
                                 },
                                 { $sample: { size: 1 } },
@@ -702,6 +703,7 @@ function answer(request, ws, userWebSockets) {
                                                         ) + 1,
                                                     ],
                                                 },
+                                                online: true,
                                             },
                                         },
                                         { $sample: { size: 1 } },

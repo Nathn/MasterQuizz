@@ -25,6 +25,10 @@ const questionSchema = new mongoose.Schema({
         min: 1,
         max: 5,
     },
+    online: {
+        type: Boolean,
+        default: true,
+    },
     question: {
         type: String,
         required: true,

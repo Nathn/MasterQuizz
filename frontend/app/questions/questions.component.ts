@@ -67,52 +67,59 @@ export class QuestionsComponent {
         private http: HttpClient,
         private authService: AuthService
     ) {
-        if (!this.authService.isAuthenticated()) {
-            this.router.navigate([`/login`], {
-                queryParams: { redirectUrl: this.router.url },
-            });
-            return;
-        } else {
-            this.authService.getCurrentUserInfo().subscribe((userObj: any) => {
-                this.userObj = userObj ? userObj : null; // Update userObj (in case user just logged in)
-                if (!this.userObj) {
-                    this.router.navigate([`/login`], {
-                        queryParams: { redirectUrl: this.router.url },
-                    });
-                    return;
-                }
-                if (!this.userObj.admin) {
-                    this.router.navigate(['']);
-                    return;
-                }
-                this.authService.onAuthStateChanged(
-                    this.authService.getAuth(),
-                    async (user) => {
-                        if (user) {
-                            if (!this.userObj.admin) {
-                                this.router.navigate(['']);
-                                return;
-                            }
-                        } else {
+        this.ar.params.subscribe((params) => {
+            this.action = params['action'];
+            if (!this.authService.isAuthenticated()) {
+                this.router.navigate([`/login`], {
+                    queryParams: { redirectUrl: this.router.url },
+                });
+                return;
+            } else {
+                this.authService
+                    .getCurrentUserInfo()
+                    .subscribe((userObj: any) => {
+                        this.userObj = userObj ? userObj : null; // Update userObj (in case user just logged in)
+                        if (!this.userObj) {
                             this.router.navigate([`/login`], {
                                 queryParams: { redirectUrl: this.router.url },
                             });
                             return;
                         }
-                    }
-                );
-            });
-        }
-        this.http
-            .post(environment.apiUrl + 'getAllThemes', {})
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    console.error(response.message);
-                } else {
-                    this.themes = response.themes;
-                    this.ar.params.subscribe((params) => {
+                        if (!this.userObj.admin && this.action != 'add') {
+                            this.router.navigate(['']);
+                            return;
+                        }
+                        this.authService.onAuthStateChanged(
+                            this.authService.getAuth(),
+                            async (user) => {
+                                if (user) {
+                                    if (
+                                        !this.userObj.admin &&
+                                        this.action != 'add'
+                                    ) {
+                                        this.router.navigate(['']);
+                                        return;
+                                    }
+                                } else {
+                                    this.router.navigate([`/login`], {
+                                        queryParams: {
+                                            redirectUrl: this.router.url,
+                                        },
+                                    });
+                                    return;
+                                }
+                            }
+                        );
+                    });
+            }
+            this.http
+                .post(environment.apiUrl + 'getAllThemes', {})
+                .subscribe((response: any) => {
+                    if (response.message != 'OK') {
+                        console.error(response.message);
+                    } else {
+                        this.themes = response.themes;
                         this.successMessage = '';
-                        this.action = params['action'];
                         if (!this.validActions.includes(this.action))
                             this.router.navigate(['/questions/manage']);
                         if (this.action == 'manage') this.getQuestions();
@@ -121,9 +128,9 @@ export class QuestionsComponent {
                             this.getQuestionInfo(this.questionEditedId);
                         }
                         this.isAuthLoading = false;
-                    });
-                }
-            });
+                    }
+                });
+        });
     }
 
     async getQuestions() {
@@ -248,13 +255,18 @@ export class QuestionsComponent {
                 goodAnswer: this.goodAnswer,
                 theme: this.themeSelected,
                 difficulty: this.difficulty,
-                user: this.userObj._id,
+                user_id: this.userObj._id,
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
                     console.error(response.message);
                 } else {
-                    this.successMessage = 'La question a bien été ajoutée.';
+                    if (this.userObj.admin) {
+                        this.successMessage = 'La question a bien été ajoutée.';
+                    } else {
+                        this.successMessage =
+                            'La question a bien été soumise aux administrateurs.';
+                    }
                     // reset form
                     this.question = '';
                     this.nbAnswers = 4;
@@ -285,7 +297,7 @@ export class QuestionsComponent {
                 goodAnswer: this.goodAnswer,
                 theme: this.themeSelected,
                 difficulty: this.difficulty,
-                user: this.userObj._id,
+                user_id: this.userObj._id,
             })
             .subscribe((response: any) => {
                 this.editSaved = true;
@@ -317,5 +329,20 @@ export class QuestionsComponent {
                     }
                 });
         }
+    }
+
+    switchQuestionOnlineStatus(question: any) {
+        this.http
+            .post(environment.apiUrl + 'switchQuestionOnlineStatus', {
+                question_id: question._id,
+                user_id: this.userObj._id,
+            })
+            .subscribe((response: any) => {
+                if (response.message != 'OK') {
+                    console.error(response.message);
+                } else {
+                    question.online = !question.online;
+                }
+            });
     }
 }

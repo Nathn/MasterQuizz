@@ -60,6 +60,7 @@ import {
     faUpload,
     faPaperPlane,
     faCircleCheck,
+    faCircleDot,
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -122,7 +123,8 @@ export class AppModule {
             faPlus,
             faStar,
             faUpload,
-            faPaperPlane
+            faPaperPlane,
+            faCircleDot
         );
     }
 }

@@ -9,7 +9,8 @@
     *ngIf="!isAuthLoading && (action == 'add' || action == 'edit')"
     (ngSubmit)="actionQuestion()"
 >
-    <h2>Ajouter une question</h2>
+    <h2 *ngIf="this.userObj && this.userObj.admin">Ajouter une question</h2>
+    <h2 *ngIf="this.userObj && !this.userObj.admin">Proposer une question</h2>
     <div class="field-container">
         <span class="success-message" *ngIf="successMessage">{{
             successMessage
@@ -121,7 +122,12 @@
         class="submit-button"
         [disabled]="!registerForm.valid || isRequestLoading"
     >
-        <span *ngIf="!isRequestLoading">Enregistrer</span>
+        <span *ngIf="!isRequestLoading && this.userObj && this.userObj.admin"
+            >Enregistrer</span
+        >
+        <span *ngIf="!isRequestLoading && this.userObj && !this.userObj.admin"
+            >Envoyer</span
+        >
         <span *ngIf="isRequestLoading">
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
@@ -133,6 +139,7 @@
         class="back-button"
         [disabled]="isRequestLoading"
         (click)="backToList()"
+        *ngIf="this.userObj && this.userObj.admin"
     >
         <span>Retourner à la liste des questions</span>
     </button>
@@ -178,6 +185,15 @@
                 <div class="question">
                     <div class="question-header">
                         <div class="question-title">
+                            <fa-icon
+                                [icon]="['fas', 'circle-dot']"
+                                [ngStyle]="{
+                                    color: question.online ? 'green' : 'red',
+                                    'margin-right': '5px',
+                                    cursor: 'pointer'
+                                }"
+                                (click)="switchQuestionOnlineStatus(question)"
+                            ></fa-icon>
                             <span>{{ question.question }}</span>
                         </div>
                     </div>

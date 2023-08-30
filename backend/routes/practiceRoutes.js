@@ -33,6 +33,7 @@ router.post("/getAvailableThemes", async (req, res) => {
                         let theme = themes[i];
                         let questions = await Question.find({
                             theme: theme._id,
+                            online: true,
                         }).exec();
                         let questionsByDifficulty = {
                             1: 0,

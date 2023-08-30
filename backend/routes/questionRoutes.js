@@ -13,13 +13,36 @@ router.post("/createQuestion", async (req, res) => {
         const theme = await Theme.findOne({
             code: req.body.theme,
         }).exec();
+        if (!theme) {
+            console.log(
+                `[SERVER] Theme not found while creating a new question`
+            );
+            res.status(200).json({
+                message: "Thème introuvable.",
+            });
+            return;
+        }
+        // Get the user executing the request
+        const user = await User.findOne({
+            _id: req.body.user_id,
+        }).exec();
+        if (!user) {
+            console.log(
+                `[SERVER] User not found while creating a new question`
+            );
+            res.status(200).json({
+                message: "Utilisateur introuvable.",
+            });
+            return;
+        }
         // Create a new question
         question = new Question({
             answers: req.body.answers,
             difficulty: req.body.difficulty,
             question: req.body.question,
             theme: theme,
-            user: req.body.user,
+            user: req.body.user_id,
+            online: user.admin,
         });
         await question.save();
         // And return a success message
@@ -54,7 +77,7 @@ router.post("/updateQuestion", async (req, res) => {
                 question: req.body.question,
                 theme: theme,
                 updated: Date.now(),
-                userUpdated: req.body.user,
+                userUpdated: req.body.user_id,
             }
         )
             .exec()
@@ -162,6 +185,11 @@ router.post("/getRandomQuestion", async (req, res) => {
             {
                 $sample: {
                     size: 1,
+                },
+            },
+            {
+                $match: {
+                    online: true,
                 },
             },
         ])
@@ -393,6 +421,80 @@ router.post("/updateQuestionStats", async (req, res) => {
     } catch (err) {
         console.log(
             `[SERVER] An error occured while updating question stats: ${err}`
+        );
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
+router.post("/switchQuestionOnlineStatus", async (req, res) => {
+    try {
+        console.log(
+            `[SERVER] Switching question online status: ${req.body.questionId}`
+        );
+        await Question.findOne({
+            _id: req.body.question_id,
+        })
+            .exec()
+            .then(async (question) => {
+                if (!question) {
+                    console.log(
+                        `[SERVER] Question not found while switching question online status`
+                    );
+                    res.status(200).json({
+                        message: "Question introuvable.",
+                    });
+                } else {
+                    await Question.updateOne(
+                        {
+                            _id: req.body.question_id,
+                        },
+                        {
+                            online: !question.online,
+                            updated: Date.now(),
+                            userUpdated: req.body.user_id,
+                        }
+                    )
+                        .exec()
+                        .then((question) => {
+                            if (!question) {
+                                console.log(
+                                    `[SERVER] Question not found while switching question online status`
+                                );
+                                res.status(200).json({
+                                    message: "Question introuvable.",
+                                });
+                            } else {
+                                console.log(
+                                    `[SERVER] Question updated: ${req.body.question_id}`
+                                );
+                                res.status(200).json({
+                                    message: "OK",
+                                });
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(
+                                `[SERVER] An error occured while switching question online status: ${err}`
+                            );
+                            res.status(500).json({
+                                message: "Internal server error",
+                            });
+                        });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while switching question online status: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error",
+                });
+            });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occured while switching question online status: ${err}`
         );
         res.status(500).json({
             message: "Internal server error",
