@@ -1,0 +1,53 @@
+@import "../../styles/variables";
+
+h1 {
+    font-size: xx-large;
+    text-align: center !important;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2 {
+    font-size: x-large;
+    text-align: left !important;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.link-boxes-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 15px;
+
+    .link-box {
+        min-width: 250px;
+        min-height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+        background: $secondary-color;
+        background-size: cover;
+        border-radius: 12px;
+        position: relative;
+        padding: 20px 0px;
+        text-align: center;
+        text-decoration: none;
+
+        span {
+            font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 2.2em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: $primary-text-color;
+            text-shadow: -1px -1px 0 $secondary-text-color,
+                1px -1px 0 $secondary-text-color,
+                -1px 1px 0 $secondary-text-color,
+                1px 1px 0 $secondary-text-color;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+    }
+}

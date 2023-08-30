@@ -16,6 +16,11 @@ const themeSchema = new mongoose.Schema({
         minlength: 2,
         maxlength: 2,
     },
+    image: {
+        type: String,
+        required: false,
+        trim: true,
+    },
 });
 
 themeSchema.plugin(mongodbErrorHandler);

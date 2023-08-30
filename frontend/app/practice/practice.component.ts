@@ -16,6 +16,7 @@ export class PracticeComponent {
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
 
+    isLoading: boolean = true;
     availableThemes: any = [];
 
     constructor(
@@ -42,6 +43,7 @@ export class PracticeComponent {
             .post(environment.apiUrl + 'getAvailableThemes', {})
             .subscribe((res: any) => {
                 if (res.themes) this.availableThemes = res.themes;
+                this.isLoading = false;
             });
     }
 }
