@@ -1,4 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    SimpleChanges,
+} from '@angular/core';
 
 @Component({
     selector: 'app-home-module',
@@ -20,6 +26,14 @@ export class HomeModuleComponent {
     answerValidated: boolean = false;
 
     constructor() {}
+
+    ngOnChanges(changes: SimpleChanges) {
+        // if moduleParams.answerValidated is changed, change answerValidated
+        if (changes['moduleParams'] && changes['moduleParams'].currentValue) {
+            this.answerValidated =
+                changes['moduleParams'].currentValue.answerValidated;
+        }
+    }
 
     selectAnswer(event: any) {
         this.selectedAnswer.emit(event);

@@ -33,6 +33,7 @@ export class DuelComponent implements OnDestroy {
     nextQuestionReady: boolean = false;
     opponent: object = {};
     hideAnswers: boolean = false;
+    answerValidated: boolean = false;
 
     eloChange: any;
     scores: any;
@@ -151,6 +152,9 @@ export class DuelComponent implements OnDestroy {
                             message.match.currentQuestion ==
                             this.currentQuestionIndex
                         ) {
+                            if (message.user == this.userObj._id) {
+                                this.answerValidated = true;
+                            }
                             this.nextQuestionReady = false;
                             this.hideAnswers = true;
                         }
@@ -229,6 +233,7 @@ export class DuelComponent implements OnDestroy {
     }
 
     validatedAnswer(event: any) {
+        this.answerValidated = true;
         this.ws.send({
             type: 'duel',
             action: 'answer',
@@ -246,6 +251,7 @@ export class DuelComponent implements OnDestroy {
         this.nextQuestionReady = false;
         this.hideAnswers = true;
         this.opponent = {};
+        this.answerValidated = false;
         if (this.status == 'ended') {
             this.router.navigate(['multiplayer']);
         }

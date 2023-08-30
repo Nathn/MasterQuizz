@@ -291,6 +291,28 @@ function start(request, ws, userWebSockets) {
                                                 question,
                                             })
                                         );
+                                        if (
+                                            match.answers.length >
+                                                match.currentQuestion &&
+                                            match.answers[match.currentQuestion]
+                                                .size > 0 &&
+                                            match.answers[
+                                                match.currentQuestion
+                                            ].has(request.user.toString())
+                                        ) {
+                                            console.log(
+                                                `[WS] User already answered the question`
+                                            );
+                                            ws.send(
+                                                JSON.stringify({
+                                                    message: "OK",
+                                                    type: "duel",
+                                                    status: "waitingforanswer",
+                                                    match,
+                                                    user: request.user,
+                                                })
+                                            );
+                                        }
                                     });
                             });
                         }
@@ -368,7 +390,10 @@ function answer(request, ws, userWebSockets) {
                 // Check if the other user already answered
                 if (
                     match.answers.length > match.currentQuestion &&
-                    match.answers[match.currentQuestion].size > 0
+                    match.answers[match.currentQuestion].size > 0 &&
+                    !match.answers[match.currentQuestion].has(
+                        request.user.toString()
+                    )
                 ) {
                     console.log(`[WS] Second user answered the question`);
                     match.answers[match.currentQuestion].set(
@@ -766,6 +791,22 @@ function answer(request, ws, userWebSockets) {
                                 }
                             });
                     });
+                } else if (
+                    match.answers.length > match.currentQuestion &&
+                    match.answers[match.currentQuestion].size > 0 &&
+                    match.answers[match.currentQuestion].has(
+                        request.user.toString()
+                    )
+                ) {
+                    console.log(`[WS] User already answered the question`);
+                    ws.send(
+                        JSON.stringify({
+                            message: "OK",
+                            type: "duel",
+                            status: "waitingforanswer",
+                            match,
+                        })
+                    );
                 } else {
                     console.log(`[WS] First user answered the question`);
                     // Save the answer
