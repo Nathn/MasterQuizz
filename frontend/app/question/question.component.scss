@@ -114,6 +114,16 @@ ul.quizzmodule-slide-answers {
     margin-right: 6px;
 }
 
+.answer-status-opponent {
+    right: 0;
+    position: absolute;
+    margin-right: 20px;
+    height: 26px;
+    width: 26px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+}
+
 label:hover:not(.answer-status):not(.answer-status-icon) {
     background-color: #ffe5ac;
 }

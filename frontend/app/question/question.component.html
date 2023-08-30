@@ -56,6 +56,19 @@
                     ></fa-icon>
                 </span>
                 {{ answer.answer }}
+                <img
+                    class="answer-status-opponent"
+                    *ngIf="
+                        questionOptions.opponent &&
+                        questionOptions.opponent.answer == i
+                    "
+                    src="{{ questionOptions.opponent.avatarUrl }}"
+                    title="Réponse de {{
+                        questionOptions.opponent.displayName
+                    }}"
+                    height="26"
+                    width="26"
+                />
             </label>
         </li>
     </ul>

@@ -59,7 +59,10 @@
     <app-question
         [question]="question"
         [answerValidated]="answerValidated"
-        [questionOptions]="{ hideAnswers: moduleParams.hideAnswers }"
+        [questionOptions]="{
+            hideAnswers: moduleParams.hideAnswers,
+            opponent: moduleParams.opponent || null,
+        }"
         (selectedAnswer)="selectAnswer($event)"
         [selectedAnswerIndex]="selectedAnswerIndex"
     ></app-question>

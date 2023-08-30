@@ -31,6 +31,7 @@ export class DuelComponent implements OnDestroy {
     nextQuestion: any = null;
     selectedAnswerIndex: number = -1;
     nextQuestionReady: boolean = false;
+    opponent: object = {};
     hideAnswers: boolean = false;
 
     eloChange: any;
@@ -158,6 +159,26 @@ export class DuelComponent implements OnDestroy {
                         (message.match.users[0]._id == this.userObj._id ||
                             message.match.users[1]._id == this.userObj._id)
                     ) {
+                        if (message.match.users[0]._id == this.userObj._id)
+                            this.opponent = {
+                                answer: message.match.answers[
+                                    this.currentQuestionIndex
+                                ][message.match.users[1]._id],
+                                avatarUrl: message.match.users[1].avatarUrl,
+                                displayName:
+                                    message.match.users[1].displayName ||
+                                    message.match.users[1].username,
+                            };
+                        else
+                            this.opponent = {
+                                answer: message.match.answers[
+                                    this.currentQuestionIndex
+                                ][message.match.users[0]._id],
+                                avatarUrl: message.match.users[0].avatarUrl,
+                                displayName:
+                                    message.match.users[0].displayName ||
+                                    message.match.users[0].username,
+                            };
                         this.nextQuestionReady = true;
                         this.hideAnswers = false;
                         this.nextQuestion = message.question;
@@ -224,6 +245,7 @@ export class DuelComponent implements OnDestroy {
         this.nextQuestion = null;
         this.nextQuestionReady = false;
         this.hideAnswers = true;
+        this.opponent = {};
         if (this.status == 'ended') {
             this.router.navigate(['multiplayer']);
         }

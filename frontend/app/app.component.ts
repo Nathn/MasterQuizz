@@ -99,10 +99,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     getMenuLinks() {
         this.menuLinks = [];
-        this.menuLinks.push({
-            text: 'Entraînement',
-            path: '/practice',
-        });
+        if (window.location.href.includes('localhost'))
+            this.menuLinks.push({
+                text: 'Entraînement',
+                path: '/practice',
+            });
         this.menuLinks.push({
             text: 'Multijoueur',
             path: '/multiplayer',
