@@ -16,7 +16,7 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'MasterQuizz';
-    waiting: boolean = window.location.href.includes('masterquizz.fr');
+    waiting: boolean = false; //window.location.href.includes('masterquizz.fr');
     countDownDate: number = new Date('Sep 05, 2023 14:00:00').getTime();
     waitingMessage: string = '';
 

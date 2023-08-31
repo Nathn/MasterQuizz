@@ -193,6 +193,11 @@
                                     cursor: 'pointer'
                                 }"
                                 (click)="switchQuestionOnlineStatus(question)"
+                                [title]="
+                                    question.online
+                                        ? 'Désactiver la question'
+                                        : 'Activer la question'
+                                "
                             ></fa-icon>
                             <span>{{ question.question }}</span>
                         </div>

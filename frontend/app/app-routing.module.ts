@@ -8,8 +8,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { PracticeComponent } from './practice/practice.component';
 import { DuelComponent } from './duel/duel.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { AboutComponent } from './about/about.component';
 import { QuestionsComponent } from './questions/questions.component';
+import { AboutComponent } from './about/about.component';
+import { CguComponent } from './cgu/cgu.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,6 +20,8 @@ const routes: Routes = [
     { path: 'practice', component: PracticeComponent },
     { path: 'leaderboard', component: LeaderboardComponent },
     { path: 'about', component: AboutComponent },
+    { path: 'privacy', component: CguComponent },
+    { path: 'terms', component: CguComponent },
     { path: 'profile/:username', component: ProfileComponent },
     { path: 'questions', component: QuestionsComponent },
     { path: 'questions/:action', component: QuestionsComponent },

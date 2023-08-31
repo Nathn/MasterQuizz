@@ -76,6 +76,7 @@ import { DuelComponent } from './duel/duel.component';
 import { AboutComponent } from './about/about.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { PracticeComponent } from './practice/practice.component';
+import { CguComponent } from './cgu/cgu.component';
 
 @NgModule({
     declarations: [
@@ -91,6 +92,7 @@ import { PracticeComponent } from './practice/practice.component';
         AboutComponent,
         LeaderboardComponent,
         PracticeComponent,
+        CguComponent,
     ],
     imports: [
         BrowserModule,
