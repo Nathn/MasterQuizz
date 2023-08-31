@@ -8,7 +8,7 @@ import * as CryptoJS from 'crypto-js';
 import {
     signInWithEmailAndPassword,
     signInWithPopup,
-    sendPasswordResetEmail,
+    sendPasswordResetEmail
 } from 'firebase/auth';
 import { AuthService } from '../auth.service';
 
@@ -17,7 +17,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
+    styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
     userObj: any = localStorage.getItem('userObj')
@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
     password: string = '';
 
     error: string = '';
+    warning: string = '';
 
     isLoading: boolean = false;
     redirectUrl: string = '';
@@ -44,6 +45,12 @@ export class LoginComponent implements OnInit {
     ) {
         this.redirectUrl = this.ar.snapshot.queryParams['redirectUrl'] || '';
         if (this.userObj) this.router.navigate([this.redirectUrl]);
+        if (this.ar.snapshot.queryParams['emailSent']) {
+            this.warning =
+                "Un email de réinitialisation de mot de passe a été envoyé à l'addresse indiquée.";
+        } else if (this.redirectUrl && this.redirectUrl != '/')
+            this.warning =
+                "Vous tentez d'accéder à une page qui nécessite d'être connecté.";
         this.authService.onAuthStateChanged(
             this.authService.getAuth(),
             async (user) => {
@@ -73,7 +80,7 @@ export class LoginComponent implements OnInit {
         this.isLoading = true;
         this.http
             .post(environment.apiUrl + 'getEmailFromUsername', {
-                username: this.username,
+                username: this.username
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
@@ -133,7 +140,7 @@ export class LoginComponent implements OnInit {
             .post(environment.apiUrl + 'register', {
                 username: user.email.split('@')[0],
                 email: user.email,
-                avatar: user.photoURL,
+                avatar: user.photoURL
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
@@ -150,10 +157,11 @@ export class LoginComponent implements OnInit {
 
     navigateToReset() {
         let redirectUrl = this.redirectUrl;
+        this.error = '';
         if (redirectUrl.includes('login') || redirectUrl.includes('register'))
             redirectUrl = '/';
         this.router.navigate(['/login/forgotPassword'], {
-            queryParams: { redirectUrl: redirectUrl },
+            queryParams: { redirectUrl: redirectUrl }
         });
     }
 
@@ -162,7 +170,7 @@ export class LoginComponent implements OnInit {
         if (redirectUrl.includes('login') || redirectUrl.includes('register'))
             redirectUrl = '/';
         this.router.navigate(['/login'], {
-            queryParams: { redirectUrl: redirectUrl },
+            queryParams: { redirectUrl: redirectUrl }
         });
     }
 
@@ -171,7 +179,7 @@ export class LoginComponent implements OnInit {
         if (redirectUrl.includes('login') || redirectUrl.includes('register'))
             redirectUrl = '/';
         this.router.navigate(['/register'], {
-            queryParams: { redirectUrl: redirectUrl },
+            queryParams: { redirectUrl: redirectUrl }
         });
     }
 
@@ -180,10 +188,6 @@ export class LoginComponent implements OnInit {
         this.isLoading = true;
         sendPasswordResetEmail(this.authService.getAuth(), this.email)
             .then(() => {
-                this.error =
-                    "Un email de réinitialisation de mot de passe a été envoyé à l'addresse" +
-                    this.email +
-                    '.';
                 let redirectUrl = this.redirectUrl;
                 if (
                     redirectUrl.includes('login') ||
@@ -192,7 +196,10 @@ export class LoginComponent implements OnInit {
                     redirectUrl = '/';
                 this.isLoading = false;
                 this.router.navigate(['/login'], {
-                    queryParams: { redirectUrl: redirectUrl },
+                    queryParams: {
+                        redirectUrl: redirectUrl,
+                        emailSent: true
+                    }
                 });
             })
             .catch((error) => {
@@ -203,7 +210,7 @@ export class LoginComponent implements OnInit {
                     this.error = "Aucun compte n'est associé à cet email.";
                 }
                 if (errorCode == 'auth/invalid-email') {
-                    this.error = 'Email invalide.';
+                    this.error = "L'email est invalide.";
                 }
                 this.isLoading = false;
             });

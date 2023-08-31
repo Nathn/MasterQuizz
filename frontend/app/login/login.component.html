@@ -1,4 +1,12 @@
 <form (ngSubmit)="login()" #registerForm="ngForm" *ngIf="screen === 'login'">
+    <span class="form-warning" *ngIf="warning"
+        >{{ warning }}
+        <span
+            (click)="warning = ''"
+            [ngStyle]="{ cursor: 'pointer', 'text-decoration': 'underline' }"
+            >Fermer</span
+        >
+    </span>
     <h2>Connection à votre compte</h2>
     <div class="form-group">
         <label for="username">Pseudo :</label><br />
@@ -71,6 +79,7 @@
             autofocus
         />
     </div>
+    <span class="form-error" *ngIf="error">{{ error }}</span>
     <button
         type="submit"
         class="submit-button"

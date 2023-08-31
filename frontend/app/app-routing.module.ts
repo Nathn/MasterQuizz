@@ -18,6 +18,8 @@ const routes: Routes = [
     { path: 'login/:action', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'practice', component: PracticeComponent },
+    { path: 'practice/:action', component: PracticeComponent },
+    { path: 'practice/:action/:id', component: PracticeComponent },
     { path: 'leaderboard', component: LeaderboardComponent },
     { path: 'about', component: AboutComponent },
     { path: 'privacy', component: CguComponent },
@@ -29,11 +31,11 @@ const routes: Routes = [
     { path: 'multiplayer', component: DuelComponent },
     { path: 'multiplayer/:id', component: DuelComponent },
     { path: 'duel/:id', component: DuelComponent },
-    { path: '**', redirectTo: '' },
+    { path: '**', redirectTo: '' }
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {}

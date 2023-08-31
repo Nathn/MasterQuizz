@@ -121,12 +121,20 @@ form {
         width: 100%;
     }
 
-    .form-error {
+    .form-error,
+    .form-warning {
         display: block;
-        color: $primary-error-color;
         font-size: larger;
         font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
         margin-bottom: 15px;
+    }
+
+    .form-error {
+        color: $primary-error-color;
+    }
+
+    .form-warning {
+        color: $primary-warning-color;
     }
 
     .form-links {
