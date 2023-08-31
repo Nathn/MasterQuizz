@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-questions',
     templateUrl: './questions.component.html',
-    styleUrls: ['./questions.component.scss'],
+    styleUrls: ['./questions.component.scss']
 })
 export class QuestionsComponent {
     userObj: any = localStorage.getItem('userObj')
@@ -71,7 +71,10 @@ export class QuestionsComponent {
             this.action = params['action'];
             if (!this.authService.isAuthenticated()) {
                 this.router.navigate([`/login`], {
-                    queryParams: { redirectUrl: this.router.url },
+                    queryParams: {
+                        redirectUrl: this.router.url,
+                        redirected: true
+                    }
                 });
                 return;
             } else {
@@ -81,7 +84,10 @@ export class QuestionsComponent {
                         this.userObj = userObj ? userObj : null; // Update userObj (in case user just logged in)
                         if (!this.userObj) {
                             this.router.navigate([`/login`], {
-                                queryParams: { redirectUrl: this.router.url },
+                                queryParams: {
+                                    redirectUrl: this.router.url,
+                                    redirected: true
+                                }
                             });
                             return;
                         }
@@ -104,7 +110,8 @@ export class QuestionsComponent {
                                     this.router.navigate([`/login`], {
                                         queryParams: {
                                             redirectUrl: this.router.url,
-                                        },
+                                            redirected: true
+                                        }
                                     });
                                     return;
                                 }
@@ -137,7 +144,7 @@ export class QuestionsComponent {
         this.isRequestLoading = true;
         this.http
             .post(environment.apiUrl + 'getAllQuestions', {
-                user: this.userObj._id,
+                user: this.userObj._id
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
@@ -153,7 +160,7 @@ export class QuestionsComponent {
         this.isRequestLoading = true;
         this.http
             .post(environment.apiUrl + 'getQuestionFromId', {
-                questionId: id,
+                questionId: id
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
@@ -244,7 +251,7 @@ export class QuestionsComponent {
         for (let i = 0; i < this.nbAnswers; i++) {
             formattedAnswers.push({
                 answer: this.answers[i],
-                correct: i == this.goodAnswer,
+                correct: i == this.goodAnswer
             });
         }
         this.http
@@ -255,7 +262,7 @@ export class QuestionsComponent {
                 goodAnswer: this.goodAnswer,
                 theme: this.themeSelected,
                 difficulty: this.difficulty,
-                user_id: this.userObj._id,
+                user_id: this.userObj._id
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {
@@ -285,7 +292,7 @@ export class QuestionsComponent {
         for (let i = 0; i < this.nbAnswers; i++) {
             formattedAnswers.push({
                 answer: this.answers[i],
-                correct: i == this.goodAnswer,
+                correct: i == this.goodAnswer
             });
         }
         this.http
@@ -297,7 +304,7 @@ export class QuestionsComponent {
                 goodAnswer: this.goodAnswer,
                 theme: this.themeSelected,
                 difficulty: this.difficulty,
-                user_id: this.userObj._id,
+                user_id: this.userObj._id
             })
             .subscribe((response: any) => {
                 this.editSaved = true;
@@ -314,7 +321,7 @@ export class QuestionsComponent {
         if (confirm('Êtes-vous sûr de vouloir supprimer cette question ?')) {
             this.http
                 .post(environment.apiUrl + 'deleteQuestion', {
-                    questionId: question._id,
+                    questionId: question._id
                 })
                 .subscribe((response: any) => {
                     if (response.message != 'OK') {
@@ -335,7 +342,7 @@ export class QuestionsComponent {
         this.http
             .post(environment.apiUrl + 'switchQuestionOnlineStatus', {
                 question_id: question._id,
-                user_id: this.userObj._id,
+                user_id: this.userObj._id
             })
             .subscribe((response: any) => {
                 if (response.message != 'OK') {

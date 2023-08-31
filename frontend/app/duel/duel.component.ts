@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-duel',
     templateUrl: './duel.component.html',
-    styleUrls: ['./duel.component.scss'],
+    styleUrls: ['./duel.component.scss']
 })
 export class DuelComponent implements OnDestroy {
     userObj: any = localStorage.getItem('userObj')
@@ -48,7 +48,7 @@ export class DuelComponent implements OnDestroy {
     ) {
         if (!this.authService.isAuthenticated()) {
             this.router.navigate([`/login`], {
-                queryParams: { redirectUrl: this.router.url },
+                queryParams: { redirectUrl: this.router.url, redirected: true }
             });
             return;
         } else {
@@ -59,7 +59,10 @@ export class DuelComponent implements OnDestroy {
                     async (user) => {
                         if (!user) {
                             this.router.navigate([`/login`], {
-                                queryParams: { redirectUrl: this.router.url },
+                                queryParams: {
+                                    redirectUrl: this.router.url,
+                                    redirected: true
+                                }
                             });
                             return;
                         }
@@ -76,7 +79,7 @@ export class DuelComponent implements OnDestroy {
                             .post(
                                 environment.apiUrl + 'getCurrentDuelFromUser',
                                 {
-                                    user: this.userObj._id,
+                                    user: this.userObj._id
                                 }
                             )
                             .subscribe((response: any) => {
@@ -171,7 +174,7 @@ export class DuelComponent implements OnDestroy {
                                 avatarUrl: message.match.users[1].avatarUrl,
                                 displayName:
                                     message.match.users[1].displayName ||
-                                    message.match.users[1].username,
+                                    message.match.users[1].username
                             };
                         else
                             this.opponent = {
@@ -181,7 +184,7 @@ export class DuelComponent implements OnDestroy {
                                 avatarUrl: message.match.users[0].avatarUrl,
                                 displayName:
                                     message.match.users[0].displayName ||
-                                    message.match.users[0].username,
+                                    message.match.users[0].username
                             };
                         this.nextQuestionReady = true;
                         this.hideAnswers = false;
@@ -203,7 +206,7 @@ export class DuelComponent implements OnDestroy {
         this.ws.send({
             type: 'duel',
             action: 'find',
-            user: this.userObj._id,
+            user: this.userObj._id
         });
     }
 
@@ -215,7 +218,7 @@ export class DuelComponent implements OnDestroy {
         this.ws.send({
             type: 'duel',
             action: 'cancel',
-            user: this.userObj._id,
+            user: this.userObj._id
         });
     }
 
@@ -224,7 +227,7 @@ export class DuelComponent implements OnDestroy {
             type: 'duel',
             action: 'start',
             user: this.userObj._id,
-            match: this.duelId,
+            match: this.duelId
         });
     }
 
@@ -239,7 +242,7 @@ export class DuelComponent implements OnDestroy {
             action: 'answer',
             user: this.userObj._id,
             match: this.duelId,
-            answer: this.selectedAnswerIndex,
+            answer: this.selectedAnswerIndex
         });
     }
 

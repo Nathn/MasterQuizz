@@ -48,7 +48,11 @@ export class LoginComponent implements OnInit {
         if (this.ar.snapshot.queryParams['emailSent']) {
             this.warning =
                 "Un email de réinitialisation de mot de passe a été envoyé à l'addresse indiquée.";
-        } else if (this.redirectUrl && this.redirectUrl != '/')
+        } else if (
+            this.redirectUrl &&
+            this.redirectUrl != '/' &&
+            this.ar.snapshot.queryParams['redirected']
+        )
             this.warning =
                 "Vous tentez d'accéder à une page qui nécessite d'être connecté.";
         this.authService.onAuthStateChanged(
