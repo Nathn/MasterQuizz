@@ -1,20 +1,30 @@
-<h1>Entraînements</h1>
-<h2>Par thèmes</h2>
-<div *ngIf="isLoading" class="link-boxes-container">
-    <div style="margin-top: 20px">
-        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-        >&nbsp;Chargement...
+<div *ngIf="!trainingView">
+    <h1>Entraînements</h1>
+    <h2>Par thèmes</h2>
+    <div *ngIf="isLoading" class="link-boxes-container">
+        <div style="margin-top: 20px">
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+            >&nbsp;Chargement...
+        </div>
     </div>
-</div>
-<div class="link-boxes-container" *ngIf="!isLoading">
-    <a
-        class="link-box"
-        *ngFor="let theme of availableThemes"
-        [routerLink]="['/practice/theme', theme._id]"
-        [ngStyle]="{
+    <div class="link-boxes-container" *ngIf="!isLoading">
+        <a
+            class="link-box"
+            *ngFor="let theme of availableThemes"
+            [routerLink]="['/practice/theme', theme._id]"
+            [ngStyle]="{
             'background-image': 'url(' + theme.image || '' + ') !important',
         }"
-    >
-        <span>{{ theme.name }}</span>
-    </a>
+        >
+            <span>{{ theme.name }}</span>
+        </a>
+    </div>
+</div>
+<div *ngIf="trainingView">
+    <div *ngIf="isLoading" class="link-boxes-container">
+        <div style="margin-top: 20px">
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+            >&nbsp;Chargement...
+        </div>
+    </div>
 </div>

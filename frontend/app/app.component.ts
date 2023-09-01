@@ -5,18 +5,18 @@ import { Subscription } from 'rxjs';
 
 import {
     NgcCookieConsentService,
-    NgcStatusChangeEvent,
+    NgcStatusChangeEvent
 } from 'ngx-cookieconsent';
 import { AuthService } from './auth.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss'],
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'MasterQuizz';
-    waiting: boolean = false; //window.location.href.includes('masterquizz.fr');
+    waiting: boolean = window.location.href.includes('masterquizz.fr');
     countDownDate: number = new Date('Sep 05, 2023 14:00:00').getTime();
     waitingMessage: string = '';
 
@@ -102,24 +102,24 @@ export class AppComponent implements OnInit, OnDestroy {
         if (window.location.href.includes('localhost'))
             this.menuLinks.push({
                 text: 'Entraînement',
-                path: '/practice',
+                path: '/practice'
             });
         this.menuLinks.push({
             text: 'Multijoueur',
-            path: '/multiplayer',
+            path: '/multiplayer'
         });
         this.menuLinks.push({
             text: 'Classements',
-            path: '/leaderboard',
+            path: '/leaderboard'
         });
         this.menuLinks.push({
             text: 'À propos',
-            path: '/about',
+            path: '/about'
         });
         if (this.userObj && this.userObj.admin)
             this.menuLinks.push({
                 text: 'Questions',
-                path: '/questions/manage',
+                path: '/questions/manage'
             });
     }
 
@@ -128,7 +128,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (redirectUrl.includes('login') || redirectUrl.includes('register'))
             redirectUrl = '/';
         this.router.navigate([`/login`], {
-            queryParams: { redirectUrl: redirectUrl },
+            queryParams: { redirectUrl: redirectUrl }
         });
     }
 
@@ -137,7 +137,7 @@ export class AppComponent implements OnInit, OnDestroy {
         if (redirectUrl.includes('register') || redirectUrl.includes('login'))
             redirectUrl = '/';
         this.router.navigate(['register'], {
-            queryParams: { redirectUrl: redirectUrl },
+            queryParams: { redirectUrl: redirectUrl }
         });
     }
 
