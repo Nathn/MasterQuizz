@@ -16,8 +16,26 @@ export class PracticeComponent {
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
 
+    difficultyImages: any = {
+        1: 'assets/images/difficulties/1.jpg',
+        2: 'assets/images/difficulties/2.jpg',
+        3: 'assets/images/difficulties/3.jpg',
+        4: 'assets/images/difficulties/4.jpg',
+        5: 'assets/images/difficulties/5.jpg'
+    };
+    difficultyNames: any = {
+        1: 'Très facile',
+        2: 'Facile',
+        3: 'Moyen',
+        4: 'Difficile',
+        5: 'Très difficile'
+    };
+
     isLoading: boolean = true;
+    isLoadingThemes: boolean = true;
+    isLoadingDifficulties: boolean = true;
     availableThemes: any = [];
+    availableDifficulties: any = [];
     trainingView: boolean = false;
     questions: any = [];
 
@@ -55,15 +73,21 @@ export class PracticeComponent {
                     .post(environment.apiUrl + 'getAvailableThemes', {})
                     .subscribe((res: any) => {
                         if (res.themes) this.availableThemes = res.themes;
-                        this.isLoading = false;
+                        this.isLoadingThemes = false;
+                    });
+                this.http
+                    .post(environment.apiUrl + 'getAvailableDifficulties', {})
+                    .subscribe((res: any) => {
+                        if (res.difficulties)
+                            this.availableDifficulties = res.difficulties;
+                        this.isLoadingDifficulties = false;
                     });
             }
             if (params['mode'] && params['id']) {
                 if (params['mode'] == 'theme') {
                     this.trainingView = true;
-                    this.isLoading = true;
                     this.http
-                        .post(environment.apiUrl + 'getQuestionsByTheme', {
+                        .post(environment.apiUrl + 'getPracticeQuizzByTheme', {
                             theme: params['id']
                         })
                         .subscribe((res: any) => {

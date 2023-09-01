@@ -1,13 +1,13 @@
 <div *ngIf="!trainingView">
     <h1>Entraînements</h1>
     <h2>Par thèmes</h2>
-    <div *ngIf="isLoading" class="link-boxes-container">
-        <div style="margin-top: 20px">
+    <div *ngIf="isLoadingThemes" class="link-boxes-container">
+        <div>
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
         </div>
     </div>
-    <div class="link-boxes-container" *ngIf="!isLoading">
+    <div class="link-boxes-container" *ngIf="!isLoadingThemes">
         <a
             class="link-box"
             *ngFor="let theme of availableThemes"
@@ -17,6 +17,25 @@
         }"
         >
             <span>{{ theme.name }}</span>
+        </a>
+    </div>
+    <h2>Par difficultés</h2>
+    <div *ngIf="isLoadingDifficulties" class="link-boxes-container">
+        <div>
+            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+            >&nbsp;Chargement...
+        </div>
+    </div>
+    <div class="link-boxes-container" *ngIf="!isLoadingDifficulties">
+        <a
+            class="link-box"
+            *ngFor="let difficulty of availableDifficulties"
+            [routerLink]="['/practice/difficulty', difficulty]"
+            [ngStyle]="{
+            'background-image': 'url(' + difficultyImages[difficulty] || '' + ') !important',
+        }"
+        >
+            <span>{{ difficultyNames[difficulty] }}</span>
         </a>
     </div>
 </div>
