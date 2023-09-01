@@ -1,7 +1,7 @@
 <div *ngIf="!trainingView">
     <h1>Entraînements</h1>
     <h2>Par thèmes</h2>
-    <div *ngIf="isLoadingThemes" class="link-boxes-container">
+    <div *ngIf="isLoadingThemes" class="link-boxes-container loading">
         <div>
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
@@ -20,7 +20,7 @@
         </a>
     </div>
     <h2>Par difficultés</h2>
-    <div *ngIf="isLoadingDifficulties" class="link-boxes-container">
+    <div *ngIf="isLoadingDifficulties" class="link-boxes-container loading">
         <div>
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
@@ -40,7 +40,7 @@
     </div>
 </div>
 <div *ngIf="trainingView">
-    <div *ngIf="isLoading" class="link-boxes-container">
+    <div *ngIf="isLoading" class="link-boxes-container loading">
         <div style="margin-top: 20px">
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...

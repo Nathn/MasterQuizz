@@ -280,7 +280,7 @@ export class QuestionsComponent {
                     this.answers = [];
                     this.goodAnswer = 0;
                     this.themeSelected = '';
-                    this.difficulty = 1;
+                    this.difficulty = 3;
                 }
                 this.isRequestLoading = false;
             });

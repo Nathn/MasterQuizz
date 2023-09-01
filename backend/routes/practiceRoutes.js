@@ -148,6 +148,172 @@ router.post("/getAvailableDifficulties", async (req, res) => {
     }
 });
 
-//router.post("/getPracticeQuizzByTheme", async (req, res) => {
+router.post("/getPracticeQuizzByTheme", async (req, res) => {
+    /*
+    This route is used to get a list of 10 questions that correspond
+    to the theme.
+    The difficulty of each question should be 1 for the first 2 questions,
+    2 for the next 2 questions, 3 for the next 2 questions, 4 for the next
+    2 questions and 5 for the last 2 questions.
+    */
+    try {
+        console.log(`[SERVER] Getting practice quizz by theme`);
+        await Question.find({
+            theme: req.body.theme,
+            online: true
+        })
+            .sort({ difficulty: "asc" })
+            .populate("theme")
+            .exec()
+            .then((questions) => {
+                if (!questions) {
+                    console.log(
+                        `[SERVER] Questions not found while getting practice quizz by theme`
+                    );
+                    res.status(200).json({
+                        message: "Questions introuvables."
+                    });
+                } else {
+                    console.log(
+                        `[SERVER] Questions found while getting practice quizz by theme`
+                    );
+                    let practiceQuizz = [];
+                    let questionsByDifficulty = {
+                        1: 0,
+                        2: 0,
+                        3: 0,
+                        4: 0,
+                        5: 0
+                    };
+                    for (let i = 0; i < questions.length; i++) {
+                        let question = questions[i];
+                        questionsByDifficulty[question.difficulty]++;
+                    }
+                    for (let difficulty in questionsByDifficulty) {
+                        if (questionsByDifficulty[difficulty] < 2) {
+                            delete questionsByDifficulty[difficulty];
+                        }
+                    }
+                    if (Object.keys(questionsByDifficulty).length == 5) {
+                        for (let i = 0; i < 2; i++) {
+                            let question = questions[i];
+                            practiceQuizz.push(question);
+                        }
+                        for (let i = 2; i < 4; i++) {
+                            let question = questions[i];
+                            practiceQuizz.push(question);
+                        }
+                        for (let i = 4; i < 6; i++) {
+                            let question = questions[i];
+                            practiceQuizz.push(question);
+                        }
+                        for (let i = 6; i < 8; i++) {
+                            let question = questions[i];
+                            practiceQuizz.push(question);
+                        }
+                        for (let i = 8; i < 10; i++) {
+                            let question = questions[i];
+                            practiceQuizz.push(question);
+                        }
+                    } else {
+                        for (let difficulty in questionsByDifficulty) {
+                            for (
+                                let i = 0;
+                                i < questionsByDifficulty[difficulty] / 2;
+                                i++
+                            ) {
+                                let question = questions[i];
+                                practiceQuizz.push(question);
+                            }
+                        }
+                    }
+                    res.status(200).json({
+                        message: "OK",
+                        questions: practiceQuizz
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while getting practice quizz by theme: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error"
+                });
+            });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occured while getting practice quizz by theme: ${err}`
+        );
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
+
+router.post("/getPracticeQuizzByDifficulty", async (req, res) => {
+    /*
+    This route is used to get a list of 10 questions that correspond
+    to the difficulty.
+    The theme of each question should be different from the theme of the
+    previous question.
+    */
+    try {
+        console.log(`[SERVER] Getting practice quizz by difficulty`);
+        await Question.find({
+            difficulty: req.body.difficulty,
+            online: true
+        })
+            .sort({ theme: "asc" })
+            .populate("theme")
+            .exec()
+            .then((questions) => {
+                if (!questions) {
+                    console.log(
+                        `[SERVER] Questions not found while getting practice quizz by difficulty`
+                    );
+                    res.status(200).json({
+                        message: "Questions introuvables."
+                    });
+                } else {
+                    console.log(
+                        `[SERVER] Questions found while getting practice quizz by difficulty`
+                    );
+                    let practiceQuizz = [];
+                    let themes = [];
+                    for (
+                        let i = 0;
+                        i < questions.length && practiceQuizz.length < 10;
+                        i++
+                    ) {
+                        let question = questions[i];
+                        if (!themes.includes(question.theme._id)) {
+                            themes.push(question.theme._id);
+                            practiceQuizz.push(question);
+                        }
+                    }
+                    res.status(200).json({
+                        message: "OK",
+                        questions: practiceQuizz
+                    });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while getting practice quizz by difficulty: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error"
+                });
+            });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occured while getting practice quizz by difficulty: ${err}`
+        );
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
 
 module.exports = router;

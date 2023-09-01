@@ -96,6 +96,27 @@ export class PracticeComponent {
                                 this.router.navigate(['/practice']);
                             } else {
                                 this.questions = res.questions;
+                                console.log(this.questions);
+                                this.isLoading = false;
+                            }
+                        });
+                }
+                if (params['mode'] == 'difficulty') {
+                    this.trainingView = true;
+                    this.http
+                        .post(
+                            environment.apiUrl + 'getPracticeQuizzByDifficulty',
+                            {
+                                difficulty: params['id']
+                            }
+                        )
+                        .subscribe((res: any) => {
+                            if (res.message != 'OK' || !res.questions) {
+                                console.error(res.message);
+                                this.router.navigate(['/practice']);
+                            } else {
+                                this.questions = res.questions;
+                                console.log(this.questions);
                                 this.isLoading = false;
                             }
                         });

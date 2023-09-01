@@ -71,5 +71,15 @@ h2 {
 
     .link-boxes-container {
         justify-content: center;
+        margin: 20px auto 30px auto;
+        width: min-content;
+
+        .link-box {
+            width: 100%;
+        }
+    }
+
+    .loading {
+        width: auto;
     }
 }
