@@ -40,10 +40,37 @@
     </div>
 </div>
 <div *ngIf="trainingView">
-    <div *ngIf="isLoading" class="link-boxes-container loading">
+    <div *ngIf="isLoading" class="main loading">
         <div style="margin-top: 20px">
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
             >&nbsp;Chargement...
         </div>
+    </div>
+    <div class="main" *ngIf="!isLoading">
+        <h1 *ngIf="mode == 'theme'">
+            Entraînement : {{ questions[0].theme.name }}
+        </h1>
+        <h1 *ngIf="mode == 'difficulty'">
+            Entraînement : {{ difficultyNames[questions[0].difficulty] }}
+        </h1>
+        <app-home-module
+            class="home-module"
+            [question]="questions[currentQuestionIndex]"
+            [moduleTitle]="
+                status == 'ended'
+                    ? 'Résultats'
+                    : 'Question ' + (currentQuestionIndex + 1)
+            "
+            moduleType="question"
+            [moduleParams]="{
+                matchEnded: status == 'ended',
+                nextButtonString: 'Question suivante',
+            }"
+            (selectedAnswer)="selectedAnswer($event)"
+            (validatedAnswer)="validatedAnswer($event)"
+            (nextQuestion)="nextQuestionPressed($event)"
+            *ngIf="questions[currentQuestionIndex]"
+        >
+        </app-home-module>
     </div>
 </div>

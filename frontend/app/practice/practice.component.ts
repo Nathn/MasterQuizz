@@ -36,8 +36,15 @@ export class PracticeComponent {
     isLoadingDifficulties: boolean = true;
     availableThemes: any = [];
     availableDifficulties: any = [];
+
     trainingView: boolean = false;
+    mode: string = '';
+
     questions: any = [];
+    answers: any = [];
+    status: string = '';
+    currentQuestionIndex: number = 0;
+    selectedAnswerIndex: number = -1;
 
     constructor(
         private router: Router,
@@ -86,6 +93,7 @@ export class PracticeComponent {
             if (params['mode'] && params['id']) {
                 if (params['mode'] == 'theme') {
                     this.trainingView = true;
+                    this.mode = 'theme';
                     this.http
                         .post(environment.apiUrl + 'getPracticeQuizzByTheme', {
                             theme: params['id']
@@ -103,6 +111,7 @@ export class PracticeComponent {
                 }
                 if (params['mode'] == 'difficulty') {
                     this.trainingView = true;
+                    this.mode = 'difficulty';
                     this.http
                         .post(
                             environment.apiUrl + 'getPracticeQuizzByDifficulty',
@@ -123,5 +132,21 @@ export class PracticeComponent {
                 }
             }
         });
+    }
+
+    selectedAnswer(event: any) {
+        this.selectedAnswerIndex = event;
+    }
+
+    validatedAnswer(event: any) {
+        this.answers.push(this.selectedAnswerIndex);
+    }
+
+    nextQuestionPressed(event: any) {
+        this.currentQuestionIndex++;
+        this.selectedAnswerIndex = -1;
+        if (this.currentQuestionIndex >= this.questions.length) {
+            this.status = 'ended';
+        }
     }
 }

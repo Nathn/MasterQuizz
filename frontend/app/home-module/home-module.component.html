@@ -21,7 +21,7 @@
             *ngIf="answerValidated"
             (click)="next()"
         >
-            Une autre !
+            {{ moduleParams.nextButtonString || "Une autre !" }}
         </button>
         <button
             class="button-start transparent"

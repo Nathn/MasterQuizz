@@ -178,54 +178,14 @@ router.post("/getPracticeQuizzByTheme", async (req, res) => {
                         `[SERVER] Questions found while getting practice quizz by theme`
                     );
                     let practiceQuizz = [];
-                    let questionsByDifficulty = {
-                        1: 0,
-                        2: 0,
-                        3: 0,
-                        4: 0,
-                        5: 0
-                    };
-                    for (let i = 0; i < questions.length; i++) {
-                        let question = questions[i];
-                        questionsByDifficulty[question.difficulty]++;
-                    }
-                    for (let difficulty in questionsByDifficulty) {
-                        if (questionsByDifficulty[difficulty] < 2) {
-                            delete questionsByDifficulty[difficulty];
-                        }
-                    }
-                    if (Object.keys(questionsByDifficulty).length == 5) {
-                        for (let i = 0; i < 2; i++) {
-                            let question = questions[i];
-                            practiceQuizz.push(question);
-                        }
-                        for (let i = 2; i < 4; i++) {
-                            let question = questions[i];
-                            practiceQuizz.push(question);
-                        }
-                        for (let i = 4; i < 6; i++) {
-                            let question = questions[i];
-                            practiceQuizz.push(question);
-                        }
-                        for (let i = 6; i < 8; i++) {
-                            let question = questions[i];
-                            practiceQuizz.push(question);
-                        }
-                        for (let i = 8; i < 10; i++) {
-                            let question = questions[i];
-                            practiceQuizz.push(question);
-                        }
-                    } else {
-                        for (let difficulty in questionsByDifficulty) {
-                            for (
-                                let i = 0;
-                                i < questionsByDifficulty[difficulty] / 2;
-                                i++
-                            ) {
-                                let question = questions[i];
-                                practiceQuizz.push(question);
-                            }
-                        }
+                    // Iterate through difficulty levels 1 to 5
+                    for (let difficulty = 1; difficulty <= 5; difficulty++) {
+                        // Filter questions based on the current difficulty level
+                        const filteredQuestions = questions.filter(
+                            (question) => question.difficulty === difficulty
+                        );
+                        // Select 2 questions from the filtered list and add them to the practiceQuizz array
+                        practiceQuizz.push(...filteredQuestions.slice(0, 2));
                     }
                     res.status(200).json({
                         message: "OK",
