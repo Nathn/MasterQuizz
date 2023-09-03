@@ -5,7 +5,8 @@
     *ngIf="
         moduleType == 'question' &&
         question &&
-        !moduleParams.noMoreAllowedQuestions
+        !moduleParams.noMoreAllowedQuestions &&
+        !moduleParams.matchEnded
     "
     class="module-content-container"
 >
@@ -30,6 +31,72 @@
             [disabled]="selectedAnswerIndex == -1"
         >
             Valider
+        </button>
+    </div>
+</div>
+<div
+    *ngIf="
+        moduleType == 'question' &&
+        moduleParams.matchEnded &&
+        !moduleParams.noMoreAllowedQuestions
+    "
+    class="module-content-container"
+>
+    <div class="results">
+        <h1>Résultats :</h1>
+        <div class="individual-results">
+            <br />
+            <h2>{{ moduleParams.score }}/10</h2>
+            <br />
+            <div class="answers" *ngIf="moduleParams.answers">
+                <div
+                    class="icon"
+                    *ngFor="let answer of moduleParams.answers; let i = index"
+                    [title]="moduleParams.questions[i].question"
+                >
+                    <fa-icon
+                        *ngIf="
+                            moduleParams.questions[i].answers[
+                                moduleParams.answers[i]
+                            ].correct
+                        "
+                        [icon]="['fas', 'circle-check']"
+                        class="correct"
+                    ></fa-icon>
+                    <fa-icon
+                        *ngIf="
+                            !moduleParams.questions[i].answers[
+                                moduleParams.answers[i]
+                            ].correct
+                        "
+                        [icon]="['fas', 'circle-xmark']"
+                        class="incorrect"
+                    ></fa-icon>
+                </div>
+            </div>
+        </div>
+        <div class="custom-result">
+            <img
+                *ngIf="moduleParams.score == 0"
+                src="/assets/images/il_a_eu_0_sur_20.jpg"
+                alt="Il a eu 0 sur 20"
+                height="200"
+                width="150"
+            />
+            <span *ngIf="moduleParams.score > 0 && moduleParams.score < 5">
+                Vous pouvez mieux faire !
+            </span>
+            <span *ngIf="moduleParams.score >= 5 && moduleParams.score < 9">
+                Pas mal ! Révisez un peu et vous serez imbattable !
+            </span>
+            <span *ngIf="moduleParams.score >= 9">
+                Vous semblez prêt pour affronter les meilleurs !
+            </span>
+        </div>
+    </div>
+    <div>
+        <button class="button-start" (click)="next()">
+            {{ moduleParams.leaveString || "Quitter le match" }}
         </button>
     </div>
 </div>

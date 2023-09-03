@@ -42,6 +42,7 @@ export class PracticeComponent {
 
     questions: any = [];
     answers: any = [];
+    score: number = 0;
     status: string = '';
     currentQuestionIndex: number = 0;
     selectedAnswerIndex: number = -1;
@@ -140,13 +141,22 @@ export class PracticeComponent {
 
     validatedAnswer(event: any) {
         this.answers.push(this.selectedAnswerIndex);
+        if (
+            this.questions[this.currentQuestionIndex].answers[
+                this.selectedAnswerIndex
+            ].correct
+        )
+            this.score++;
     }
 
     nextQuestionPressed(event: any) {
-        this.currentQuestionIndex++;
         this.selectedAnswerIndex = -1;
-        if (this.currentQuestionIndex >= this.questions.length) {
-            this.status = 'ended';
+        if (this.status == 'ended') {
+            this.router.navigate(['practice']);
+            return;
         }
+        if (this.currentQuestionIndex + 1 >= this.questions.length) {
+            this.status = 'ended';
+        } else this.currentQuestionIndex++;
     }
 }

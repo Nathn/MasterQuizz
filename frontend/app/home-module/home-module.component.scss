@@ -154,7 +154,8 @@
         }
     }
 
-    .elo-change {
+    .elo-change,
+    .custom-result {
         display: block;
         margin: 25px auto;
         background-color: $quaternary-color;
@@ -170,5 +171,12 @@
 
     .elo-change.negative {
         border: 1px solid $secondary-error-color;
+    }
+
+    .custom-result {
+        width: fit-content;
+        img {
+            border-radius: 16px;
+        }
     }
 }

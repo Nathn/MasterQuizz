@@ -3,13 +3,13 @@ import {
     Input,
     Output,
     EventEmitter,
-    SimpleChanges,
+    SimpleChanges
 } from '@angular/core';
 
 @Component({
     selector: 'app-home-module',
     templateUrl: './home-module.component.html',
-    styleUrls: ['./home-module.component.scss'],
+    styleUrls: ['./home-module.component.scss']
 })
 export class HomeModuleComponent {
     @Input('question') question: any;
@@ -29,7 +29,11 @@ export class HomeModuleComponent {
 
     ngOnChanges(changes: SimpleChanges) {
         // if moduleParams.answerValidated is changed, change answerValidated
-        if (changes['moduleParams'] && changes['moduleParams'].currentValue) {
+        if (
+            changes['moduleParams'] &&
+            changes['moduleParams'].currentValue &&
+            changes['moduleParams'].currentValue.answerValidated
+        ) {
             this.answerValidated =
                 changes['moduleParams'].currentValue.answerValidated;
         }

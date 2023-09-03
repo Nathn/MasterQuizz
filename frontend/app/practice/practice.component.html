@@ -65,6 +65,10 @@
             [moduleParams]="{
                 matchEnded: status == 'ended',
                 nextButtonString: 'Question suivante',
+                leaveString: 'Quitter l\'entraînement',
+                questions: questions,
+                answers: answers,
+                score: score,
             }"
             (selectedAnswer)="selectedAnswer($event)"
             (validatedAnswer)="validatedAnswer($event)"
