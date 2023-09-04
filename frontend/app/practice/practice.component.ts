@@ -39,6 +39,7 @@ export class PracticeComponent {
 
     trainingView: boolean = false;
     mode: string = '';
+    id: string = '';
 
     questions: any = [];
     answers: any = [];
@@ -92,44 +93,76 @@ export class PracticeComponent {
                     });
             }
             if (params['mode'] && params['id']) {
+                this.id = params['id'];
+                this.questions = localStorage.getItem(
+                    `questions-${params['id']}`
+                )
+                    ? JSON.parse(
+                          localStorage.getItem(`questions-${params['id']}`) ||
+                              ''
+                      )
+                    : [];
+                this.answers = localStorage.getItem(`answers-${params['id']}`)
+                    ? JSON.parse(
+                          localStorage.getItem(`answers-${params['id']}`) || ''
+                      )
+                    : [];
+                this.currentQuestionIndex = this.answers.length;
+                console.log(this.currentQuestionIndex);
                 if (params['mode'] == 'theme') {
                     this.trainingView = true;
                     this.mode = 'theme';
-                    this.http
-                        .post(environment.apiUrl + 'getPracticeQuizzByTheme', {
-                            theme: params['id']
-                        })
-                        .subscribe((res: any) => {
-                            if (res.message != 'OK' || !res.questions) {
-                                console.error(res.message);
-                                this.router.navigate(['/practice']);
-                            } else {
-                                this.questions = res.questions;
-                                console.log(this.questions);
-                                this.isLoading = false;
-                            }
-                        });
+                    if (!this.questions || !this.answers) {
+                        this.http
+                            .post(
+                                environment.apiUrl + 'getPracticeQuizzByTheme',
+                                {
+                                    theme: params['id']
+                                }
+                            )
+                            .subscribe((res: any) => {
+                                if (res.message != 'OK' || !res.questions) {
+                                    console.error(res.message);
+                                    this.router.navigate(['/practice']);
+                                } else {
+                                    this.questions = res.questions;
+                                    localStorage.setItem(
+                                        `questions-${params['id']}`,
+                                        JSON.stringify(res.questions)
+                                    );
+                                    this.isLoading = false;
+                                }
+                            });
+                    } else this.isLoading = false;
                 }
                 if (params['mode'] == 'difficulty') {
                     this.trainingView = true;
                     this.mode = 'difficulty';
-                    this.http
-                        .post(
-                            environment.apiUrl + 'getPracticeQuizzByDifficulty',
-                            {
-                                difficulty: params['id']
-                            }
-                        )
-                        .subscribe((res: any) => {
-                            if (res.message != 'OK' || !res.questions) {
-                                console.error(res.message);
-                                this.router.navigate(['/practice']);
-                            } else {
-                                this.questions = res.questions;
-                                console.log(this.questions);
-                                this.isLoading = false;
-                            }
-                        });
+                    if (!this.questions.length || !this.answers.length) {
+                        this.questions = [];
+                        this.answers = [];
+                        this.http
+                            .post(
+                                environment.apiUrl +
+                                    'getPracticeQuizzByDifficulty',
+                                {
+                                    difficulty: params['id']
+                                }
+                            )
+                            .subscribe((res: any) => {
+                                if (res.message != 'OK' || !res.questions) {
+                                    console.error(res.message);
+                                    this.router.navigate(['/practice']);
+                                } else {
+                                    this.questions = res.questions;
+                                    localStorage.setItem(
+                                        `questions-${params['id']}`,
+                                        JSON.stringify(res.questions)
+                                    );
+                                    this.isLoading = false;
+                                }
+                            });
+                    } else this.isLoading = false;
                 }
             }
         });
@@ -141,12 +174,27 @@ export class PracticeComponent {
 
     validatedAnswer(event: any) {
         this.answers.push(this.selectedAnswerIndex);
+        localStorage.setItem(
+            `answers-${this.id}`,
+            JSON.stringify(this.answers)
+        );
         if (
             this.questions[this.currentQuestionIndex].answers[
                 this.selectedAnswerIndex
             ].correct
         )
             this.score++;
+        if (this.userObj) {
+            this.http
+                .post(environment.apiUrl + 'updateQuestionStats', {
+                    user_id: this.userObj._id,
+                    question_id: this.questions[this.currentQuestionIndex]._id,
+                    answer_status:
+                        this.questions[this.currentQuestionIndex].answers[event]
+                            .correct
+                })
+                .subscribe((res: any) => {});
+        }
     }
 
     nextQuestionPressed(event: any) {
@@ -156,6 +204,8 @@ export class PracticeComponent {
             return;
         }
         if (this.currentQuestionIndex + 1 >= this.questions.length) {
+            localStorage.removeItem(`questions-${this.mode}`);
+            localStorage.removeItem(`answers-${this.mode}`);
             this.status = 'ended';
         } else this.currentQuestionIndex++;
     }
