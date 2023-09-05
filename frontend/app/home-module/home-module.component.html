@@ -76,14 +76,7 @@
             </div>
         </div>
         <div class="custom-result">
-            <img
-                *ngIf="moduleParams.score == 0"
-                src="/assets/images/il_a_eu_0_sur_20.jpg"
-                alt="Il a eu 0 sur 20"
-                height="200"
-                width="150"
-            />
-            <span *ngIf="moduleParams.score > 0 && moduleParams.score < 5">
+            <span *ngIf="moduleParams.score < 5">
                 Vous pouvez mieux faire !
             </span>
             <span *ngIf="moduleParams.score >= 5 && moduleParams.score < 9">
@@ -92,6 +85,13 @@
             <span *ngIf="moduleParams.score >= 9">
                 Vous semblez prêt pour affronter les meilleurs !
             </span>
+            <img
+                *ngIf="moduleParams.score == 0"
+                src="/assets/images/il_a_eu_0_sur_20.jpg"
+                alt="Il a eu 0 sur 20"
+                height="200"
+                width="150"
+            />
         </div>
     </div>
     <div>

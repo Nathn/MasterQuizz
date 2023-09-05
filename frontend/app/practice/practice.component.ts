@@ -108,11 +108,12 @@ export class PracticeComponent {
                       )
                     : [];
                 this.currentQuestionIndex = this.answers.length;
-                console.log(this.currentQuestionIndex);
                 if (params['mode'] == 'theme') {
                     this.trainingView = true;
                     this.mode = 'theme';
-                    if (!this.questions || !this.answers) {
+                    if (!this.questions.length || !this.answers.length) {
+                        this.questions = [];
+                        this.answers = [];
                         this.http
                             .post(
                                 environment.apiUrl + 'getPracticeQuizzByTheme',
@@ -204,8 +205,8 @@ export class PracticeComponent {
             return;
         }
         if (this.currentQuestionIndex + 1 >= this.questions.length) {
-            localStorage.removeItem(`questions-${this.mode}`);
-            localStorage.removeItem(`answers-${this.mode}`);
+            localStorage.removeItem(`questions-${this.id}`);
+            localStorage.removeItem(`answers-${this.id}`);
             this.status = 'ended';
         } else this.currentQuestionIndex++;
     }
