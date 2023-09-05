@@ -6,9 +6,9 @@ function find(request, ws, userWebSockets) {
     Match.findOne({
         users: {
             $size: 1,
-            $ne: request.user._id, // Exclude the request.user from the query
+            $ne: request.user._id // Exclude the request.user from the query
         },
-        started: 0,
+        started: 0
     })
         .populate("users")
         .exec()
@@ -16,7 +16,7 @@ function find(request, ws, userWebSockets) {
             if (!match) {
                 console.log(`[WS] No match found`);
                 const newMatch = new Match({
-                    users: [request.user],
+                    users: [request.user]
                 });
                 newMatch
                     .save()
@@ -27,7 +27,7 @@ function find(request, ws, userWebSockets) {
                                 message: "OK",
                                 type: "duel",
                                 status: "waiting",
-                                match,
+                                match
                             })
                         );
                     })
@@ -38,7 +38,7 @@ function find(request, ws, userWebSockets) {
                         console.log(err.stack);
                         ws.send(
                             JSON.stringify({
-                                message: "Internal server error",
+                                message: "Internal server error"
                             })
                         );
                     });
@@ -59,7 +59,7 @@ function find(request, ws, userWebSockets) {
                                     message: "OK",
                                     type: "duel",
                                     status: "ready",
-                                    match,
+                                    match
                                 })
                             );
                             userWs2.send(
@@ -67,7 +67,7 @@ function find(request, ws, userWebSockets) {
                                     message: "OK",
                                     type: "duel",
                                     status: "ready",
-                                    match,
+                                    match
                                 })
                             );
                         } else {
@@ -79,7 +79,7 @@ function find(request, ws, userWebSockets) {
                                     message: "OK",
                                     type: "duel",
                                     status: "ready",
-                                    match,
+                                    match
                                 })
                             );
                         }
@@ -91,7 +91,7 @@ function find(request, ws, userWebSockets) {
                         console.log(err.stack);
                         ws.send(
                             JSON.stringify({
-                                message: "Internal server error",
+                                message: "Internal server error"
                             })
                         );
                     });
@@ -102,7 +102,7 @@ function find(request, ws, userWebSockets) {
             console.log(err.stack);
             ws.send(
                 JSON.stringify({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 })
             );
         });
@@ -111,7 +111,7 @@ function find(request, ws, userWebSockets) {
 function cancel(request, ws, userWebSockets) {
     Match.findOne({
         users: request.user,
-        started: 0,
+        started: 0
     })
         .exec()
         .then((match) => {
@@ -122,7 +122,7 @@ function cancel(request, ws, userWebSockets) {
                         JSON.stringify({
                             message: "OK",
                             type: "duel",
-                            status: "cancelled",
+                            status: "cancelled"
                         })
                     );
                 })
@@ -133,7 +133,7 @@ function cancel(request, ws, userWebSockets) {
                     console.log(err.stack);
                     ws.send(
                         JSON.stringify({
-                            message: "Internal server error",
+                            message: "Internal server error"
                         })
                     );
                 });
@@ -143,7 +143,7 @@ function cancel(request, ws, userWebSockets) {
             console.log(err.stack);
             ws.send(
                 JSON.stringify({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 })
             );
         });
@@ -154,7 +154,7 @@ function start(request, ws, userWebSockets) {
     // Add 1 to the started field
     // If both users started the match, then send a message to both users containing the info & first question
     Match.findOne({
-        _id: request.match,
+        _id: request.match
     })
         .populate("users winner scores.user questions")
         .exec()
@@ -165,7 +165,7 @@ function start(request, ws, userWebSockets) {
                     JSON.stringify({
                         message: "OK",
                         type: "duel",
-                        status: "not found",
+                        status: "not found"
                     })
                 );
             } else {
@@ -179,7 +179,7 @@ function start(request, ws, userWebSockets) {
                             match: match.toObject(),
                             eloChanges: match.eloChanges,
                             scores: match.scores,
-                            answers: match.answers,
+                            answers: match.answers
                         })
                     );
                     return;
@@ -199,8 +199,8 @@ function start(request, ws, userWebSockets) {
                                 {
                                     $match: {
                                         difficulty: { $in: [1, 2] },
-                                        online: true,
-                                    },
+                                        online: true
+                                    }
                                 },
                                 { $sample: { size: 1 } },
                                 {
@@ -208,10 +208,10 @@ function start(request, ws, userWebSockets) {
                                         from: "themes",
                                         localField: "theme",
                                         foreignField: "_id",
-                                        as: "theme",
-                                    },
+                                        as: "theme"
+                                    }
                                 },
-                                { $unwind: "$theme" },
+                                { $unwind: "$theme" }
                             ])
                                 .exec()
                                 .then((questions) => {
@@ -232,7 +232,7 @@ function start(request, ws, userWebSockets) {
                                                     type: "duel",
                                                     status: "started",
                                                     match,
-                                                    question: questions[0],
+                                                    question: questions[0]
                                                 })
                                             );
                                             userWs2.send(
@@ -241,7 +241,7 @@ function start(request, ws, userWebSockets) {
                                                     type: "duel",
                                                     status: "started",
                                                     match,
-                                                    question: questions[0],
+                                                    question: questions[0]
                                                 })
                                             );
                                         } else {
@@ -254,7 +254,7 @@ function start(request, ws, userWebSockets) {
                                                     type: "duel",
                                                     status: "started",
                                                     match,
-                                                    question: questions[0],
+                                                    question: questions[0]
                                                 })
                                             );
                                         }
@@ -267,7 +267,7 @@ function start(request, ws, userWebSockets) {
                                     console.log(err.stack);
                                     ws.send(
                                         JSON.stringify({
-                                            message: "Internal server error",
+                                            message: "Internal server error"
                                         })
                                     );
                                 });
@@ -289,7 +289,7 @@ function start(request, ws, userWebSockets) {
                                                 type: "duel",
                                                 status: "started",
                                                 match,
-                                                question,
+                                                question
                                             })
                                         );
                                         if (
@@ -310,7 +310,7 @@ function start(request, ws, userWebSockets) {
                                                     type: "duel",
                                                     status: "waitingforanswer",
                                                     match,
-                                                    user: request.user,
+                                                    user: request.user
                                                 })
                                             );
                                         }
@@ -325,7 +325,7 @@ function start(request, ws, userWebSockets) {
                         console.log(err.stack);
                         ws.send(
                             JSON.stringify({
-                                message: "Internal server error",
+                                message: "Internal server error"
                             })
                         );
                     });
@@ -338,7 +338,7 @@ function start(request, ws, userWebSockets) {
                     JSON.stringify({
                         message: "OK",
                         type: "duel",
-                        status: "not found",
+                        status: "not found"
                     })
                 );
             } else {
@@ -348,22 +348,25 @@ function start(request, ws, userWebSockets) {
                 console.log(err.stack);
                 ws.send(
                     JSON.stringify({
-                        message: "Internal server error",
+                        message: "Internal server error"
                     })
                 );
             }
         });
 }
 
-function getNewElo(currentElo, opponentElo, result) {
-    const k = 32;
-    const expectedScore =
-        1 / (1 + Math.pow(10, (opponentElo - currentElo) / 400));
-    let newElo = Math.round(currentElo + k * (result - expectedScore));
-    if (newElo < 0) {
-        newElo = 0;
+// Elo calculations // Source : https://github.com/moroshko/elo.js/blob/master/elo.js
+function getRatingDelta(myRating, opponentRating, myGameResult) {
+    if ([0, 0.5, 1].indexOf(myGameResult) === -1) {
+        return null;
     }
-    return newElo;
+    var myChanceToWin =
+        1 / (1 + Math.pow(10, (opponentRating - myRating) / 400));
+    return Math.round(32 * (myGameResult - myChanceToWin));
+}
+
+function getNewRating(myRating, opponentRating, myGameResult) {
+    return myRating + getRatingDelta(myRating, opponentRating, myGameResult);
 }
 
 function answer(request, ws, userWebSockets) {
@@ -372,7 +375,7 @@ function answer(request, ws, userWebSockets) {
     // If yes, then send a message to both users containing the info & next question
     // If no, then save the answer
     Match.findOne({
-        _id: request.match,
+        _id: request.match
     })
         .populate("users questions")
         .exec()
@@ -383,7 +386,7 @@ function answer(request, ws, userWebSockets) {
                     JSON.stringify({
                         message: "OK",
                         type: "duel",
-                        status: "not found",
+                        status: "not found"
                     })
                 );
             } else {
@@ -472,16 +475,16 @@ function answer(request, ws, userWebSockets) {
                                                             user2EloChange =
                                                                 user2.elo;
                                                             user1.elo =
-                                                                getNewElo(
+                                                                getNewRating(
                                                                     user1.elo,
                                                                     user2.elo,
                                                                     1
                                                                 );
                                                             user2.elo =
-                                                                getNewElo(
+                                                                getNewRating(
                                                                     user2.elo,
                                                                     user1.elo,
-                                                                    -1
+                                                                    0
                                                                 );
                                                             user1EloChange =
                                                                 user1.elo -
@@ -499,13 +502,13 @@ function answer(request, ws, userWebSockets) {
                                                             user1EloChange =
                                                                 user1.elo;
                                                             user1.elo =
-                                                                getNewElo(
+                                                                getNewRating(
                                                                     user1.elo,
                                                                     user2.elo,
-                                                                    -1
+                                                                    0
                                                                 );
                                                             user2.elo =
-                                                                getNewElo(
+                                                                getNewRating(
                                                                     user2.elo,
                                                                     user1.elo,
                                                                     1
@@ -526,16 +529,18 @@ function answer(request, ws, userWebSockets) {
                                                             user1.elo;
                                                         user2EloChange =
                                                             user2.elo;
-                                                        user1.elo = getNewElo(
-                                                            user1.elo,
-                                                            user2.elo,
-                                                            0
-                                                        );
-                                                        user2.elo = getNewElo(
-                                                            user2.elo,
-                                                            user1.elo,
-                                                            0
-                                                        );
+                                                        user1.elo =
+                                                            getNewRating(
+                                                                user1.elo,
+                                                                user2.elo,
+                                                                0.5
+                                                            );
+                                                        user2.elo =
+                                                            getNewRating(
+                                                                user2.elo,
+                                                                user1.elo,
+                                                                0.5
+                                                            );
                                                         user1EloChange =
                                                             user1.elo -
                                                             user1EloChange;
@@ -598,7 +603,7 @@ function answer(request, ws, userWebSockets) {
                                                                                                     match.eloChanges,
                                                                                                 scores: match.scores,
                                                                                                 answers:
-                                                                                                    match.answers,
+                                                                                                    match.answers
                                                                                             };
                                                                                         const userWs1 =
                                                                                             userWebSockets[
@@ -663,22 +668,22 @@ function answer(request, ws, userWebSockets) {
                                                                     {
                                                                         $in: [
                                                                             "$$questionId",
-                                                                            "$questions",
-                                                                        ],
+                                                                            "$questions"
+                                                                        ]
                                                                     },
                                                                     {
                                                                         $eq: [
                                                                             "$ended",
-                                                                            false,
-                                                                        ],
-                                                                    },
-                                                                ],
-                                                            },
-                                                        },
-                                                    },
+                                                                            false
+                                                                        ]
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
                                                 ],
-                                                as: "matches",
-                                            },
+                                                as: "matches"
+                                            }
                                         },
                                         {
                                             $match: {
@@ -700,11 +705,11 @@ function answer(request, ws, userWebSockets) {
                                                                     2
                                                             ),
                                                             4
-                                                        ) + 1,
-                                                    ],
+                                                        ) + 1
+                                                    ]
                                                 },
-                                                online: true,
-                                            },
+                                                online: true
+                                            }
                                         },
                                         { $sample: { size: 1 } },
                                         {
@@ -712,10 +717,10 @@ function answer(request, ws, userWebSockets) {
                                                 from: "themes",
                                                 localField: "theme",
                                                 foreignField: "_id",
-                                                as: "theme",
-                                            },
+                                                as: "theme"
+                                            }
                                         },
-                                        { $unwind: "$theme" },
+                                        { $unwind: "$theme" }
                                     ])
                                         .exec()
                                         .then((questions) => {
@@ -748,7 +753,7 @@ function answer(request, ws, userWebSockets) {
                                                             status: "answered",
                                                             match,
                                                             question:
-                                                                questions[0],
+                                                                questions[0]
                                                         })
                                                     );
                                                     userWs2.send(
@@ -758,7 +763,7 @@ function answer(request, ws, userWebSockets) {
                                                             status: "answered",
                                                             match,
                                                             question:
-                                                                questions[0],
+                                                                questions[0]
                                                         })
                                                     );
                                                 } else {
@@ -772,7 +777,7 @@ function answer(request, ws, userWebSockets) {
                                                             status: "answered",
                                                             match,
                                                             question:
-                                                                questions[0],
+                                                                questions[0]
                                                         })
                                                     );
                                                 }
@@ -786,7 +791,7 @@ function answer(request, ws, userWebSockets) {
                                             ws.send(
                                                 JSON.stringify({
                                                     message:
-                                                        "Internal server error",
+                                                        "Internal server error"
                                                 })
                                             );
                                         });
@@ -806,7 +811,7 @@ function answer(request, ws, userWebSockets) {
                             message: "OK",
                             type: "duel",
                             status: "waitingforanswer",
-                            match,
+                            match
                         })
                     );
                 } else {
@@ -827,7 +832,7 @@ function answer(request, ws, userWebSockets) {
                                     message: "OK",
                                     type: "duel",
                                     status: "waitingforanswer",
-                                    match,
+                                    match
                                 })
                             );
                             userWs2.send(
@@ -835,7 +840,7 @@ function answer(request, ws, userWebSockets) {
                                     message: "OK",
                                     type: "duel",
                                     status: "waitingforanswer",
-                                    match,
+                                    match
                                 })
                             );
                         } else {
@@ -847,7 +852,7 @@ function answer(request, ws, userWebSockets) {
                                     message: "OK",
                                     type: "duel",
                                     status: "waitingforanswer",
-                                    match,
+                                    match
                                 })
                             );
                         }
@@ -861,7 +866,7 @@ function answer(request, ws, userWebSockets) {
                 console.log(err.stack);
                 ws.send(
                     JSON.stringify({
-                        message: "Internal server error",
+                        message: "Internal server error"
                     })
                 );
                 // ws.send(
@@ -878,7 +883,7 @@ function answer(request, ws, userWebSockets) {
                 console.log(err.stack);
                 ws.send(
                     JSON.stringify({
-                        message: "Internal server error",
+                        message: "Internal server error"
                     })
                 );
             }
@@ -889,5 +894,5 @@ module.exports = {
     find,
     cancel,
     start,
-    answer,
+    answer
 };
