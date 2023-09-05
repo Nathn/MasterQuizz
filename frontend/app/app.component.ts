@@ -16,9 +16,6 @@ import { AuthService } from './auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'MasterQuizz';
-    waiting: boolean = window.location.href.includes('masterquizz.fr');
-    countDownDate: number = new Date('Sep 05, 2023 14:00:00').getTime();
-    waitingMessage: string = '';
 
     //keep refs to subscriptions to be able to unsubscribe later
     private statusChangeSubscription!: Subscription;
@@ -38,36 +35,6 @@ export class AppComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private cookieService: NgcCookieConsentService
     ) {
-        if (this.waiting) {
-            let x = setInterval(() => {
-                let now = new Date().getTime();
-                let distance = this.countDownDate - now;
-                let days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                let hours = Math.floor(
-                    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-                );
-                let minutes = Math.floor(
-                    (distance % (1000 * 60 * 60)) / (1000 * 60)
-                );
-                let seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                this.waitingMessage =
-                    days +
-                    ':' +
-                    (hours < 10 ? '0' : '') +
-                    hours +
-                    ':' +
-                    (minutes < 10 ? '0' : '') +
-                    minutes +
-                    ':' +
-                    (seconds < 10 ? '0' : '') +
-                    seconds;
-                if (distance < 0) {
-                    clearInterval(x);
-                    this.waitingMessage = ':)';
-                    this.waiting = false;
-                }
-            }, 1000);
-        }
         this.authService.initAuth();
         this.authService.onAuthStateChanged(
             this.authService.getAuth(),

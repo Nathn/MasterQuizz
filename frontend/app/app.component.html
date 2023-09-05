@@ -1,8 +1,4 @@
-<div *ngIf="waiting && waitingMessage">
-    coming soon...<br />
-    {{ waitingMessage }}
-</div>
-<header *ngIf="!waiting">
+<header>
     <div class="toolbar">
         <div class="title-bar" href="#">
             <a class="logo" href="/">
@@ -89,7 +85,7 @@
     </ul>
 </header>
 
-<main *ngIf="!waiting">
+<main>
     <section class="content">
         <router-outlet></router-outlet>
     </section>

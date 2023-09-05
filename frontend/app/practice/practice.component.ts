@@ -93,6 +93,15 @@ export class PracticeComponent {
                     });
             }
             if (params['mode'] && params['id']) {
+                if (!this.userObj) {
+                    this.router.navigate([`/login`], {
+                        queryParams: {
+                            redirectUrl: this.router.url,
+                            redirected: true
+                        }
+                    });
+                    return;
+                }
                 this.id = params['id'];
                 this.questions = localStorage.getItem(
                     `questions-${params['id']}`
