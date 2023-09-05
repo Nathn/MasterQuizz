@@ -4,53 +4,53 @@ const mongodbErrorHandler = require("mongoose-mongodb-errors");
 const matchSchema = new mongoose.Schema({
     created: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     questions: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: "Question",
-        },
+            ref: "Question"
+        }
     ],
     currentQuestion: {
         type: Number,
-        default: 0,
+        default: 0
     },
     answers: [
         {
             type: Map,
             of: Number,
-            default: {},
-        },
+            default: {}
+        }
     ],
     started: {
         type: Number,
-        default: 0,
+        default: 0
     },
     ended: {
         type: Boolean,
-        default: false,
+        default: false
     },
     scores: {
         type: Map,
         of: Number,
-        default: {},
+        default: {}
     },
     eloChanges: {
         type: Map,
         of: Number,
-        default: {},
+        default: {}
     },
     users: [
         {
             type: mongoose.Schema.ObjectId,
-            ref: "User",
-        },
+            ref: "User"
+        }
     ],
     winner: {
         type: mongoose.Schema.ObjectId || null,
-        ref: "User",
-    },
+        ref: "User"
+    }
 });
 
 matchSchema.plugin(mongodbErrorHandler);

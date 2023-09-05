@@ -5,7 +5,7 @@ const themeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true,
+        trim: true
     },
     code: {
         type: String,
@@ -14,13 +14,13 @@ const themeSchema = new mongoose.Schema({
         unique: true,
         uppercase: true,
         minlength: 2,
-        maxlength: 2,
+        maxlength: 2
     },
     image: {
         type: String,
         required: false,
-        trim: true,
-    },
+        trim: true
+    }
 });
 
 themeSchema.plugin(mongodbErrorHandler);

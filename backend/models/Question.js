@@ -7,62 +7,62 @@ const questionSchema = new mongoose.Schema({
             answer: {
                 type: String,
                 required: true,
-                trim: true,
+                trim: true
             },
             correct: {
                 type: Boolean,
-                required: true,
-            },
-        },
+                required: true
+            }
+        }
     ],
     created: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     difficulty: {
         type: Number,
         required: true,
         min: 1,
-        max: 5,
+        max: 5
     },
     online: {
         type: Boolean,
-        default: true,
+        default: true
     },
     question: {
         type: String,
         required: true,
-        trim: true,
+        trim: true
     },
     stats: {
         right: {
             type: Number,
-            default: 0,
+            default: 0
         },
         wrong: {
             type: Number,
-            default: 0,
-        },
+            default: 0
+        }
     },
     theme: {
         type: mongoose.Schema.ObjectId,
         ref: "Theme",
-        required: true,
+        required: true
     },
     updated: {
         type: Date,
-        default: Date.now,
+        default: Date.now
     },
     user: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: false,
+        required: false
     },
     userUpdated: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: false,
-    },
+        required: false
+    }
 });
 
 questionSchema.plugin(mongodbErrorHandler);
