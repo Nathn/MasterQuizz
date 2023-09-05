@@ -18,17 +18,20 @@
 <h1 class="quizzmodule-slide-question">{{ question.question }}</h1>
 <div class="photo-answer">
     <ul class="quizzmodule-slide-answers">
-        <li *ngFor="let answer of question.answers; let i = index">
+        <li *ngFor="let answer of shuffledAnswers; let i = index">
             <input
                 type="radio"
                 name="q{{ question._id }}"
                 value="a{{ i }}"
                 id="q{{ question._id }}a{{ i }}"
+                [checked]="selectedAnswerIndex === getOriginalIndex(i)"
             />
             <label
                 for="q{{ question._id }}a{{ i }}"
-                [ngClass]="{ selected: selectedAnswerIndex == i }"
-                (click)="selectAnswer(i)"
+                [ngClass]="{
+                    selected: selectedAnswerIndex === getOriginalIndex(i)
+                }"
+                (click)="selectAnswer(getOriginalIndex(i))"
                 *ngIf="!answerValidated"
             >
                 {{ answer.answer }}
@@ -36,7 +39,7 @@
             <label
                 [ngClass]="{
                     incorrect:
-                        selectedAnswerIndex == i &&
+                        selectedAnswerIndex == getOriginalIndex(i) &&
                         !answer.correct &&
                         !questionOptions.hideAnswers,
                     correct: answer.correct && !questionOptions.hideAnswers,
@@ -60,7 +63,7 @@
                     class="answer-status-opponent"
                     *ngIf="
                         questionOptions.opponent &&
-                        questionOptions.opponent.answer == i
+                        questionOptions.opponent.answer == getOriginalIndex(i)
                     "
                     src="{{ questionOptions.opponent.avatarUrl }}"
                     title="Réponse de {{

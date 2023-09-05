@@ -119,6 +119,10 @@
     font-size: 1.2rem;
     text-wrap: balance;
 
+    a {
+        color: $secondary-text-color;
+    }
+
     h2 {
         display: flex;
         flex-direction: row;
