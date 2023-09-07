@@ -87,12 +87,12 @@ export class DuelComponent implements OnDestroy {
                                     user: this.userObj._id
                                 }
                             )
-                            .subscribe((response: any) => {
-                                if (response.message != 'OK') {
-                                    console.error(response.message);
+                            .subscribe((res: any) => {
+                                if (res.message != 'OK') {
+                                    console.error(res.message);
                                 } else {
-                                    if (response.match) {
-                                        this.startedDuelId = response.match._id;
+                                    if (res.match) {
+                                        this.startedDuelId = res.match._id;
                                         this.status = 'Match en cours...';
                                     }
                                     this.isRequestLoading = false;
@@ -145,6 +145,10 @@ export class DuelComponent implements OnDestroy {
                         message.status == 'ended' &&
                         message.match._id == this.duelId
                     ) {
+                        if (this.duelObj) {
+                            // If match just ended
+                            window.location.reload(); // Reload page to reload ELO score
+                        }
                         this.status = 'ended';
                         this.duelObj = message.match;
                         this.currentQuestion =

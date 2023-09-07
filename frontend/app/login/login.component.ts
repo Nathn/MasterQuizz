@@ -86,18 +86,17 @@ export class LoginComponent implements OnInit {
             .post(environment.apiUrl + 'getEmailFromUsername', {
                 username: this.username
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    this.error = response.message;
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    this.error = res.message;
                     this.isLoading = false;
                     return;
                 }
                 signInWithEmailAndPassword(
                     this.authService.getAuth(),
-                    AES.decrypt(
-                        response.email,
-                        environment.encryptionKey
-                    ).toString(CryptoJS.enc.Utf8),
+                    AES.decrypt(res.email, environment.encryptionKey).toString(
+                        CryptoJS.enc.Utf8
+                    ),
                     this.password
                 )
                     .then((userCredential) => {
@@ -146,9 +145,9 @@ export class LoginComponent implements OnInit {
                 email: user.email,
                 avatar: user.photoURL
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    console.warn(response.message);
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    console.warn(res.message);
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 } else {

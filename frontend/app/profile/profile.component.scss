@@ -84,4 +84,15 @@
             cursor: pointer;
         }
     }
+
+    .watch-button {
+        margin-top: 10px;
+        width: max-content;
+        background-color: #ff1414;
+        border-color: #9f4141;
+
+        fa-icon {
+            margin-right: 5px;
+        }
+    }
 }

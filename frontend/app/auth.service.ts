@@ -6,7 +6,7 @@ import {
     Auth,
     GoogleAuthProvider,
     getAuth,
-    onAuthStateChanged,
+    onAuthStateChanged
 } from 'firebase/auth';
 
 import { environment } from '../environments/environment';
@@ -14,7 +14,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class AuthService {
     constructor(private http: HttpClient) {}
@@ -73,20 +73,20 @@ export class AuthService {
     getCurrentUserInfo(): Observable<any> {
         return this.http
             .post(environment.apiUrl + 'getUserFromEmail', {
-                email: this.user.email,
+                email: this.user.email
             })
             .pipe(
-                map((response: any) => {
-                    if (response.message != 'OK') {
-                        console.error(response.message);
+                map((res: any) => {
+                    if (res.message != 'OK') {
+                        console.error(res.message);
                         localStorage.removeItem('userObj');
                         return null;
                     } else {
                         localStorage.setItem(
                             'userObj',
-                            JSON.stringify(response.user)
+                            JSON.stringify(res.user)
                         );
-                        return response.user;
+                        return res.user;
                     }
                 }),
                 catchError((error: any) => {

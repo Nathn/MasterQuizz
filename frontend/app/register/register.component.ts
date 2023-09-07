@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss'],
+    styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
     userObj: any = localStorage.getItem('userObj')
@@ -70,11 +70,11 @@ export class RegisterComponent implements OnInit {
         this.http
             .post(environment.apiUrl + 'validateRegister', {
                 username: this.username,
-                email: this.email,
+                email: this.email
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    this.error = response.message;
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    this.error = res.message;
                     this.isLoading = false;
                     return;
                 }
@@ -89,11 +89,11 @@ export class RegisterComponent implements OnInit {
                         this.http
                             .post(environment.apiUrl + 'register', {
                                 username: this.username,
-                                email: this.email,
+                                email: this.email
                             })
-                            .subscribe((response: any) => {
-                                if (response.message != 'OK') {
-                                    this.error = response.message;
+                            .subscribe((res: any) => {
+                                if (res.message != 'OK') {
+                                    this.error = res.message;
                                     this.isLoading = false;
                                     return;
                                 } else {
@@ -150,10 +150,10 @@ export class RegisterComponent implements OnInit {
                         ? user.email.split('@')[0].substring(0, 14)
                         : user.email.split('@')[0],
                 email: user.email,
-                avatar: user.photoURL,
+                avatar: user.photoURL
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
                     this.isLoading = false;
                     return;
                 } else {
@@ -168,7 +168,7 @@ export class RegisterComponent implements OnInit {
         if (redirectUrl.includes('login') || redirectUrl.includes('register'))
             redirectUrl = '/';
         this.router.navigate([`/login`], {
-            queryParams: { redirectUrl: redirectUrl },
+            queryParams: { redirectUrl: redirectUrl }
         });
     }
 }

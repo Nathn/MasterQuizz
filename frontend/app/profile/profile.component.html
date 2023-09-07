@@ -87,4 +87,12 @@
     <div *ngIf="displayedUser.admin">
         <span> Administrateur </span>
     </div>
+    <button
+        *ngIf="currentDuelId && displayedUser._id != userObj._id"
+        [routerLink]="['/duel', currentDuelId]"
+        class="watch-button"
+    >
+        <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+        Regarder en direct
+    </button>
 </div>

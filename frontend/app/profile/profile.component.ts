@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-profile',
     templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
+    styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
     userObj: any = localStorage.getItem('userObj')
@@ -28,6 +28,7 @@ export class ProfileComponent {
 
     tempUsername: string = '';
 
+    currentDuelId: string = '';
     avatarName: string = '';
     avatarFile: any = null;
     tempAvatar: string = '';
@@ -61,12 +62,21 @@ export class ProfileComponent {
     getUser(username: string) {
         this.http
             .post(environment.apiUrl + 'getUserFromUsername', {
-                username: username,
+                username: username
             })
             .subscribe((res: any) => {
                 if (res.message == 'OK' && res.user) {
                     this.displayedUser = res.user;
-                    this.isRequestLoading = false;
+                    this.http
+                        .post(environment.apiUrl + 'getCurrentDuelFromUser', {
+                            user: this.displayedUser._id
+                        })
+                        .subscribe((res: any) => {
+                            if (res.match) {
+                                this.currentDuelId = res.match._id;
+                            }
+                            this.isRequestLoading = false;
+                        });
                 } else {
                     console.warn(res.message);
                     this.router.navigate(['/']);
@@ -91,7 +101,7 @@ export class ProfileComponent {
         this.http
             .post(environment.apiUrl + 'editUsername', {
                 userId: this.userObj._id,
-                username: this.tempUsername,
+                username: this.tempUsername
             })
             .subscribe((res: any) => {
                 if (res.message == 'OK') {
@@ -144,7 +154,7 @@ export class ProfileComponent {
         this.http
             .post(environment.apiUrl + 'editAvatar', {
                 userId: this.userObj._id,
-                avatar: this.tempAvatar,
+                avatar: this.tempAvatar
             })
             .subscribe((res: any) => {
                 if (res.message == 'OK') {

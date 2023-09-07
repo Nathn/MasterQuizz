@@ -121,11 +121,11 @@ export class QuestionsComponent {
             }
             this.http
                 .post(environment.apiUrl + 'getAllThemes', {})
-                .subscribe((response: any) => {
-                    if (response.message != 'OK') {
-                        console.error(response.message);
+                .subscribe((res: any) => {
+                    if (res.message != 'OK') {
+                        console.error(res.message);
                     } else {
-                        this.themes = response.themes;
+                        this.themes = res.themes;
                         this.successMessage = '';
                         if (!this.validActions.includes(this.action))
                             this.router.navigate(['/questions/manage']);
@@ -146,11 +146,11 @@ export class QuestionsComponent {
             .post(environment.apiUrl + 'getAllQuestions', {
                 user: this.userObj._id
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    console.error(response.message);
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    console.error(res.message);
                 } else {
-                    this.questionsList = response.questions;
+                    this.questionsList = res.questions;
                     this.isRequestLoading = false;
                 }
             });
@@ -162,26 +162,26 @@ export class QuestionsComponent {
             .post(environment.apiUrl + 'getQuestionFromId', {
                 questionId: id
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    console.error(response.message);
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    console.error(res.message);
                 } else {
-                    this.question = response.question.question;
-                    this.nbAnswers = response.question.answers.length;
+                    this.question = res.question.question;
+                    this.nbAnswers = res.question.answers.length;
                     this.answers = [];
-                    for (let answer of response.question.answers) {
+                    for (let answer of res.question.answers) {
                         this.answers.push(answer.answer);
                     }
                     let goodAnswer: number = 0;
-                    for (let i = 0; i < response.question.answers.length; i++) {
-                        if (response.question.answers[i].correct) {
+                    for (let i = 0; i < res.question.answers.length; i++) {
+                        if (res.question.answers[i].correct) {
                             goodAnswer = i;
                             break;
                         }
                     }
                     this.goodAnswer = goodAnswer;
-                    this.themeSelected = response.question.theme.code;
-                    this.difficulty = response.question.difficulty;
+                    this.themeSelected = res.question.theme.code;
+                    this.difficulty = res.question.difficulty;
                     this.isRequestLoading = false;
                 }
             });
@@ -264,9 +264,9 @@ export class QuestionsComponent {
                 difficulty: this.difficulty,
                 user_id: this.userObj._id
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    console.error(response.message);
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    console.error(res.message);
                 } else {
                     if (this.userObj.admin) {
                         this.successMessage = 'La question a bien été ajoutée.';
@@ -306,11 +306,11 @@ export class QuestionsComponent {
                 difficulty: this.difficulty,
                 user_id: this.userObj._id
             })
-            .subscribe((response: any) => {
+            .subscribe((res: any) => {
                 this.editSaved = true;
                 this.isRequestLoading = false;
-                if (response.message != 'OK') {
-                    console.error(response.message);
+                if (res.message != 'OK') {
+                    console.error(res.message);
                 } else {
                     this.successMessage = 'La question a bien été modifiée.';
                 }
@@ -323,9 +323,9 @@ export class QuestionsComponent {
                 .post(environment.apiUrl + 'deleteQuestion', {
                     questionId: question._id
                 })
-                .subscribe((response: any) => {
-                    if (response.message != 'OK') {
-                        console.error(response.message);
+                .subscribe((res: any) => {
+                    if (res.message != 'OK') {
+                        console.error(res.message);
                     } else {
                         this.successMessage =
                             'La question a bien été supprimée.';
@@ -344,9 +344,9 @@ export class QuestionsComponent {
                 question_id: question._id,
                 user_id: this.userObj._id
             })
-            .subscribe((response: any) => {
-                if (response.message != 'OK') {
-                    console.error(response.message);
+            .subscribe((res: any) => {
+                if (res.message != 'OK') {
+                    console.error(res.message);
                 } else {
                     question.online = !question.online;
                 }

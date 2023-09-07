@@ -10,19 +10,19 @@ import { environment } from '../environments/environment';
 
 import {
     NgcCookieConsentModule,
-    NgcCookieConsentConfig,
+    NgcCookieConsentConfig
 } from 'ngx-cookieconsent';
 const cookieConfig: NgcCookieConsentConfig = {
     cookie: {
-        domain: environment.cookieDomain,
+        domain: environment.cookieDomain
     },
     palette: {
         popup: {
-            background: '#13375e',
+            background: '#13375e'
         },
         button: {
-            background: '#102741',
-        },
+            background: '#102741'
+        }
     },
     theme: 'classic',
     type: 'opt-out',
@@ -34,13 +34,13 @@ const cookieConfig: NgcCookieConsentConfig = {
         allow: 'Accepter les cookies',
         deny: 'Refuser',
         link: 'En savoir plus',
-        policy: 'Politique de cookies',
-    },
+        policy: 'Politique de cookies'
+    }
 };
 
 import {
     FontAwesomeModule,
-    FaIconLibrary,
+    FaIconLibrary
 } from '@fortawesome/angular-fontawesome';
 
 import {
@@ -61,6 +61,7 @@ import {
     faPaperPlane,
     faCircleCheck,
     faCircleDot,
+    faEye
 } from '@fortawesome/free-solid-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
@@ -92,7 +93,7 @@ import { CguComponent } from './cgu/cgu.component';
         AboutComponent,
         LeaderboardComponent,
         PracticeComponent,
-        CguComponent,
+        CguComponent
     ],
     imports: [
         BrowserModule,
@@ -101,10 +102,10 @@ import { CguComponent } from './cgu/cgu.component';
         FormsModule,
         StoreModule.forRoot({}),
         FontAwesomeModule,
-        NgcCookieConsentModule.forRoot(cookieConfig),
+        NgcCookieConsentModule.forRoot(cookieConfig)
     ],
     providers: [],
-    bootstrap: [AppComponent],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
     constructor(library: FaIconLibrary) {
@@ -126,7 +127,8 @@ export class AppModule {
             faStar,
             faUpload,
             faPaperPlane,
-            faCircleDot
+            faCircleDot,
+            faEye
         );
     }
 }
