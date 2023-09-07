@@ -72,6 +72,32 @@
                     height="26"
                     width="26"
                 />
+                <img
+                    class="answer-status-opponent"
+                    *ngIf="
+                        questionOptions.opponent1 &&
+                        questionOptions.opponent1.answer == getOriginalIndex(i)
+                    "
+                    src="{{ questionOptions.opponent1.avatarUrl }}"
+                    title="Réponse de {{
+                        questionOptions.opponent1.displayName
+                    }}"
+                    height="26"
+                    width="26"
+                />
+                <img
+                    class="answer-status-opponent"
+                    *ngIf="
+                        questionOptions.opponent2 &&
+                        questionOptions.opponent2.answer == getOriginalIndex(i)
+                    "
+                    src="{{ questionOptions.opponent2.avatarUrl }}"
+                    title="Réponse de {{
+                        questionOptions.opponent2.displayName
+                    }}"
+                    height="26"
+                    width="26"
+                />
             </label>
         </li>
     </ul>

@@ -20,6 +20,7 @@ export class DuelComponent implements OnDestroy {
     duelId: string = '';
     duelObj: any = null;
     startedDuelId: string = '';
+    spectator: boolean = false;
 
     destroyed$ = new Subject();
 
@@ -34,6 +35,10 @@ export class DuelComponent implements OnDestroy {
     opponent: object = {};
     hideAnswers: boolean = false;
     answerValidated: boolean = false;
+
+    // spect mode
+    opponent1: any;
+    opponent2: any;
 
     eloChange: any;
     scores: any;
@@ -122,18 +127,23 @@ export class DuelComponent implements OnDestroy {
                         this.status = '';
                     } else if (
                         message.status == 'started' &&
-                        (message.match.users[0]._id == this.userObj._id ||
-                            message.match.users[1]._id == this.userObj._id)
+                        message.match._id == this.duelId
                     ) {
                         this.status = '';
                         this.duelObj = message.match;
                         this.currentQuestion = message.question;
                         this.currentQuestionIndex =
                             message.match.currentQuestion;
+                        if (
+                            message.match.users[0]._id != this.userObj._id &&
+                            message.match.users[1]._id != this.userObj._id
+                        ) {
+                            this.answerValidated = true;
+                            this.spectator = true;
+                        }
                     } else if (
                         message.status == 'ended' &&
-                        (message.match.users[0]._id == this.userObj._id ||
-                            message.match.users[1]._id == this.userObj._id)
+                        message.match._id == this.duelId
                     ) {
                         this.status = 'ended';
                         this.duelObj = message.match;
@@ -148,8 +158,7 @@ export class DuelComponent implements OnDestroy {
                         this.answers = message.answers;
                     } else if (
                         message.status == 'waitingforanswer' &&
-                        (message.match.users[0]._id == this.userObj._id ||
-                            message.match.users[1]._id == this.userObj._id)
+                        message.match._id == this.duelId
                     ) {
                         if (
                             message.match.currentQuestion ==
@@ -163,8 +172,7 @@ export class DuelComponent implements OnDestroy {
                         }
                     } else if (
                         message.status == 'answered' &&
-                        (message.match.users[0]._id == this.userObj._id ||
-                            message.match.users[1]._id == this.userObj._id)
+                        message.match._id == this.duelId
                     ) {
                         if (message.match.users[0]._id == this.userObj._id)
                             this.opponent = {
@@ -176,7 +184,7 @@ export class DuelComponent implements OnDestroy {
                                     message.match.users[1].displayName ||
                                     message.match.users[1].username
                             };
-                        else
+                        else if (message.match.users[1]._id == this.userObj._id)
                             this.opponent = {
                                 answer: message.match.answers[
                                     this.currentQuestionIndex
@@ -186,9 +194,35 @@ export class DuelComponent implements OnDestroy {
                                     message.match.users[0].displayName ||
                                     message.match.users[0].username
                             };
+                        else {
+                            this.opponent1 = {
+                                answer: message.match.answers[
+                                    this.currentQuestionIndex
+                                ][message.match.users[0]._id],
+                                avatarUrl: message.match.users[0].avatarUrl,
+                                displayName:
+                                    message.match.users[0].displayName ||
+                                    message.match.users[0].username
+                            };
+                            this.opponent2 = {
+                                answer: message.match.answers[
+                                    this.currentQuestionIndex
+                                ][message.match.users[1]._id],
+                                avatarUrl: message.match.users[1].avatarUrl,
+                                displayName:
+                                    message.match.users[1].displayName ||
+                                    message.match.users[1].username
+                            };
+                        }
                         this.nextQuestionReady = true;
                         this.hideAnswers = false;
                         this.nextQuestion = message.question;
+                        if (
+                            message.match.users[0]._id != this.userObj._id &&
+                            message.match.users[1]._id != this.userObj._id
+                        ) {
+                            this.answerValidated = true;
+                        }
                     } else if (message.status == 'not found') {
                         this.router.navigate(['multiplayer']);
                     }
@@ -254,7 +288,7 @@ export class DuelComponent implements OnDestroy {
         this.nextQuestionReady = false;
         this.hideAnswers = true;
         this.opponent = {};
-        this.answerValidated = false;
+        if (!this.spectator) this.answerValidated = false;
         if (this.status == 'ended') {
             this.router.navigate(['multiplayer']);
         }

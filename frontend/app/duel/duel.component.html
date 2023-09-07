@@ -24,6 +24,9 @@
         Rejoindre le duel en cours
     </button>
     <span class="status" *ngIf="status && !startedDuelId">{{ status }}</span>
+    <span class="status" *ngIf="status && status.startsWith('Match trouvé')">
+        Rechargez la page si le match ne se lance pas automatiquement
+    </span>
 </div>
 <div class="main" *ngIf="duelId && duelObj">
     <h1>
@@ -104,6 +107,11 @@
             answers: answers,
             opponent: opponent || null,
             answerValidated: answerValidated,
+            opponent1: opponent1,
+            opponent2: opponent2,
+            waitingForAnswerText: spectator
+                ? 'En attente de la réponse des joueurs...'
+                : null
         }"
         (selectedAnswer)="selectedAnswer($event)"
         (validatedAnswer)="validatedAnswer($event)"

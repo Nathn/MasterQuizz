@@ -49,40 +49,14 @@ function find(request, ws, userWebSockets) {
                     .save()
                     .then((match) => {
                         console.log(`[WS] Match updated`);
-                        const userWs1 = userWebSockets[match.users[0]._id]; // WebSocket of the first user
-                        const userWs2 = userWebSockets[match.users[1]._id]; // WebSocket of the second user (newly joined)
-                        // Check if both users' WebSocket connections exist
-                        if (userWs1 && userWs2) {
-                            // Send a message to both users
-                            userWs1.send(
-                                JSON.stringify({
-                                    message: "OK",
-                                    type: "duel",
-                                    status: "ready",
-                                    match
-                                })
-                            );
-                            userWs2.send(
-                                JSON.stringify({
-                                    message: "OK",
-                                    type: "duel",
-                                    status: "ready",
-                                    match
-                                })
-                            );
-                        } else {
-                            console.log(
-                                `[WS] One of the users is not connected`
-                            );
-                            ws.send(
-                                JSON.stringify({
-                                    message: "OK",
-                                    type: "duel",
-                                    status: "ready",
-                                    match
-                                })
-                            );
-                        }
+                        ws.send(
+                            JSON.stringify({
+                                message: "OK",
+                                type: "duel",
+                                status: "ready",
+                                match
+                            })
+                        );
                     })
                     .catch((err) => {
                         console.log(
@@ -171,17 +145,22 @@ function start(request, ws, userWebSockets) {
             } else {
                 if (match.ended) {
                     console.log(`[WS] Match already ended`);
-                    ws.send(
-                        JSON.stringify({
-                            message: "OK",
-                            type: "duel",
-                            status: "ended",
-                            match: match.toObject(),
-                            eloChanges: match.eloChanges,
-                            scores: match.scores,
-                            answers: match.answers
-                        })
-                    );
+                    for (const user in userWebSockets) {
+                        // Send a message to all users (to support spectator mode)
+                        if (userWebSockets.hasOwnProperty(user)) {
+                            userWebSockets[user].send(
+                                JSON.stringify({
+                                    message: "OK",
+                                    type: "duel",
+                                    status: "ended",
+                                    match: match.toObject(),
+                                    eloChanges: match.eloChanges,
+                                    scores: match.scores,
+                                    answers: match.answers
+                                })
+                            );
+                        }
+                    }
                     return;
                 }
                 console.log(`[WS] Match found: ${match._id}`);
@@ -192,9 +171,6 @@ function start(request, ws, userWebSockets) {
                         console.log(`[WS] Match updated`);
                         if (match.started === 2) {
                             console.log(`[WS] Both users started the match`);
-                            const userWs1 = userWebSockets[match.users[0]._id]; // WebSocket of the first user
-                            const userWs2 = userWebSockets[match.users[1]._id]; // WebSocket of the second user
-                            // Check if both users' WebSocket connections exist
                             Question.aggregate([
                                 {
                                     $match: {
@@ -224,40 +200,15 @@ function start(request, ws, userWebSockets) {
                                         console.log(
                                             `[WS] Match updated with question`
                                         );
-                                        if (userWs1 && userWs2) {
-                                            // Send a message to both users
-                                            userWs1.send(
-                                                JSON.stringify({
-                                                    message: "OK",
-                                                    type: "duel",
-                                                    status: "started",
-                                                    match,
-                                                    question: questions[0]
-                                                })
-                                            );
-                                            userWs2.send(
-                                                JSON.stringify({
-                                                    message: "OK",
-                                                    type: "duel",
-                                                    status: "started",
-                                                    match,
-                                                    question: questions[0]
-                                                })
-                                            );
-                                        } else {
-                                            console.log(
-                                                `[WS] One of the users is not connected`
-                                            );
-                                            ws.send(
-                                                JSON.stringify({
-                                                    message: "OK",
-                                                    type: "duel",
-                                                    status: "started",
-                                                    match,
-                                                    question: questions[0]
-                                                })
-                                            );
-                                        }
+                                        ws.send(
+                                            JSON.stringify({
+                                                message: "OK",
+                                                type: "duel",
+                                                status: "started",
+                                                match,
+                                                question: questions[0]
+                                            })
+                                        );
                                     });
                                 })
                                 .catch((err) => {
@@ -605,43 +556,23 @@ function answer(request, ws, userWebSockets) {
                                                                                                 answers:
                                                                                                     match.answers
                                                                                             };
-                                                                                        const userWs1 =
-                                                                                            userWebSockets[
-                                                                                                match
-                                                                                                    .users[0]
-                                                                                                    ._id
-                                                                                            ]; // WebSocket of the first user
-                                                                                        const userWs2 =
-                                                                                            userWebSockets[
-                                                                                                match
-                                                                                                    .users[1]
-                                                                                                    ._id
-                                                                                            ]; // WebSocket of the second user
-                                                                                        // Check if both users' WebSocket connections exist
-                                                                                        if (
-                                                                                            userWs1 &&
-                                                                                            userWs2
-                                                                                        ) {
-                                                                                            userWs1.send(
-                                                                                                JSON.stringify(
-                                                                                                    message
+                                                                                        for (const user in userWebSockets) {
+                                                                                            // Send a message to all users (to support spectator mode)
+                                                                                            if (
+                                                                                                userWebSockets.hasOwnProperty(
+                                                                                                    user
                                                                                                 )
-                                                                                            );
-                                                                                            userWs2.send(
-                                                                                                JSON.stringify(
-                                                                                                    message
-                                                                                                )
-                                                                                            );
-                                                                                        } else {
-                                                                                            console.log(
-                                                                                                `[WS] One of the users is not connected`
-                                                                                            );
-                                                                                            ws.send(
-                                                                                                JSON.stringify(
-                                                                                                    message
-                                                                                                )
-                                                                                            );
+                                                                                            ) {
+                                                                                                userWebSockets[
+                                                                                                    user
+                                                                                                ].send(
+                                                                                                    JSON.stringify(
+                                                                                                        message
+                                                                                                    )
+                                                                                                );
+                                                                                            }
                                                                                         }
+                                                                                        // }
                                                                                     }
                                                                                 );
                                                                         }
@@ -735,51 +666,26 @@ function answer(request, ws, userWebSockets) {
                                                 console.log(
                                                     `[WS] Match updated with question`
                                                 );
-                                                const userWs1 =
-                                                    userWebSockets[
-                                                        match.users[0]._id
-                                                    ]; // WebSocket of the first user
-                                                const userWs2 =
-                                                    userWebSockets[
-                                                        match.users[1]._id
-                                                    ]; // WebSocket of the second user
-                                                // Check if both users' WebSocket connections exist
-                                                if (userWs1 && userWs2) {
-                                                    // Send a message to both users
-                                                    userWs1.send(
-                                                        JSON.stringify({
-                                                            message: "OK",
-                                                            type: "duel",
-                                                            status: "answered",
-                                                            match,
-                                                            question:
-                                                                questions[0]
-                                                        })
-                                                    );
-                                                    userWs2.send(
-                                                        JSON.stringify({
-                                                            message: "OK",
-                                                            type: "duel",
-                                                            status: "answered",
-                                                            match,
-                                                            question:
-                                                                questions[0]
-                                                        })
-                                                    );
-                                                } else {
-                                                    console.log(
-                                                        `[WS] One of the users is not connected`
-                                                    );
-                                                    ws.send(
-                                                        JSON.stringify({
-                                                            message: "OK",
-                                                            type: "duel",
-                                                            status: "answered",
-                                                            match,
-                                                            question:
-                                                                questions[0]
-                                                        })
-                                                    );
+                                                for (const user in userWebSockets) {
+                                                    // Send a message to all users (to support spectator mode)
+                                                    if (
+                                                        userWebSockets.hasOwnProperty(
+                                                            user
+                                                        )
+                                                    ) {
+                                                        userWebSockets[
+                                                            user
+                                                        ].send(
+                                                            JSON.stringify({
+                                                                message: "OK",
+                                                                type: "duel",
+                                                                status: "answered",
+                                                                match,
+                                                                question:
+                                                                    questions[0]
+                                                            })
+                                                        );
+                                                    }
                                                 }
                                             });
                                         })
@@ -822,40 +728,14 @@ function answer(request, ws, userWebSockets) {
                     match.answers.push(newAnswerMap);
                     match.save().then((match) => {
                         console.log(`[WS] Match updated with answer`);
-                        const userWs1 = userWebSockets[match.users[0]._id]; // WebSocket of the first user
-                        const userWs2 = userWebSockets[match.users[1]._id]; // WebSocket of the second user
-                        // Check if both users' WebSocket connections exist
-                        if (userWs1 && userWs2) {
-                            // Send a message to both users
-                            userWs1.send(
-                                JSON.stringify({
-                                    message: "OK",
-                                    type: "duel",
-                                    status: "waitingforanswer",
-                                    match
-                                })
-                            );
-                            userWs2.send(
-                                JSON.stringify({
-                                    message: "OK",
-                                    type: "duel",
-                                    status: "waitingforanswer",
-                                    match
-                                })
-                            );
-                        } else {
-                            console.log(
-                                `[WS] One of the users is not connected`
-                            );
-                            ws.send(
-                                JSON.stringify({
-                                    message: "OK",
-                                    type: "duel",
-                                    status: "waitingforanswer",
-                                    match
-                                })
-                            );
-                        }
+                        ws.send(
+                            JSON.stringify({
+                                message: "OK",
+                                type: "duel",
+                                status: "waitingforanswer",
+                                match
+                            })
+                        );
                     });
                 }
             }
@@ -869,13 +749,6 @@ function answer(request, ws, userWebSockets) {
                         message: "Internal server error"
                     })
                 );
-                // ws.send(
-                //     JSON.stringify({
-                //         message: "OK",
-                //         type: "duel",
-                //         status: "not found",
-                //     })
-                // );
             } else {
                 console.log(
                     `[WS] An error occurred while finding match: ${err}`

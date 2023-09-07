@@ -129,6 +129,8 @@
         [questionOptions]="{
             hideAnswers: moduleParams.hideAnswers,
             opponent: moduleParams.opponent || null,
+            opponent1: moduleParams.opponent1 || null,
+            opponent2: moduleParams.opponent2 || null
         }"
         (selectedAnswer)="selectAnswer($event)"
         [selectedAnswerIndex]="selectedAnswerIndex"
@@ -140,7 +142,10 @@
             disabled
         >
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
-            En attente de l'adversaire...
+            {{
+                moduleParams.waitingForAnswerText ||
+                    "En attente de l'adversaire..."
+            }}
         </button>
         <button
             class="button-start"
