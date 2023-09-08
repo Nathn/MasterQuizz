@@ -245,9 +245,10 @@
     style="width: 90%"
 >
     <ul class="rankingmodule-slide-ranking">
-        <a
+        <div
             *ngFor="let user of ranking; let i = index"
-            href="/profile/{{ user.username }}"
+            class="rankingmodule-slide-ranking-user"
+            [routerLink]="['/profile', user.username]"
             [ngClass]="{
                 'rankingmodule-is-current-user': user._id == moduleParams.userId
             }"
@@ -264,6 +265,13 @@
                 <div class="rankingmodule-slide-ranking-name">
                     {{ user.displayName }}
                 </div>
+                <button
+                    class="rankingmodule-slide-ranking-live"
+                    *ngIf="user.currentDuelId"
+                    [routerLink]="['/multiplayer', user.currentDuelId]"
+                >
+                    <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+                </button>
             </div>
             <div
                 class="rankingmodule-slide-ranking-score"
@@ -293,7 +301,7 @@
             >
                 {{ user.stats.questions.right }}
             </div>
-        </a>
+        </div>
     </ul>
 </div>
 <div

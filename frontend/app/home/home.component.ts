@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
+    styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')
@@ -48,7 +48,7 @@ export class HomeComponent {
         if (!this.randomQuestion && !this.noMoreAllowedQuestions) {
             this.http
                 .post(environment.apiUrl + 'getRandomQuestion', {
-                    user_id: this.userObj ? this.userObj._id : null,
+                    user_id: this.userObj ? this.userObj._id : null
                 })
                 .subscribe((res: any) => {
                     this.randomQuestion = res.question;
@@ -62,7 +62,24 @@ export class HomeComponent {
         this.http
             .post(environment.apiUrl + 'getTopUsersByElo', {})
             .subscribe((res: any) => {
-                if (res.users) this.rankedUsers = res.users.slice(0, 7);
+                if (res.users) {
+                    this.rankedUsers = res.users.slice(0, 7);
+                    // for each user, call getCurrentDuelFromUser and add it to the user object
+                    this.rankedUsers.forEach((user: any) => {
+                        this.http
+                            .post(
+                                environment.apiUrl + 'getCurrentDuelFromUser',
+                                {
+                                    user: user._id
+                                }
+                            )
+                            .subscribe((res: any) => {
+                                if (res.match) {
+                                    user.currentDuelId = res.match._id;
+                                }
+                            });
+                    });
+                }
             });
         this.authService.onAuthStateChanged(
             this.authService.getAuth(),
@@ -93,13 +110,13 @@ export class HomeComponent {
                 .post(environment.apiUrl + 'updateQuestionStats', {
                     user_id: this.userObj._id,
                     question_id: this.randomQuestion._id,
-                    answer_status: this.randomQuestion.answers[event].correct,
+                    answer_status: this.randomQuestion.answers[event].correct
                 })
                 .subscribe((res: any) => {});
         }
         this.http
             .post(environment.apiUrl + 'getRandomQuestion', {
-                user_id: this.userObj ? this.userObj._id : null,
+                user_id: this.userObj ? this.userObj._id : null
             })
             .subscribe((res: any) => {
                 this.nextRandomQuestion = res.question;
@@ -118,7 +135,7 @@ export class HomeComponent {
         } else {
             this.http
                 .post(environment.apiUrl + 'getRandomQuestion', {
-                    user_id: this.userObj ? this.userObj._id : null,
+                    user_id: this.userObj ? this.userObj._id : null
                 })
                 .subscribe((res: any) => {
                     if (res.question) {
@@ -140,7 +157,7 @@ export class HomeComponent {
             this.http
                 .post(environment.apiUrl + 'updateRemainingQuestions', {
                     userId: this.userObj._id,
-                    remainingQuestions: this.userObj.remainingQuestions - 1,
+                    remainingQuestions: this.userObj.remainingQuestions - 1
                 })
                 .subscribe((res: any) => {
                     if (res.userObj) {
@@ -203,7 +220,7 @@ export class HomeComponent {
                                 environment.apiUrl + 'updateRemainingQuestions',
                                 {
                                     userId: this.userObj._id,
-                                    remainingQuestions: 15,
+                                    remainingQuestions: 15
                                 }
                             )
                             .subscribe((res: any) => {

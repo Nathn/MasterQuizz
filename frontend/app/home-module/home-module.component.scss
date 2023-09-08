@@ -52,7 +52,7 @@
     padding: 3px 0;
 }
 
-.rankingmodule-slide-ranking a {
+.rankingmodule-slide-ranking .rankingmodule-slide-ranking-user {
     list-style-type: none;
     justify-content: space-between;
     margin-bottom: 10px;
@@ -72,14 +72,22 @@
     color: $primary-text-color;
     font-weight: 600;
     min-height: 48px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
 }
 
 .rankingmodule-is-current-user {
     background-color: #ffe5ac !important;
 }
 
-.rankingmodule-slide-ranking a:last-child {
+.rankingmodule-slide-ranking .rankingmodule-slide-ranking-user:last-child {
     margin-bottom: 0;
+}
+
+.rankingmodule-slide-ranking .rankingmodule-slide-ranking-user:hover {
+    // move 5px right on hover
+    transform: translateX(5px);
+    transition: transform 0.2s ease-in-out;
 }
 
 .rankingmodule-slide-ranking-position {
@@ -102,6 +110,15 @@
         font-size: 1.1rem;
         color: $primary-text-color;
         margin-right: 10px;
+    }
+
+    .rankingmodule-slide-ranking-live {
+        background-color: #ff1414;
+        border-color: #9f4141;
+        padding: 5px;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
     }
 }
 
