@@ -145,10 +145,6 @@ export class DuelComponent implements OnDestroy {
                         message.status == 'ended' &&
                         message.match._id == this.duelId
                     ) {
-                        if (this.duelObj) {
-                            // If match just ended
-                            window.location.reload(); // Reload page to reload ELO score
-                        }
                         this.status = 'ended';
                         this.duelObj = message.match;
                         this.currentQuestion =
@@ -293,6 +289,10 @@ export class DuelComponent implements OnDestroy {
         this.hideAnswers = true;
         this.opponent = {};
         if (!this.spectator) this.answerValidated = false;
+        if (this.spectator) {
+            this.opponent1 = {};
+            this.opponent2 = {};
+        }
         if (this.status == 'ended') {
             this.router.navigate(['multiplayer']);
         }
