@@ -30,3 +30,44 @@ h2 {
 button fa-icon {
     margin-right: 10px;
 }
+
+.checkbox-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+
+    input {
+        width: max-content;
+        margin-right: 10px !important;
+    }
+
+    label {
+        a {
+            color: $primary-link-color;
+            cursor: pointer;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+            position: relative;
+            display: block;
+            width: fit-content;
+
+            &::before {
+                content: "";
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: $primary-link-color;
+                transition: width 0.3s ease-in-out;
+            }
+
+            &:hover {
+                &::before {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

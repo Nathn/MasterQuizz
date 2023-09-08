@@ -20,6 +20,7 @@ export class RegisterComponent implements OnInit {
     email: string = '';
     username: string = '';
     password: string = '';
+    cgu: boolean = false;
 
     error: string = '';
 

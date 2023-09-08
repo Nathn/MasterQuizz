@@ -35,6 +35,15 @@
             required
         />
     </div>
+    <div class="form-group checkbox-container">
+        <input type="checkbox" id="cgu" name="cgu" [ngModel]="cgu" required />
+        <label for="cgu"
+            >J'accepte les
+            <a href="/terms" target="_blank">
+                Conditions Générales d'Utilisation
+            </a></label
+        >
+    </div>
     <span class="form-error" *ngIf="error">{{ error }}</span>
     <button
         type="submit"
