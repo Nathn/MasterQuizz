@@ -111,7 +111,8 @@
             opponent2: opponent2,
             waitingForAnswerText: spectator
                 ? 'En attente de la réponse des joueurs...'
-                : null
+                : null,
+            nextQuestionText: ended ? 'Résultats' : 'Question suivante',
         }"
         (selectedAnswer)="selectedAnswer($event)"
         (validatedAnswer)="validatedAnswer($event)"

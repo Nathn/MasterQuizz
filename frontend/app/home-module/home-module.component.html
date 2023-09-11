@@ -152,7 +152,7 @@
             *ngIf="answerValidated && moduleParams.nextQuestionReady"
             (click)="next()"
         >
-            Question suivante
+            {{ moduleParams.nextQuestionText || "Question suivante" }}
         </button>
         <button
             class="button-start"

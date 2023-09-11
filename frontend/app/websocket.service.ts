@@ -5,7 +5,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { environment } from '../environments/environment';
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: 'root'
 })
 export class WebSocketService {
     private connection$: WebSocketSubject<any> | null = null;
@@ -31,6 +31,7 @@ export class WebSocketService {
 
     closeConnection() {
         if (this.connection$) {
+            console.warn('Closing connection');
             this.connection$.complete();
             this.connection$ = null;
         }
