@@ -75,7 +75,7 @@ h1 {
     background-color: #ff5959 !important;
 }
 
-.hidden {
+.hidden:not(.spectator) {
     // disabled colors
     background-color: #e0e0e0 !important;
     color: #bdbdbd !important;
@@ -122,6 +122,10 @@ ul.quizzmodule-slide-answers {
     width: 26px;
     border-radius: 50%;
     border: 1px solid #fff;
+}
+
+.same-answer {
+    transform: translateX(8px);
 }
 
 label:hover:not(.answer-status):not(.answer-status-icon) {

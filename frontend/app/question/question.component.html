@@ -44,6 +44,7 @@
                         !questionOptions.hideAnswers,
                     correct: answer.correct && !questionOptions.hideAnswers,
                     hidden: questionOptions.hideAnswers,
+                    spectator: questionOptions.spectator,
                     'answer-status': true
                 }"
                 *ngIf="answerValidated"
@@ -97,6 +98,15 @@
                     }}"
                     height="26"
                     width="26"
+                    [ngClass]="{
+                        'same-answer':
+                            questionOptions.opponent1 &&
+                            questionOptions.opponent2 &&
+                            questionOptions.opponent1.answer ==
+                                questionOptions.opponent2.answer &&
+                            questionOptions.opponent1.answer ==
+                                getOriginalIndex(i)
+                    }"
                 />
             </label>
         </li>
