@@ -85,8 +85,7 @@
 }
 
 .rankingmodule-slide-ranking .rankingmodule-slide-ranking-user:hover {
-    // move 5px right on hover
-    transform: translateX(5px);
+    transform: scale(1.05);
     transition: transform 0.2s ease-in-out;
 }
 

@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 @Component({
     selector: 'app-leaderboard',
     templateUrl: './leaderboard.component.html',
-    styleUrls: ['./leaderboard.component.scss'],
+    styleUrls: ['./leaderboard.component.scss']
 })
 export class LeaderboardComponent {
     userObj: any = localStorage.getItem('userObj')
@@ -44,25 +44,49 @@ export class LeaderboardComponent {
         this.http
             .post(environment.apiUrl + 'getTopUsersByElo', {})
             .subscribe((res: any) => {
-                if (res.users) this.rankedUsersByElo = res.users.slice(0, 15);
+                if (res.users) {
+                    this.rankedUsersByElo = res.users.slice(0, 15);
+                    this.addCurrentMatches(this.rankedUsersByElo);
+                }
             });
         this.http
             .post(environment.apiUrl + 'getTopUsersByNbGames', {})
             .subscribe((res: any) => {
-                if (res.users)
+                if (res.users) {
                     this.rankedUsersByNbGames = res.users.slice(0, 15);
+                    this.addCurrentMatches(this.rankedUsersByNbGames);
+                }
             });
         this.http
             .post(environment.apiUrl + 'getTopUsersByNbWins', {})
             .subscribe((res: any) => {
-                if (res.users)
+                if (res.users) {
                     this.rankedUsersByNbWins = res.users.slice(0, 15);
+                    this.addCurrentMatches(this.rankedUsersByNbWins);
+                }
             });
         this.http
             .post(environment.apiUrl + 'getTopUsersByNbGoodAnswers', {})
             .subscribe((res: any) => {
-                if (res.users)
+                if (res.users) {
                     this.rankedUsersByNbGoodAnswers = res.users.slice(0, 15);
+                    this.addCurrentMatches(this.rankedUsersByNbGoodAnswers);
+                }
             });
+    }
+
+    addCurrentMatches(users: any[]) {
+        // for each user, call getCurrentDuelFromUser and add it to the user object
+        users.forEach((user: any) => {
+            this.http
+                .post(environment.apiUrl + 'getCurrentDuelFromUser', {
+                    user: user._id
+                })
+                .subscribe((res: any) => {
+                    if (res.match) {
+                        user.currentDuelId = res.match._id;
+                    }
+                });
+        });
     }
 }
