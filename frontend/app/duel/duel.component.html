@@ -87,6 +87,14 @@
                 </span>
             </a>
         </span>
+        <button
+            type="button"
+            (click)="forfeitMatch()"
+            *ngIf="status != 'ended' && !spectator"
+            class="forfeit-button"
+        >
+            Abandonner
+        </button>
     </h1>
     <app-home-module
         class="home-module"

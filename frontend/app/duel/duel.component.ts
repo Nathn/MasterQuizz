@@ -156,53 +156,72 @@ export class DuelComponent implements OnDestroy {
                             this.currentQuestionIndex =
                                 message.match.currentQuestion;
                         } else {
+                            this.answerValidated = true;
                             this.currentQuestionIndex =
                                 message.match.currentQuestion;
-                            this.currentQuestion =
-                                message.match.questions[
-                                    message.match.currentQuestion
-                                ];
-                            if (message.match.users[0]._id == this.userObj._id)
-                                this.opponent = {
-                                    answer: message.answers[
-                                        this.currentQuestionIndex
-                                    ][message.match.users[1]._id],
-                                    avatarUrl: message.match.users[1].avatarUrl,
-                                    displayName:
-                                        message.match.users[1].displayName ||
-                                        message.match.users[1].username
-                                };
-                            else if (
-                                message.match.users[1]._id == this.userObj._id
-                            )
-                                this.opponent = {
-                                    answer: message.answers[
-                                        this.currentQuestionIndex
-                                    ][message.match.users[0]._id],
-                                    avatarUrl: message.match.users[0].avatarUrl,
-                                    displayName:
-                                        message.match.users[0].displayName ||
-                                        message.match.users[0].username
-                                };
-                            else {
-                                this.opponent1 = {
-                                    answer: message.answers[
-                                        this.currentQuestionIndex
-                                    ][message.match.users[0]._id],
-                                    avatarUrl: message.match.users[0].avatarUrl,
-                                    displayName:
-                                        message.match.users[0].displayName ||
-                                        message.match.users[0].username
-                                };
-                                this.opponent2 = {
-                                    answer: message.answers[
-                                        this.currentQuestionIndex
-                                    ][message.match.users[1]._id],
-                                    avatarUrl: message.match.users[1].avatarUrl,
-                                    displayName:
-                                        message.match.users[1].displayName ||
-                                        message.match.users[1].username
-                                };
+                            if (
+                                message.answers[this.currentQuestionIndex] &&
+                                message.answers[this.currentQuestionIndex][
+                                    message.match.users[0]._id
+                                ] &&
+                                message.answers[this.currentQuestionIndex][
+                                    message.match.users[1]._id
+                                ]
+                            ) {
+                                if (
+                                    message.match.users[0]._id ==
+                                    this.userObj._id
+                                )
+                                    this.opponent = {
+                                        answer: message.answers[
+                                            this.currentQuestionIndex
+                                        ][message.match.users[1]._id],
+                                        avatarUrl:
+                                            message.match.users[1].avatarUrl,
+                                        displayName:
+                                            message.match.users[1]
+                                                .displayName ||
+                                            message.match.users[1].username
+                                    };
+                                else if (
+                                    message.match.users[1]._id ==
+                                    this.userObj._id
+                                )
+                                    this.opponent = {
+                                        answer: message.answers[
+                                            this.currentQuestionIndex
+                                        ][message.match.users[0]._id],
+                                        avatarUrl:
+                                            message.match.users[0].avatarUrl,
+                                        displayName:
+                                            message.match.users[0]
+                                                .displayName ||
+                                            message.match.users[0].username
+                                    };
+                                else {
+                                    this.opponent1 = {
+                                        answer: message.answers[
+                                            this.currentQuestionIndex
+                                        ][message.match.users[0]._id],
+                                        avatarUrl:
+                                            message.match.users[0].avatarUrl,
+                                        displayName:
+                                            message.match.users[0]
+                                                .displayName ||
+                                            message.match.users[0].username
+                                    };
+                                    this.opponent2 = {
+                                        answer: message.answers[
+                                            this.currentQuestionIndex
+                                        ][message.match.users[1]._id],
+                                        avatarUrl:
+                                            message.match.users[1].avatarUrl,
+                                        displayName:
+                                            message.match.users[1]
+                                                .displayName ||
+                                            message.match.users[1].username
+                                    };
+                                }
                             }
                             this.ended = true;
                             this.nextQuestionReady = true;
@@ -319,6 +338,22 @@ export class DuelComponent implements OnDestroy {
             user: this.userObj._id,
             match: this.duelId
         });
+    }
+
+    forfeitMatch() {
+        // confirm popup
+        if (
+            confirm(
+                'Êtes-vous sûr de vouloir abandonner le match ? Il sera considéré comme perdu.'
+            )
+        ) {
+            this.ws.send({
+                type: 'duel',
+                action: 'forfeit',
+                user: this.userObj._id,
+                match: this.duelId
+            });
+        }
     }
 
     selectedAnswer(event: any) {
