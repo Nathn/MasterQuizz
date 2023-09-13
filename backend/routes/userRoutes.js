@@ -1,9 +1,23 @@
 const express = require("express");
+const nodemailer = require("nodemailer");
 const { AES } = require("crypto-js");
 
 const router = express.Router();
 
 const User = require("../models/User");
+
+const transporter = nodemailer.createTransport({
+    host: process.env.MAIL_TRANSPORTER_HOST,
+    port: process.env.MAIL_TRANSPORTER_PORT,
+    secure: process.env.MAIL_TRANSPORTER_PORT == 465 ? true : false,
+    auth: {
+        user: process.env.MAIL_TRANSPORTER_AUTH_USER,
+        pass: process.env.MAIL_TRANSPORTER_AUTH_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
 
 router.post("/validateRegister", async (req, res) => {
     /*
@@ -14,37 +28,37 @@ router.post("/validateRegister", async (req, res) => {
     // Check if the email is valid
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
         return res.status(200).json({
-            message: "L'adresse email n'est pas valide.",
+            message: "L'adresse email n'est pas valide."
         });
     }
     // Check if the username is valid
     if (!username || !username.match(/^[a-zA-Z0-9_]{1,14}$/)) {
         return res.status(200).json({
             message:
-                "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores, et doit faire moins de 15 caractères.",
+                "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores, et doit faire moins de 15 caractères."
         });
     }
     // Check if the username is already taken
     let user = await User.findOne({
-        username,
+        username
     });
     if (user) {
         return res.status(200).json({
-            message: "Le pseudo n'est pas disponible.",
+            message: "Le pseudo n'est pas disponible."
         });
     }
     // Check if the email is already taken
     user = await User.findOne({
-        email,
+        email
     });
     if (user) {
         return res.status(200).json({
-            message: "L'adresse email est déjà utilisée par un autre compte.",
+            message: "L'adresse email est déjà utilisée par un autre compte."
         });
     }
     // If everything is OK, return a success message
     res.status(200).json({
-        message: "OK",
+        message: "OK"
     });
 });
 
@@ -61,12 +75,29 @@ router.post("/register", async (req, res) => {
             email: req.body.email,
             username: req.body.username,
             displayName: req.body.username,
-            avatarUrl: req.body.avatar,
+            avatarUrl: req.body.avatar
         });
         await user.save();
+        const message = {
+            from: process.env.MAIL_TRANSPORTER_AUTH_USER, // sender's email address
+            to: process.env.MAIL_RECEIVER,
+            subject: "Nouvel utilisateur MasterQuizz", // Subject line
+            text: `Un nouvel utilisateur s'est inscrit sur MasterQuizz.\n\nPseudo: ${req.body.username}\nEmail: ${req.body.email}\n\nCordialement,\nL'équipe MasterQuizz` // plain text body
+        };
+        transporter.sendMail(message, (err, info) => {
+            if (err) {
+                console.log(
+                    `[SERVER] An error occured while sending email: ${err}`
+                );
+            } else {
+                console.log(
+                    `[SERVER] Email sent: ${info.response} - ${info.messageId}`
+                );
+            }
+        });
         // And return a success message
         res.status(200).json({
-            message: "OK",
+            message: "OK"
         });
     } catch (err) {
         console.log(
@@ -75,22 +106,39 @@ router.post("/register", async (req, res) => {
         // if the error is duplicate email
         if (err.code === 11000 && err.keyPattern.email) {
             res.status(200).json({
-                message: "Utilisateur déjà enregistré.",
+                message: "Utilisateur déjà enregistré."
             });
         } else if (err.code === 11000 && err.keyPattern.username) {
             user = new User({
                 email: req.body.email,
                 username: req.body.username + Math.floor(Math.random() * 1000),
                 displayName: req.body.username,
-                avatarUrl: req.body.avatar,
+                avatarUrl: req.body.avatar
             });
             await user.save();
+            const message = {
+                from: process.env.MAIL_TRANSPORTER_AUTH_USER, // sender's email address
+                to: process.env.MAIL_RECEIVER,
+                subject: "Nouvel utilisateur MasterQuizz", // Subject line
+                text: `Un nouvel utilisateur s'est inscrit sur MasterQuizz.\n\nPseudo: ${req.body.username}\nEmail: ${req.body.email}\n\nCordialement,\nL'équipe MasterQuizz` // plain text body
+            };
+            transporter.sendMail(message, (err, info) => {
+                if (err) {
+                    console.log(
+                        `[SERVER] An error occured while sending email: ${err}`
+                    );
+                } else {
+                    console.log(
+                        `[SERVER] Email sent: ${info.response} - ${info.messageId}`
+                    );
+                }
+            });
             res.status(200).json({
-                message: "OK",
+                message: "OK"
             });
         } else {
             res.status(500).json({
-                message: "Internal server error",
+                message: "Internal server error"
             });
         }
     }
@@ -105,7 +153,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
             `[SERVER] Getting email from username: ${req.body.username}`
         );
         await User.findOne({
-            username: req.body.username,
+            username: req.body.username
         })
             .exec()
             .then((user) => {
@@ -114,7 +162,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
                         `[SERVER] User not found while getting email from username`
                     );
                     res.status(200).json({
-                        message: "Nom d'utilisateur introuvable.",
+                        message: "Nom d'utilisateur introuvable."
                     });
                 } else {
                     console.log(`[SERVER] Email found: ${user.email}`);
@@ -123,7 +171,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
                         email: AES.encrypt(
                             user.email,
                             process.env.ENCRYPTION_KEY || "secret key"
-                        ).toString(),
+                        ).toString()
                     });
                 }
             })
@@ -132,7 +180,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
                     `[SERVER] An error occured while getting email from username: ${err}`
                 );
                 res.status(500).json({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 });
             });
     } catch (err) {
@@ -140,7 +188,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
             `[SERVER] An error occured while getting email from username: ${err}`
         );
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
@@ -152,7 +200,7 @@ router.post("/getUserFromEmail", async (req, res) => {
     try {
         console.log(`[SERVER] Getting user from email: ${req.body.email}`);
         await User.findOne({
-            email: req.body.email,
+            email: req.body.email
         })
             .exec()
             .then((user) => {
@@ -161,13 +209,13 @@ router.post("/getUserFromEmail", async (req, res) => {
                         `[SERVER] User not found while getting user from email`
                     );
                     res.status(200).json({
-                        message: "Utilisateur introuvable.",
+                        message: "Utilisateur introuvable."
                     });
                 } else {
                     console.log(`[SERVER] User found: ${user.username}`);
                     res.status(200).json({
                         message: "OK",
-                        user,
+                        user
                     });
                 }
             })
@@ -176,7 +224,7 @@ router.post("/getUserFromEmail", async (req, res) => {
                     `[SERVER] An error occured while getting user from email: ${err}`
                 );
                 res.status(500).json({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 });
             });
     } catch (err) {
@@ -184,7 +232,7 @@ router.post("/getUserFromEmail", async (req, res) => {
             `[SERVER] An error occured while getting user from email: ${err}`
         );
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
@@ -198,7 +246,7 @@ router.post("/getUserFromUsername", async (req, res) => {
             `[SERVER] Getting user from username: ${req.body.username}`
         );
         await User.findOne({
-            username: req.body.username,
+            username: req.body.username
         })
             .exec()
             .then((user) => {
@@ -207,14 +255,14 @@ router.post("/getUserFromUsername", async (req, res) => {
                         `[SERVER] User not found while getting user from username`
                     );
                     res.status(200).json({
-                        message: "Utilisateur introuvable.",
+                        message: "Utilisateur introuvable."
                     });
                 } else {
                     delete user.email;
                     console.log(`[SERVER] User found: ${user.username}`);
                     res.status(200).json({
                         message: "OK",
-                        user,
+                        user
                     });
                 }
             })
@@ -223,7 +271,7 @@ router.post("/getUserFromUsername", async (req, res) => {
                     `[SERVER] An error occured while getting user from username: ${err}`
                 );
                 res.status(500).json({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 });
             });
     } catch (err) {
@@ -231,7 +279,7 @@ router.post("/getUserFromUsername", async (req, res) => {
             `[SERVER] An error occured while getting user from username: ${err}`
         );
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
@@ -249,16 +297,16 @@ router.post("/editUsername", async (req, res) => {
         ) {
             return res.status(200).json({
                 message:
-                    "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores, et doit faire moins de 15 caractères.",
+                    "Le pseudo n'est pas valide.\nIl ne doit contenir que des caractères alphanumériques et underscores, et doit faire moins de 15 caractères."
             });
         }
         // Check if the username is already taken
         let userTest = await User.findOne({
-            username: req.body.username,
+            username: req.body.username
         });
         if (userTest && userTest._id.toString() !== req.body.userId) {
             return res.status(200).json({
-                message: "Le pseudo n'est pas disponible.",
+                message: "Le pseudo n'est pas disponible."
             });
         }
         console.log(
@@ -266,11 +314,11 @@ router.post("/editUsername", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId,
+                _id: req.body.userId
             },
             {
                 username: req.body.username.toLowerCase(),
-                displayName: req.body.username,
+                displayName: req.body.username
             }
         )
             .exec()
@@ -280,13 +328,13 @@ router.post("/editUsername", async (req, res) => {
                         `[SERVER] User not found while editing username`
                     );
                     res.status(200).json({
-                        message: "Utilisateur introuvable.",
+                        message: "Utilisateur introuvable."
                     });
                 } else {
                     console.log(`[SERVER] Username edited: ${user.username}`);
                     res.status(200).json({
                         message: "OK",
-                        user,
+                        user
                     });
                 }
             })
@@ -295,13 +343,13 @@ router.post("/editUsername", async (req, res) => {
                     `[SERVER] An error occured while editing username: ${err}`
                 );
                 res.status(500).json({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 });
             });
     } catch (err) {
         console.log(`[SERVER] An error occured while editing username: ${err}`);
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
@@ -317,10 +365,10 @@ router.post("/editAvatar", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId,
+                _id: req.body.userId
             },
             {
-                avatarUrl: req.body.avatar,
+                avatarUrl: req.body.avatar
             }
         )
             .exec()
@@ -328,13 +376,13 @@ router.post("/editAvatar", async (req, res) => {
                 if (!user) {
                     console.log(`[SERVER] User not found while editing avatar`);
                     res.status(200).json({
-                        message: "Utilisateur introuvable.",
+                        message: "Utilisateur introuvable."
                     });
                 } else {
                     console.log(`[SERVER] Avatar edited: ${user.avatarUrl}`);
                     res.status(200).json({
                         message: "OK",
-                        user,
+                        user
                     });
                 }
             })
@@ -343,13 +391,13 @@ router.post("/editAvatar", async (req, res) => {
                     `[SERVER] An error occured while editing avatar: ${err}`
                 );
                 res.status(500).json({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 });
             });
     } catch (err) {
         console.log(`[SERVER] An error occured while editing avatar: ${err}`);
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
@@ -366,10 +414,10 @@ router.post("/updateRemainingQuestions", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId,
+                _id: req.body.userId
             },
             {
-                remainingQuestions: req.body.remainingQuestions,
+                remainingQuestions: req.body.remainingQuestions
             }
         )
             .exec()
@@ -379,7 +427,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                         `[SERVER] User not found while updating remaining questions`
                     );
                     res.status(200).json({
-                        message: "Utilisateur introuvable.",
+                        message: "Utilisateur introuvable."
                     });
                 } else {
                     console.log(
@@ -393,10 +441,10 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                         );
                         User.findOneAndUpdate(
                             {
-                                _id: req.body.userId,
+                                _id: req.body.userId
                             },
                             {
-                                timeBeforeQuestionRefill: Date.now() + 86400000,
+                                timeBeforeQuestionRefill: Date.now() + 86400000
                             }
                         )
                             .exec()
@@ -406,7 +454,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                         `[SERVER] User not found while setting refillQuetimeBeforeQuestionRefillstionsTime`
                                     );
                                     res.status(200).json({
-                                        message: "Utilisateur introuvable.",
+                                        message: "Utilisateur introuvable."
                                     });
                                 } else {
                                     console.log(
@@ -416,7 +464,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                     );
                                     res.status(200).json({
                                         message: "OK",
-                                        userObj: user,
+                                        userObj: user
                                     });
                                 }
                             })
@@ -425,17 +473,17 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                     `[SERVER] An error occured while setting refillQuestionsTime: ${err}`
                                 );
                                 res.status(500).json({
-                                    message: "Internal server error",
+                                    message: "Internal server error"
                                 });
                             });
                     } else if (user.timeBeforeQuestionRefill) {
                         console.log(`[SERVER] Removing refillQuestionsTime`);
                         User.findOneAndUpdate(
                             {
-                                _id: req.body.userId,
+                                _id: req.body.userId
                             },
                             {
-                                timeBeforeQuestionRefill: null,
+                                timeBeforeQuestionRefill: null
                             }
                         )
                             .exec()
@@ -445,7 +493,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                         `[SERVER] User not found while removing refillQuestionsTime`
                                     );
                                     res.status(200).json({
-                                        message: "Utilisateur introuvable.",
+                                        message: "Utilisateur introuvable."
                                     });
                                 } else {
                                     console.log(
@@ -453,7 +501,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                     );
                                     res.status(200).json({
                                         message: "OK",
-                                        userObj: user,
+                                        userObj: user
                                     });
                                 }
                             });
@@ -465,7 +513,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                     `[SERVER] An error occured while updating remaining questions: ${err}`
                 );
                 res.status(500).json({
-                    message: "Internal server error",
+                    message: "Internal server error"
                 });
             });
     } catch (err) {
@@ -473,7 +521,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
             `[SERVER] An error occured while updating remaining questions: ${err}`
         );
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
