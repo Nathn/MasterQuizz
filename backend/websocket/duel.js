@@ -49,14 +49,19 @@ function find(request, ws, userWebSockets) {
                     .save()
                     .then((match) => {
                         console.log(`[WS] Match updated`);
-                        ws.send(
-                            JSON.stringify({
-                                message: "OK",
-                                type: "duel",
-                                status: "ready",
-                                match
-                            })
-                        );
+                        // Send a message to all users in the match
+                        for (const user in userWebSockets) {
+                            if (userWebSockets.hasOwnProperty(user)) {
+                                userWebSockets[user].send(
+                                    JSON.stringify({
+                                        message: "OK",
+                                        type: "duel",
+                                        status: "ready",
+                                        match
+                                    })
+                                );
+                            }
+                        }
                     })
                     .catch((err) => {
                         console.log(
@@ -200,15 +205,21 @@ function start(request, ws, userWebSockets) {
                                         console.log(
                                             `[WS] Match updated with question`
                                         );
-                                        ws.send(
-                                            JSON.stringify({
-                                                message: "OK",
-                                                type: "duel",
-                                                status: "started",
-                                                match,
-                                                question: questions[0]
-                                            })
-                                        );
+                                        for (const user in userWebSockets) {
+                                            if (
+                                                userWebSockets.hasOwnProperty(
+                                                    user
+                                                )
+                                            ) {
+                                                JSON.stringify({
+                                                    message: "OK",
+                                                    type: "duel",
+                                                    status: "started",
+                                                    match,
+                                                    question: questions[0]
+                                                });
+                                            }
+                                        }
                                     });
                                 })
                                 .catch((err) => {

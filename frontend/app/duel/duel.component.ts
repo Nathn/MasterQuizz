@@ -7,6 +7,7 @@ import { WebSocketService } from '../websocket.service';
 import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
+import { set } from 'mongoose';
 
 @Component({
     selector: 'app-duel',
@@ -303,7 +304,12 @@ export class DuelComponent implements OnDestroy {
                     }
                 }
             });
-        if (this.duelId) this.startMatch();
+        if (this.duelId) {
+            this.startMatch();
+            setInterval(() => {
+                if (!this.duelObj) this.startMatch();
+            }, 1000);
+        }
     }
 
     ngOnDestroy() {
