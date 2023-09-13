@@ -3,11 +3,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
 
+import * as dayjs from 'dayjs';
+import 'dayjs/locale/fr'; // Import the French locale
+import relativeTime from 'dayjs/plugin/relativeTime'; // Import the relativeTime plugin
+
 import { WebSocketService } from '../websocket.service';
 import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
-import { set } from 'mongoose';
 
 @Component({
     selector: 'app-duel',
@@ -22,6 +25,7 @@ export class DuelComponent implements OnDestroy {
     duelObj: any = null;
     startedDuelId: string = '';
     spectator: boolean = false;
+    dayjs: any = dayjs;
 
     destroyed$ = new Subject();
 
@@ -53,6 +57,8 @@ export class DuelComponent implements OnDestroy {
         private ws: WebSocketService,
         private authService: AuthService
     ) {
+        dayjs.locale('fr');
+        dayjs.extend(relativeTime);
         if (!this.authService.isAuthenticated()) {
             this.router.navigate([`/login`], {
                 queryParams: { redirectUrl: this.router.url, redirected: true }

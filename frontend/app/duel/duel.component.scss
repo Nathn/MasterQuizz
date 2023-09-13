@@ -45,11 +45,23 @@
             }
         }
 
-        .forfeit-button {
-            background-color: $third-error-color;
-            color: white;
+        .match-navbar {
+            display: flex;
+            flex-direction: row;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 15px;
-            padding: 5px 10px;
+
+            span {
+                font-size: large;
+            }
+
+            .forfeit-button {
+                background-color: $third-error-color;
+                color: white;
+                padding: 5px 10px;
+            }
         }
 
         @media (max-width: 768px) {
