@@ -6,7 +6,7 @@ function find(request, ws, userWebSockets) {
     Match.findOne({
         users: {
             $size: 1,
-            $ne: request.user._id // Exclude the request.user from the query
+            $ne: request.user // Exclude the request.user from the query
         },
         started: 0
     })
