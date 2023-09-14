@@ -26,6 +26,7 @@ export class DuelComponent implements OnDestroy {
     startedDuelId: string = '';
     spectator: boolean = false;
     dayjs: any = dayjs;
+    refreshInterval: any = null;
 
     destroyed$ = new Subject();
 
@@ -312,7 +313,7 @@ export class DuelComponent implements OnDestroy {
             });
         if (this.duelId) {
             this.startMatch();
-            setInterval(() => {
+            this.refreshInterval = setInterval(() => {
                 if (!this.duelObj) this.startMatch();
             }, 1000);
         }
@@ -321,6 +322,7 @@ export class DuelComponent implements OnDestroy {
     ngOnDestroy() {
         this.destroyed$.next(0);
         this.ws.closeConnection();
+        if (this.refreshInterval) clearInterval(this.refreshInterval);
     }
 
     findMatch() {
