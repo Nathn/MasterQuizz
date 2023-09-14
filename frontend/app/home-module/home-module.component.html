@@ -162,6 +162,14 @@
             [disabled]="selectedAnswerIndex == -1"
         >
             Valider
+            <br />
+            <span
+                class="timer"
+                [ngStyle]="{ color: timerColor }"
+                *ngIf="timeLeft"
+            >
+                {{ timeLeft }}</span
+            >
         </button>
     </div>
 </div>

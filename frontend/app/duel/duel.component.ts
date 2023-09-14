@@ -123,6 +123,7 @@ export class DuelComponent implements OnDestroy {
             .subscribe((message: any) => {
                 if (message.type == 'duel') {
                     console.log(message.status);
+                    if (message.match) console.log(message.match.timeLimits);
                     if (message.status == 'waiting') {
                         this.status = "Recherche d'adversaire en cours...";
                     } else if (
@@ -256,6 +257,7 @@ export class DuelComponent implements OnDestroy {
                         message.status == 'answered' &&
                         message.match._id == this.duelId
                     ) {
+                        this.duelObj = message.match;
                         if (message.match.users[0]._id == this.userObj._id)
                             this.opponent = {
                                 answer: message.match.answers[

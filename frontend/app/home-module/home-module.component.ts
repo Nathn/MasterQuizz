@@ -22,10 +22,18 @@ export class HomeModuleComponent {
     @Output() validatedAnswer = new EventEmitter();
     @Output() nextQuestion = new EventEmitter();
 
+    TIME_LIMIT: number = 30000;
+
     selectedAnswerIndex: number = -1;
     answerValidated: boolean = false;
+    timeLeft: string = '';
+    timerColor: string = '';
 
-    constructor() {}
+    constructor() {
+        setInterval(() => {
+            this.updateTimeLeft();
+        }, 1000);
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         // if moduleParams.answerValidated is changed, change answerValidated
@@ -36,6 +44,29 @@ export class HomeModuleComponent {
         ) {
             this.answerValidated =
                 changes['moduleParams'].currentValue.answerValidated;
+        }
+        this.updateTimeLeft();
+    }
+
+    updateTimeLeft() {
+        const timeLimit =
+            this.moduleParams.matchObj.timeLimits[
+                this.moduleParams.currentQuestionIndex
+            ];
+        const now = new Date().getTime();
+        const endTime = timeLimit;
+        const timeLeft = endTime - now;
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        this.timeLeft = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        let secondsPassed = this.TIME_LIMIT - timeLeft;
+        console.log(secondsPassed);
+        if (secondsPassed > this.TIME_LIMIT / 2) {
+            this.timerColor = `rgb(255, ${Math.floor(
+                255 - (secondsPassed / this.TIME_LIMIT) * 255
+            )}, ${Math.floor(255 - (secondsPassed / this.TIME_LIMIT) * 255)})`;
+        } else {
+            this.timerColor = '';
         }
     }
 
