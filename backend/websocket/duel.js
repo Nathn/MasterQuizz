@@ -169,6 +169,23 @@ function start(request, ws, userWebSockets) {
                     return;
                 }
                 console.log(`[WS] Match found: ${match._id}`);
+                // if the user is not in the match, then return
+                if (
+                    !(
+                        match.users[0]._id == request.user ||
+                        (match.users[1] && match.users[1]._id == request.user)
+                    )
+                ) {
+                    console.log(`[WS] User not in the match`);
+                    ws.send(
+                        JSON.stringify({
+                            message: "OK",
+                            type: "duel",
+                            status: "not found"
+                        })
+                    );
+                    return;
+                }
                 match.started += 1;
                 match
                     .save()
