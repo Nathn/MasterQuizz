@@ -6,16 +6,22 @@ const matchSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    currentQuestion: {
+        type: Number,
+        default: 0
+    },
     questions: [
         {
             type: mongoose.Schema.ObjectId,
             ref: "Question"
         }
     ],
-    currentQuestion: {
-        type: Number,
-        default: 0
-    },
+    timeLimits: [
+        {
+            type: Number,
+            default: 0
+        }
+    ],
     answers: [
         {
             type: Map,

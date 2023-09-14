@@ -201,6 +201,8 @@ function start(request, ws, userWebSockets) {
                                     );
                                     // Add the question to the match
                                     match.questions.push(questions[0]._id);
+                                    // Add the time limit to the match (Date.now() + 30 seconds)
+                                    match.timeLimits.push(Date.now() + 30000);
                                     match.save().then((match) => {
                                         console.log(
                                             `[WS] Match updated with question`
@@ -672,6 +674,10 @@ function answer(request, ws, userWebSockets) {
                                             // Add the question to the match
                                             match.questions.push(
                                                 questions[0]._id
+                                            );
+                                            // Add the time limit to the match (Date.now() + 30 seconds)
+                                            match.timeLimits.push(
+                                                Date.now() + 30000
                                             );
                                             match.save().then((match) => {
                                                 console.log(
