@@ -80,9 +80,9 @@
     <span> Inscrit le {{ displayedUser.created | date : "dd/MM/yyyy" }} </span>
     <span> {{ displayedUser.elo }}&nbsp;🏆 </span>
     <span>
-        {{ displayedUser.stats.duels.wins }} duels gagnés<br />
-        {{ displayedUser.stats.duels.losses }} duels perdus<br />
-        {{ displayedUser.stats.duels.draws }} duels nuls
+        {{ displayedUser.stats.duels.wins }} duel{{ displayedUser.stats.duels.wins === 1 ? '' : 's' }} gagné{{ displayedUser.stats.duels.wins === 1 ? '' : 's' }}<br />
+        {{ displayedUser.stats.duels.losses }} duel{{ displayedUser.stats.duels.losses === 1 ? '' : 's' }} perdu{{ displayedUser.stats.duels.losses === 1 ? '' : 's' }}<br />
+        {{ displayedUser.stats.duels.draws }} duel{{ displayedUser.stats.duels.draws === 1 ? '' : 's' }} nul{{ displayedUser.stats.duels.draws === 1 ? '' : 's' }}
     </span>
     <div *ngIf="displayedUser.admin">
         <span> Administrateur </span>
