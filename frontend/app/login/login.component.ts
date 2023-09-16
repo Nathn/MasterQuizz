@@ -187,7 +187,6 @@ export class LoginComponent implements OnInit {
     }
 
     sendResetEmail() {
-        console.log(this.email);
         this.isLoading = true;
         sendPasswordResetEmail(this.authService.getAuth(), this.email)
             .then(() => {
