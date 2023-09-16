@@ -220,7 +220,7 @@ function start(request, ws, userWebSockets) {
                                     // Add the question to the match
                                     match.questions.push(questions[0]._id);
                                     // Add the time limit to the match (Date.now() + 30 seconds)
-                                    match.timeLimits.push(Date.now() + 3000000);
+                                    match.timeLimits.push(Date.now() + 30000);
                                     match.save().then((match) => {
                                         console.log(
                                             `[WS] Match updated with question`
@@ -695,7 +695,7 @@ function answer(request, ws, userWebSockets) {
                                             );
                                             // Add the time limit to the match (Date.now() + 30 seconds)
                                             match.timeLimits.push(
-                                                Date.now() + 3000000
+                                                Date.now() + 30000
                                             );
                                             match.save().then((match) => {
                                                 console.log(
@@ -759,7 +759,6 @@ function answer(request, ws, userWebSockets) {
                     console.log(`[WS] First user answered the question`);
                     // Save the answer
                     let newAnswerMap = new Map();
-                    console.log(`request.answeer: ${request.answer}`);
                     newAnswerMap.set(request.user, request.answer); // /!\ request.user is the user id !
                     match.answers.push(newAnswerMap);
                     match.save().then((match) => {
