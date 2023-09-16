@@ -21,6 +21,7 @@
         (click)="joinMatch()"
         *ngIf="startedDuelId && !duelId"
     >
+        <fa-icon [icon]="['fas', 'door-open']"></fa-icon>
         Rejoindre le duel en cours
     </button>
     <span class="status" *ngIf="status && !startedDuelId">{{ status }}</span>

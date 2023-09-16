@@ -34,7 +34,8 @@
                         ],
                         "scripts": [
                             "node_modules/cookieconsent/build/cookieconsent.min.js"
-                        ]
+                        ],
+                        "allowedCommonJsDependencies": ["dayjs", "crypto-js"]
                     },
                     "configurations": {
                         "production": {

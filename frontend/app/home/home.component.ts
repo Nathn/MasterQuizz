@@ -76,6 +76,15 @@ export class HomeComponent {
                             .subscribe((res: any) => {
                                 if (res.match) {
                                     user.currentDuelId = res.match._id;
+                                    if (
+                                        res.match.users.includes(
+                                            this.userObj._id
+                                        )
+                                    ) {
+                                        user.isCurrentDuelUser = true;
+                                    } else {
+                                        user.isCurrentDuelUser = false;
+                                    }
                                 }
                             });
                     });
