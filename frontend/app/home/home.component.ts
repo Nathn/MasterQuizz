@@ -77,6 +77,7 @@ export class HomeComponent {
                                 if (res.match) {
                                     user.currentDuelId = res.match._id;
                                     if (
+                                        this.userObj &&
                                         res.match.users.includes(
                                             this.userObj._id
                                         )
