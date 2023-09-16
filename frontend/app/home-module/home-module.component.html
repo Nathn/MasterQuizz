@@ -212,6 +212,9 @@
                         *ngIf="
                             moduleParams.matchObj.questions[i].answers[
                                 moduleParams.answers[i][user._id]
+                            ] &&
+                            moduleParams.matchObj.questions[i].answers[
+                                moduleParams.answers[i][user._id]
                             ].correct
                         "
                         [icon]="['fas', 'circle-check']"
@@ -219,6 +222,9 @@
                     ></fa-icon>
                     <fa-icon
                         *ngIf="
+                            !moduleParams.matchObj.questions[i].answers[
+                                moduleParams.answers[i][user._id]
+                            ] ||
                             !moduleParams.matchObj.questions[i].answers[
                                 moduleParams.answers[i][user._id]
                             ].correct

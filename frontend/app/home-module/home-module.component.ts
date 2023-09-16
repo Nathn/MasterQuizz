@@ -49,7 +49,8 @@ export class HomeModuleComponent {
         }
         if (
             this.moduleParams.matchObj &&
-            this.moduleParams.matchObj.timeLimits
+            this.moduleParams.matchObj.timeLimits &&
+            !this.answerValidated
         ) {
             this.updateTimeLeft();
             if (!this.timerInterval)
@@ -79,8 +80,16 @@ export class HomeModuleComponent {
             this.timerColor = '';
         }
         // if time is up, validate answer
-        if (timeLeft < 0) {
-            this.validateAnswer();
+        if (
+            timeLeft < 0 &&
+            !this.moduleParams.spectator &&
+            this.moduleParams.userObj
+        ) {
+            this.timeLeft = '';
+            clearInterval(this.timerInterval);
+            setTimeout(() => {
+                this.validateAnswer();
+            }, 600 * (this.moduleParams.matchObj.users[0]._id == this.moduleParams.userObj._id ? 0 : 1) + 100);
         }
     }
 
@@ -90,6 +99,7 @@ export class HomeModuleComponent {
     }
 
     validateAnswer() {
+        clearInterval(this.timerInterval);
         this.validatedAnswer.emit(this.selectedAnswerIndex);
         this.answerValidated = true;
     }
@@ -98,5 +108,10 @@ export class HomeModuleComponent {
         this.nextQuestion.emit(this.selectedAnswerIndex);
         this.answerValidated = false;
         this.selectedAnswerIndex = -1;
+        this.timeLeft = '';
+        this.timerColor = '';
+        this.timerInterval = setInterval(() => {
+            this.updateTimeLeft();
+        }, 1000);
     }
 }
