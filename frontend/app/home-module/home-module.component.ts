@@ -28,11 +28,13 @@ export class HomeModuleComponent {
     answerValidated: boolean = false;
     timeLeft: string = '';
     timerColor: string = '';
+    timerInterval: any;
 
     constructor() {
-        setInterval(() => {
-            this.updateTimeLeft();
-        }, 1000);
+        if (this.moduleParams.matchObj && this.moduleParams.matchObj.timeLimits)
+            this.timerInterval = setInterval(() => {
+                this.updateTimeLeft();
+            }, 1000);
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -45,7 +47,16 @@ export class HomeModuleComponent {
             this.answerValidated =
                 changes['moduleParams'].currentValue.answerValidated;
         }
-        this.updateTimeLeft();
+        if (
+            this.moduleParams.matchObj &&
+            this.moduleParams.matchObj.timeLimits
+        ) {
+            this.updateTimeLeft();
+            if (!this.timerInterval)
+                this.timerInterval = setInterval(() => {
+                    this.updateTimeLeft();
+                }, 1000);
+        }
     }
 
     updateTimeLeft() {
@@ -60,13 +71,16 @@ export class HomeModuleComponent {
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
         this.timeLeft = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         let secondsPassed = this.TIME_LIMIT - timeLeft;
-        console.log(secondsPassed);
         if (secondsPassed > this.TIME_LIMIT / 2) {
             this.timerColor = `rgb(255, ${Math.floor(
                 255 - (secondsPassed / this.TIME_LIMIT) * 255
             )}, ${Math.floor(255 - (secondsPassed / this.TIME_LIMIT) * 255)})`;
         } else {
             this.timerColor = '';
+        }
+        // if time is up, validate answer
+        if (timeLeft < 0) {
+            this.validateAnswer();
         }
     }
 
