@@ -275,11 +275,28 @@
                     {{ user.displayName }}
                 </div>
                 <button
-                    class="rankingmodule-slide-ranking-live"
+                    [ngClass]="{
+                        'rankingmodule-slide-ranking-live':
+                            !user.isCurrentDuelUser,
+                        'rankingmodule-slide-ranking-live-own':
+                            user.isCurrentDuelUser
+                    }"
                     *ngIf="user.currentDuelId"
                     [routerLink]="['/multiplayer', user.currentDuelId]"
+                    [title]="
+                        user.isCurrentDuelUser
+                            ? 'Regagner la partie'
+                            : 'Regarder la partie'
+                    "
                 >
-                    <fa-icon [icon]="['fas', 'eye']"></fa-icon>
+                    <fa-icon
+                        [icon]="['fas', 'eye']"
+                        *ngIf="!user.isCurrentDuelUser"
+                    ></fa-icon>
+                    <fa-icon
+                        [icon]="['fas', 'door-open']"
+                        *ngIf="user.isCurrentDuelUser"
+                    ></fa-icon>
                 </button>
             </div>
             <div

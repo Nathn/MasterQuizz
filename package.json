@@ -1,6 +1,6 @@
 {
     "name": "master-quizz",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "scripts": {
         "ng": "ng",
         "start": "node backend/app.js",

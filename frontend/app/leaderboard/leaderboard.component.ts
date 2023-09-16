@@ -85,6 +85,14 @@ export class LeaderboardComponent {
                 .subscribe((res: any) => {
                     if (res.match) {
                         user.currentDuelId = res.match._id;
+                        if (
+                            this.userObj &&
+                            res.match.users.includes(this.userObj._id)
+                        ) {
+                            user.isCurrentDuelUser = true;
+                        } else {
+                            user.isCurrentDuelUser = false;
+                        }
                     }
                 });
         });

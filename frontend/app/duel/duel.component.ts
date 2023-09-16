@@ -26,6 +26,7 @@ export class DuelComponent implements OnDestroy {
     startedDuelId: string = '';
     spectator: boolean = false;
     dayjs: any = dayjs;
+    refreshInterval: any = null;
 
     destroyed$ = new Subject();
 
@@ -59,18 +60,59 @@ export class DuelComponent implements OnDestroy {
     ) {
         dayjs.locale('fr');
         dayjs.extend(relativeTime);
-        if (!this.authService.isAuthenticated()) {
-            this.router.navigate([`/login`], {
-                queryParams: { redirectUrl: this.router.url, redirected: true }
-            });
-            return;
-        } else {
+        this.ar.params.subscribe((params) => {
+            if (params['id']) {
+                this.duelId = params['id'];
+                this.status = "Match trouvé ! En attente de l'adversaire...";
+            }
+            if (!this.duelId) {
+                if (!this.authService.isAuthenticated()) {
+                    this.router.navigate([`/login`], {
+                        queryParams: {
+                            redirectUrl: this.router.url,
+                            redirected: true
+                        }
+                    });
+                    return;
+                } else {
+                    this.authService
+                        .getCurrentUserInfo()
+                        .subscribe((userObj: any) => {
+                            this.userObj = userObj ? userObj : null;
+                            this.http
+                                .post(
+                                    environment.apiUrl +
+                                        'getCurrentDuelFromUser',
+                                    {
+                                        user: this.userObj._id
+                                    }
+                                )
+                                .subscribe((res: any) => {
+                                    if (res.message != 'OK') {
+                                        console.error(res.message);
+                                    } else {
+                                        if (res.match) {
+                                            this.startedDuelId = res.match._id;
+                                            this.status = 'Match en cours...';
+                                        }
+                                        this.isRequestLoading = false;
+                                        this.initDuel();
+                                    }
+                                });
+                        });
+                }
+            } else {
+                this.isRequestLoading = false;
+                this.initDuel();
+            }
+        });
+        if (this.authService.isAuthenticated()) {
             this.authService.getCurrentUserInfo().subscribe((userObj: any) => {
                 this.userObj = userObj ? userObj : null; // Update userObj (in case user just logged in)
                 this.authService.onAuthStateChanged(
                     this.authService.getAuth(),
                     async (user) => {
-                        if (!user) {
+                        if (!user && !this.duelId) {
                             this.router.navigate([`/login`], {
                                 queryParams: {
                                     redirectUrl: this.router.url,
@@ -81,39 +123,14 @@ export class DuelComponent implements OnDestroy {
                         }
                     }
                 );
-                this.ar.params.subscribe((params) => {
-                    if (params['id']) {
-                        this.duelId = params['id'];
-                        this.status =
-                            "Match trouvé ! En attente de l'adversaire...";
-                    }
-                    if (!this.duelId) {
-                        this.http
-                            .post(
-                                environment.apiUrl + 'getCurrentDuelFromUser',
-                                {
-                                    user: this.userObj._id
-                                }
-                            )
-                            .subscribe((res: any) => {
-                                if (res.message != 'OK') {
-                                    console.error(res.message);
-                                } else {
-                                    if (res.match) {
-                                        this.startedDuelId = res.match._id;
-                                        this.status = 'Match en cours...';
-                                    }
-                                    this.isRequestLoading = false;
-                                    this.initDuel();
-                                }
-                            });
-                    } else {
-                        this.isRequestLoading = false;
-                        this.initDuel();
-                    }
-                });
             });
-        }
+        } else if (!this.duelId)
+            this.router.navigate([`/login`], {
+                queryParams: {
+                    redirectUrl: this.router.url,
+                    redirected: true
+                }
+            });
     }
 
     initDuel(): void {
@@ -144,8 +161,9 @@ export class DuelComponent implements OnDestroy {
                         this.currentQuestionIndex =
                             message.match.currentQuestion;
                         if (
-                            message.match.users[0]._id != this.userObj._id &&
-                            message.match.users[1]._id != this.userObj._id
+                            !this.userObj ||
+                            (message.match.users[0]._id != this.userObj._id &&
+                                message.match.users[1]._id != this.userObj._id)
                         ) {
                             this.answerValidated = true;
                             this.spectator = true;
@@ -314,7 +332,7 @@ export class DuelComponent implements OnDestroy {
             });
         if (this.duelId) {
             this.startMatch();
-            setInterval(() => {
+            this.refreshInterval = setInterval(() => {
                 if (!this.duelObj) this.startMatch();
             }, 1000);
         }
@@ -323,6 +341,7 @@ export class DuelComponent implements OnDestroy {
     ngOnDestroy() {
         this.destroyed$.next(0);
         this.ws.closeConnection();
+        if (this.refreshInterval) clearInterval(this.refreshInterval);
     }
 
     findMatch() {
@@ -349,7 +368,7 @@ export class DuelComponent implements OnDestroy {
         this.ws.send({
             type: 'duel',
             action: 'start',
-            user: this.userObj._id,
+            user: this.userObj ? this.userObj._id : null,
             match: this.duelId
         });
     }

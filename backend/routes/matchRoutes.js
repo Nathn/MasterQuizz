@@ -14,21 +14,18 @@ router.post("/getCurrentDuelFromUser", async (req, res) => {
     try {
         const match = await Match.findOne({
             users: { $size: 2, $in: [userId] },
-            ended: false,
-        }).populate({
-            path: "users",
-            select: "-email", // Exclude the email field from each user object
+            ended: false
         });
         if (!match) {
             console.log(`[SERVER] No match found for user ${userId}`);
             res.status(200).json({
-                message: "OK",
+                message: "OK"
             });
         } else {
             console.log(`[SERVER] Found match ${match._id} for user ${userId}`);
             res.status(200).json({
                 message: "OK",
-                match: match,
+                match: match
             });
         }
     } catch (err) {
@@ -36,7 +33,7 @@ router.post("/getCurrentDuelFromUser", async (req, res) => {
             `[SERVER] An error occurred while finding match: ${err.stack}`
         );
         res.status(500).json({
-            message: "Internal server error",
+            message: "Internal server error"
         });
     }
 });
