@@ -171,7 +171,6 @@ export class DuelComponent implements OnDestroy {
                         message.status == 'ended' &&
                         message.match._id == this.duelId
                     ) {
-                        console.log(message);
                         if (this.duelObj == null) {
                             this.status = 'ended';
                             this.duelObj = message.match;
