@@ -75,7 +75,12 @@ router.post("/register", async (req, res) => {
             email: req.body.email,
             username: req.body.username,
             displayName: req.body.username,
-            avatarUrl: req.body.avatar
+            avatarUrl:
+                req.body.avatar ||
+                `https://ui-avatars.com/api/?background=random&name=${req.body.username.replace(
+                    " ",
+                    "+"
+                )}`
         });
         await user.save();
         const message = {
