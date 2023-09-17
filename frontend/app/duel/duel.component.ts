@@ -23,6 +23,7 @@ export class DuelComponent implements OnDestroy {
         : null;
     duelId: string = '';
     duelObj: any = null;
+    opponentId: string = '';
     startedDuelId: string = '';
     spectator: boolean = false;
     dayjs: any = dayjs;
@@ -166,6 +167,16 @@ export class DuelComponent implements OnDestroy {
                         ) {
                             this.answerValidated = true;
                             this.spectator = true;
+                        } else if (
+                            this.userObj &&
+                            message.match.users[0]._id == this.userObj._id
+                        ) {
+                            this.opponentId = message.match.users[1]._id;
+                        } else if (
+                            this.userObj &&
+                            message.match.users[1]._id == this.userObj._id
+                        ) {
+                            this.opponentId = message.match.users[0]._id;
                         }
                     } else if (
                         message.status == 'ended' &&
@@ -412,6 +423,18 @@ export class DuelComponent implements OnDestroy {
             user: this.userObj._id,
             match: this.duelId,
             answer: this.selectedAnswerIndex
+        });
+    }
+
+    timeOut(event: any) {
+        // This is triggered only when the opponent is not connected
+        // We send an answer (-1) as the opponent's answer
+        this.ws.send({
+            type: 'duel',
+            action: 'answer',
+            user: this.opponentId,
+            match: this.duelId,
+            answer: -1
         });
     }
 

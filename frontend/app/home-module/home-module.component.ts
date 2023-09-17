@@ -21,6 +21,7 @@ export class HomeModuleComponent {
     @Output() selectedAnswer = new EventEmitter();
     @Output() validatedAnswer = new EventEmitter();
     @Output() nextQuestion = new EventEmitter();
+    @Output() timeOut = new EventEmitter();
 
     TIME_LIMIT: number = 30000;
 
@@ -83,13 +84,37 @@ export class HomeModuleComponent {
         if (
             timeLeft < 0 &&
             !this.moduleParams.spectator &&
-            this.moduleParams.userObj
+            this.moduleParams.userObj &&
+            !this.answerValidated
         ) {
             this.timeLeft = '';
             clearInterval(this.timerInterval);
             setTimeout(() => {
                 this.validateAnswer();
+                if (
+                    timeLeft < 0 &&
+                    this.answerValidated &&
+                    !this.moduleParams.nextQuestionReady
+                ) {
+                    this.timeLeft = '';
+                    clearInterval(this.timerInterval);
+                    setTimeout(() => {
+                        this.sendTimeOut();
+                    }, 2000);
+                }
             }, 600 * (this.moduleParams.matchObj.users[0]._id == this.moduleParams.userObj._id ? 0 : 1) + 100);
+        }
+        // if time is up, current user has answered but the opponent hasn't, wait 2 seconds then send timeover event
+        if (
+            timeLeft < 0 &&
+            this.answerValidated &&
+            !this.moduleParams.nextQuestionReady
+        ) {
+            this.timeLeft = '';
+            clearInterval(this.timerInterval);
+            setTimeout(() => {
+                this.sendTimeOut();
+            }, 2000);
         }
     }
 
@@ -99,12 +124,16 @@ export class HomeModuleComponent {
     }
 
     validateAnswer() {
-        clearInterval(this.timerInterval);
         this.validatedAnswer.emit(this.selectedAnswerIndex);
         this.answerValidated = true;
     }
 
+    sendTimeOut() {
+        this.timeOut.emit();
+    }
+
     next() {
+        clearInterval(this.timerInterval);
         this.nextQuestion.emit(this.selectedAnswerIndex);
         this.answerValidated = false;
         this.selectedAnswerIndex = -1;
