@@ -32,33 +32,36 @@
         />
     </div>
     <span class="form-error" *ngIf="error">{{ error }}</span>
-    <button
-        type="submit"
-        class="submit-button"
-        [disabled]="!registerForm.valid || isLoading"
-    >
-        <span *ngIf="!isLoading"
-            ><fa-icon [icon]="['fas', 'sign-in-alt']"></fa-icon>Se
-            connecter</span
+    <div class="buttons-container">
+        <button
+            type="submit"
+            class="submit-button"
+            [disabled]="!registerForm.valid || isLoading"
         >
-        <span *ngIf="isLoading">
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-            >&nbsp;Chargement...
-        </span>
-    </button>
-    <br />
-    <button
-        type="button"
-        class=""
-        id="google-button"
-        class="google-button"
-        (click)="loginWithGoogle()"
-    >
-        <fa-icon [icon]="['fab', 'google']"></fa-icon>Se connecter avec Google
-    </button>
-    <div class="form-links">
-        <span (click)="navigateToReset()">Mot de passe oublié ?</span>
-        <span (click)="navigateToRegister()">Pas encore inscrit ?</span>
+            <span *ngIf="!isLoading"
+                ><fa-icon [icon]="['fas', 'sign-in-alt']"></fa-icon>Se
+                connecter</span
+            >
+            <span *ngIf="isLoading">
+                <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
+                >&nbsp;Chargement...
+            </span>
+        </button>
+        <br />
+        <button
+            type="button"
+            class=""
+            id="google-button"
+            class="google-button"
+            (click)="loginWithGoogle()"
+        >
+            <fa-icon [icon]="['fab', 'google']"></fa-icon>Se connecter avec
+            Google
+        </button>
+        <div class="form-links">
+            <span (click)="navigateToReset()">Mot de passe oublié ?</span>
+            <span (click)="navigateToRegister()">Pas encore inscrit ?</span>
+        </div>
     </div>
 </form>
 <form

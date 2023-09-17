@@ -6,6 +6,49 @@ h2 {
     font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.form-group {
+    margin: 20px auto;
+    width: max-content;
+}
+
+input,
+select {
+    font-weight: 300;
+    border-radius: 5px;
+    border: 1px solid #111;
+    padding: 10px !important;
+    margin: 10px 0 !important;
+    width: 100%;
+    min-width: 500px;
+    max-width: 100%;
+    background-color: $input-color;
+    color: $input-text-color;
+}
+
+input[type="checkbox"] {
+    min-width: 0;
+}
+
+.buttons-container {
+    margin: auto;
+    width: max-content;
+    min-width: 500px;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    input,
+    select {
+        min-width: 250px;
+        max-width: 500px;
+    }
+
+    .buttons-container {
+        min-width: 250px;
+        max-width: 500px;
+    }
+}
+
 .google-button {
     background-color: #4285f4;
     color: white;
