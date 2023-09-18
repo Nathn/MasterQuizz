@@ -1,8 +1,4 @@
-const Question = require("../models/Question");
-const Match = require("../models/Match");
-const User = require("../models/User");
-
-const duel = require("./duel");
+const duel = require("./duel/duel");
 
 function handleWebSocketDuelMessage(request, ws, userWebSockets) {
     if (request.action === "find") {
