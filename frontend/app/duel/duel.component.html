@@ -113,10 +113,12 @@
         "
         moduleType="match"
         [moduleParams]="{
+            currentQuestionIndex: currentQuestionIndex,
             nextQuestionReady: nextQuestionReady,
             matchEnded: status == 'ended',
             hideAnswers: !nextQuestionReady,
             matchObj: duelObj,
+            userObj: userObj,
             eloChange: eloChange,
             scores: scores,
             answers: answers,
@@ -133,6 +135,7 @@
         (selectedAnswer)="selectedAnswer($event)"
         (validatedAnswer)="validatedAnswer($event)"
         (nextQuestion)="nextQuestionPressed($event)"
+        (timeOut)="timeOut($event)"
         *ngIf="currentQuestion"
     >
     </app-home-module>

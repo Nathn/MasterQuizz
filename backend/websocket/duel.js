@@ -219,6 +219,8 @@ function start(request, ws, userWebSockets) {
                                     );
                                     // Add the question to the match
                                     match.questions.push(questions[0]._id);
+                                    // Add the time limit to the match (Date.now() + 30 seconds)
+                                    match.timeLimits.push(Date.now() + 90000);
                                     match.save().then((match) => {
                                         console.log(
                                             `[WS] Match updated with question`
@@ -277,9 +279,13 @@ function start(request, ws, userWebSockets) {
                                                 match.currentQuestion &&
                                             match.answers[match.currentQuestion]
                                                 .size > 0 &&
-                                            match.answers[
-                                                match.currentQuestion
-                                            ].has(request.user.toString())
+                                            ((request.user &&
+                                                match.answers[
+                                                    match.currentQuestion
+                                                ].has(
+                                                    request.user.toString()
+                                                )) ||
+                                                !request.user)
                                         ) {
                                             console.log(
                                                 `[WS] User already answered the question`
@@ -374,6 +380,7 @@ function answer(request, ws, userWebSockets) {
                 // Check if the other user already answered
                 if (
                     match.answers.length > match.currentQuestion &&
+                    match.answers[match.currentQuestion] &&
                     match.answers[match.currentQuestion].size > 0 &&
                     !match.answers[match.currentQuestion].has(
                         request.user.toString()
@@ -401,6 +408,11 @@ function answer(request, ws, userWebSockets) {
                                     for (let i = 0; i < 10; i++) {
                                         for (let j = 0; j < 2; j++) {
                                             if (
+                                                match.questions[i].answers[
+                                                    match.answers[i].get(
+                                                        match.users[j]._id
+                                                    )
+                                                ] &&
                                                 match.questions[i].answers[
                                                     match.answers[i].get(
                                                         match.users[j]._id
@@ -691,6 +703,10 @@ function answer(request, ws, userWebSockets) {
                                             match.questions.push(
                                                 questions[0]._id
                                             );
+                                            // Add the time limit to the match (Date.now() + 30 seconds)
+                                            match.timeLimits.push(
+                                                Date.now() + 90000
+                                            );
                                             match.save().then((match) => {
                                                 console.log(
                                                     `[WS] Match updated with question`
@@ -755,17 +771,30 @@ function answer(request, ws, userWebSockets) {
                     let newAnswerMap = new Map();
                     newAnswerMap.set(request.user, request.answer); // /!\ request.user is the user id !
                     match.answers.push(newAnswerMap);
-                    match.save().then((match) => {
-                        console.log(`[WS] Match updated with answer`);
-                        ws.send(
-                            JSON.stringify({
-                                message: "OK",
-                                type: "duel",
-                                status: "waitingforanswer",
-                                match
-                            })
-                        );
-                    });
+                    match
+                        .save()
+                        .then((match) => {
+                            console.log(`[WS] Match updated with answer`);
+                            ws.send(
+                                JSON.stringify({
+                                    message: "OK",
+                                    type: "duel",
+                                    status: "waitingforanswer",
+                                    match
+                                })
+                            );
+                        })
+                        .catch((err) => {
+                            console.log(
+                                `[WS] An error occurred while updating match: ${err}`
+                            );
+                            console.log(err.stack);
+                            ws.send(
+                                JSON.stringify({
+                                    message: "Internal server error"
+                                })
+                            );
+                        });
                 }
             }
         })
