@@ -42,7 +42,7 @@ function start(request, ws, userWebSockets) {
                     return;
                 }
                 console.log(`[WS] Match found: ${match._id}`);
-                // if the user is not in the match ans match is not started yet, then return
+                // if the user is not in the match and match is not started yet, then return
                 if (
                     !(
                         match.users[0]._id == request.user ||
@@ -51,6 +51,24 @@ function start(request, ws, userWebSockets) {
                     match.started < 2
                 ) {
                     console.log(`[WS] User not in the match`);
+                    ws.send(
+                        JSON.stringify({
+                            message: "OK",
+                            type: "duel",
+                            status: "not found"
+                        })
+                    );
+                    return;
+                }
+                // if the user is in the match but no other user has been found yet, then return
+                if (
+                    match.users[0]._id == request.user &&
+                    match.started < 1 &&
+                    !match.users[1]
+                ) {
+                    console.log(
+                        `[WS] User in the match but no other user found`
+                    );
                     ws.send(
                         JSON.stringify({
                             message: "OK",
