@@ -51,7 +51,7 @@ export class HomeModuleComponent {
         if (
             this.moduleParams.matchObj &&
             this.moduleParams.matchObj.timeLimits &&
-            !this.answerValidated
+            (!this.answerValidated || this.moduleParams.spectator)
         ) {
             this.updateTimeLeft();
             if (!this.timerInterval)
@@ -80,12 +80,14 @@ export class HomeModuleComponent {
         } else {
             this.timerColor = '';
         }
+        if (timeLeft < 0) this.timeLeft = '';
         // if time is up, validate answer
         if (
             timeLeft < 0 &&
             !this.moduleParams.spectator &&
             this.moduleParams.userObj &&
-            !this.answerValidated
+            !this.answerValidated &&
+            !this.moduleParams.spectator
         ) {
             this.timeLeft = '';
             clearInterval(this.timerInterval);
@@ -108,7 +110,8 @@ export class HomeModuleComponent {
         if (
             timeLeft < 0 &&
             this.answerValidated &&
-            !this.moduleParams.nextQuestionReady
+            !this.moduleParams.nextQuestionReady &&
+            !this.moduleParams.spectator
         ) {
             this.timeLeft = '';
             clearInterval(this.timerInterval);

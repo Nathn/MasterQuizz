@@ -36,6 +36,7 @@ export class DuelComponent implements OnDestroy {
     status: string = '';
     currentQuestion: any = null;
     currentQuestionIndex: number = 0;
+    tempCurrentQuestionIndex: number = 0;
     nextQuestion: any = null;
     selectedAnswerIndex: number = -1;
     nextQuestionReady: boolean = false;
@@ -317,6 +318,8 @@ export class DuelComponent implements OnDestroy {
                                     message.match.users[0].username
                             };
                         else {
+                            this.tempCurrentQuestionIndex =
+                                message.match.currentQuestion;
                             this.opponent1 = {
                                 answer: message.match.answers[
                                     this.currentQuestionIndex
@@ -440,7 +443,11 @@ export class DuelComponent implements OnDestroy {
 
     nextQuestionPressed(event: any) {
         this.selectedAnswerIndex = -1;
-        this.currentQuestionIndex++;
+        if (this.spectator) {
+            this.currentQuestionIndex = this.tempCurrentQuestionIndex;
+        } else {
+            this.currentQuestionIndex++;
+        }
         this.currentQuestion = this.nextQuestion || this.currentQuestion;
         this.nextQuestion = null;
         this.nextQuestionReady = false;
