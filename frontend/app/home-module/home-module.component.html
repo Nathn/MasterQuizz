@@ -147,6 +147,14 @@
                 moduleParams.waitingForAnswerText ||
                     "En attente de l'adversaire..."
             }}
+            <br />
+            <span
+                class="timer"
+                [ngStyle]="{ color: timerColor }"
+                *ngIf="timeLeft"
+            >
+                {{ timeLeft }}</span
+            >
         </button>
         <button
             class="button-start"

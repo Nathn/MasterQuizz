@@ -10,8 +10,6 @@ function forfeit(request, ws, userWebSockets) {
         .populate("users")
         .exec()
         .then((match) => {
-            console.log(`match: ${match}`);
-            console.log(`request.user: ${request.user}`);
             if (
                 !match ||
                 (match.users[0]._id != request.user &&
