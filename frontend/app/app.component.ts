@@ -35,6 +35,11 @@ export class AppComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private cookieService: NgcCookieConsentService
     ) {
+        // redirect .fly.dev domain to .fr
+        if (window.location.href.includes('masterquizz.fly.dev')) {
+            const newUrl = window.location.href.replace('.fly.dev', '.fr');
+            window.location.replace(newUrl);
+        }
         this.authService.initAuth();
         this.authService.onAuthStateChanged(
             this.authService.getAuth(),
