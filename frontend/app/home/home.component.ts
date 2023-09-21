@@ -14,8 +14,11 @@ export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
-    longModuleShown: boolean = localStorage.getItem('longModuleShown')
-        ? localStorage.getItem('longModuleShown') == '1'
+    longModule1Shown: boolean = localStorage.getItem('longModule2Shown')
+        ? localStorage.getItem('longModule2Shown') == '1'
+        : true;
+    longModule2Shown: boolean = localStorage.getItem('longModule2Shown')
+        ? localStorage.getItem('longModule2Shown') == '1'
         : true;
     randomQuestion: any = localStorage.getItem('randomQuestion')
         ? JSON.parse(localStorage.getItem('randomQuestion') || '')
@@ -250,7 +253,7 @@ export class HomeComponent {
     }
 
     closeLongModule() {
-        this.longModuleShown = false;
-        localStorage.setItem('longModuleShown', '0');
+        this.longModule2Shown = false;
+        localStorage.setItem('longModule2Shown', '0');
     }
 }
