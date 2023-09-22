@@ -136,14 +136,19 @@ export class HomeModuleComponent {
     }
 
     next() {
-        clearInterval(this.timerInterval);
+        if (this.timerInterval) clearInterval(this.timerInterval);
         this.nextQuestion.emit(this.selectedAnswerIndex);
         this.answerValidated = false;
         this.selectedAnswerIndex = -1;
         this.timeLeft = '';
         this.timerColor = '';
-        this.timerInterval = setInterval(() => {
-            this.updateTimeLeft();
-        }, 1000);
+        if (
+            this.moduleParams.matchObj &&
+            this.moduleParams.matchObj.timeLimits
+        ) {
+            this.timerInterval = setInterval(() => {
+                this.updateTimeLeft();
+            }, 1000);
+        }
     }
 }
