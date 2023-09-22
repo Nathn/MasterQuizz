@@ -11,6 +11,7 @@
         <div
             *ngFor="let theme of availableThemes"
             class="home-module-long-content-item"
+            (click)="openTheme(theme._id)"
         >
             <img
                 [src]="theme.image"

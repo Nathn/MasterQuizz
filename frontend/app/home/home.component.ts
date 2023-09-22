@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -33,7 +34,11 @@ export class HomeComponent {
 
     rankedUsers: any = [];
 
-    constructor(private http: HttpClient, private authService: AuthService) {
+    constructor(
+        private http: HttpClient,
+        private authService: AuthService,
+        private router: Router
+    ) {
         if (this.availableThemes.length > 0) this.isLoadingThemes = false;
         if (this.userObj) {
             if (this.userObj.remainingQuestions <= 0) {
@@ -130,6 +135,10 @@ export class HomeComponent {
                 }
             }
         );
+    }
+
+    openTheme(theme_id: string) {
+        this.router.navigate([`/practice/theme/${theme_id}`]);
     }
 
     validatedAnswer(event: any) {
