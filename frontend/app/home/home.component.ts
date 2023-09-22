@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
@@ -14,8 +15,14 @@ export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
-    longModuleShown: boolean = localStorage.getItem('longModuleShown')
-        ? localStorage.getItem('longModuleShown') == '1'
+    availableThemes: any = localStorage.getItem('availableThemes')
+        ? JSON.parse(localStorage.getItem('availableThemes') || '')
+        : [];
+    longModule1Shown: boolean = localStorage.getItem('longModule2Shown')
+        ? localStorage.getItem('longModule2Shown') == '1'
+        : true;
+    longModule2Shown: boolean = localStorage.getItem('longModule2Shown')
+        ? localStorage.getItem('longModule2Shown') == '1'
         : true;
     randomQuestion: any = localStorage.getItem('randomQuestion')
         ? JSON.parse(localStorage.getItem('randomQuestion') || '')
@@ -23,10 +30,16 @@ export class HomeComponent {
     nextRandomQuestion: any;
     noMoreAllowedQuestions: boolean = false;
     waitingMessage: string = '';
+    isLoadingThemes: boolean = true;
 
     rankedUsers: any = [];
 
-    constructor(private http: HttpClient, private authService: AuthService) {
+    constructor(
+        private http: HttpClient,
+        private authService: AuthService,
+        private router: Router
+    ) {
+        if (this.availableThemes.length > 0) this.isLoadingThemes = false;
         if (this.userObj) {
             if (this.userObj.remainingQuestions <= 0) {
                 this.noMoreAllowedQuestions = true;
@@ -59,6 +72,16 @@ export class HomeComponent {
                     );
                 });
         }
+        this.http
+            .post(environment.apiUrl + 'getAvailableThemes', {})
+            .subscribe((res: any) => {
+                if (res.themes) this.availableThemes = res.themes;
+                this.isLoadingThemes = false;
+                localStorage.setItem(
+                    'availableThemes',
+                    JSON.stringify(res.themes)
+                );
+            });
         this.http
             .post(environment.apiUrl + 'getTopUsersByElo', {})
             .subscribe((res: any) => {
@@ -112,6 +135,10 @@ export class HomeComponent {
                 }
             }
         );
+    }
+
+    openTheme(theme_id: string) {
+        this.router.navigate([`/practice/theme/${theme_id}`]);
     }
 
     validatedAnswer(event: any) {
@@ -250,7 +277,7 @@ export class HomeComponent {
     }
 
     closeLongModule() {
-        this.longModuleShown = false;
-        localStorage.setItem('longModuleShown', '0');
+        this.longModule2Shown = false;
+        localStorage.setItem('longModule2Shown', '0');
     }
 }
