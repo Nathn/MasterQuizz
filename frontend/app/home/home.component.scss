@@ -53,6 +53,33 @@
     text-align: center;
     font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
 
+    .home-module-long-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        overflow-x: auto;
+        width: 100%;
+
+        .home-module-long-content-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-width: 135px;
+
+            img {
+                width: 75px;
+                height: 75px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 2px solid $secondary-text-color;
+                padding: 3px;
+                margin-bottom: 5px;
+            }
+        }
+    }
+
     button {
         margin: 0 0 0 25px;
     }

@@ -14,6 +14,9 @@ export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')
         ? JSON.parse(localStorage.getItem('userObj') || '')
         : null;
+    availableThemes: any = localStorage.getItem('availableThemes')
+        ? JSON.parse(localStorage.getItem('availableThemes') || '')
+        : [];
     longModule1Shown: boolean = localStorage.getItem('longModule2Shown')
         ? localStorage.getItem('longModule2Shown') == '1'
         : true;
@@ -26,10 +29,12 @@ export class HomeComponent {
     nextRandomQuestion: any;
     noMoreAllowedQuestions: boolean = false;
     waitingMessage: string = '';
+    isLoadingThemes: boolean = true;
 
     rankedUsers: any = [];
 
     constructor(private http: HttpClient, private authService: AuthService) {
+        if (this.availableThemes.length > 0) this.isLoadingThemes = false;
         if (this.userObj) {
             if (this.userObj.remainingQuestions <= 0) {
                 this.noMoreAllowedQuestions = true;
@@ -62,6 +67,16 @@ export class HomeComponent {
                     );
                 });
         }
+        this.http
+            .post(environment.apiUrl + 'getAvailableThemes', {})
+            .subscribe((res: any) => {
+                if (res.themes) this.availableThemes = res.themes;
+                this.isLoadingThemes = false;
+                localStorage.setItem(
+                    'availableThemes',
+                    JSON.stringify(res.themes)
+                );
+            });
         this.http
             .post(environment.apiUrl + 'getTopUsersByElo', {})
             .subscribe((res: any) => {

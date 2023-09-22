@@ -4,6 +4,23 @@
     !
 </h1>
 <div class="home-module-long" *ngIf="longModule1Shown">
+    <h2 class="loading-container" *ngIf="isLoadingThemes">
+        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+    </h2>
+    <div class="home-module-long-content" *ngIf="!isLoadingThemes">
+        <div
+            *ngFor="let theme of availableThemes"
+            class="home-module-long-content-item"
+        >
+            <img
+                [src]="theme.image"
+                [alt]="theme.name"
+                height="75"
+                width="75"
+            />
+            <h3>{{ theme.name }}</h3>
+        </div>
+    </div>
     <div class="close-button">
         <fa-icon
             [icon]="['fas', 'circle-xmark']"
