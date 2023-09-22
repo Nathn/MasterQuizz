@@ -53,6 +53,58 @@
     text-align: center;
     font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
 
+    .home-module-long-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        overflow-x: scroll;
+        width: 100%;
+
+        .home-module-long-content-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-width: 135px;
+            cursor: pointer;
+
+            img {
+                width: 75px;
+                height: 75px;
+                object-fit: cover;
+                border-radius: 50%;
+                border: 2px solid $secondary-text-color;
+                padding: 3px;
+                margin: 5px 0;
+                box-shadow: none;
+                transition: box-shadow 0.5s ease-in-out;
+            }
+        }
+
+        .home-module-long-content-item:hover {
+            img {
+                box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.3);
+                transition: box-shadow 0.5s ease-in-out;
+
+                animation-name: rotate;
+                animation-duration: 12s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+            }
+        }
+
+        /* Define the animation */
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    }
+
     button {
         margin: 0 0 0 25px;
     }
