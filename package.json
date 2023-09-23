@@ -1,6 +1,6 @@
 {
     "name": "master-quizz",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "scripts": {
         "ng": "ng",
         "start": "node backend/app.js",
@@ -13,10 +13,10 @@
     "private": true,
     "dependencies": {
         "@angular/animations": "^16.1.0",
-        "@angular/cli": "latest",
+        "@angular/cli": "^16.1.0",
         "@angular/common": "^16.1.0",
         "@angular/compiler": "^16.1.0",
-        "@angular/compiler-cli": "latest",
+        "@angular/compiler-cli": "^16.1.0",
         "@angular/core": "^16.1.0",
         "@angular/forms": "^16.1.0",
         "@angular/platform-browser": "^16.1.0",
@@ -53,7 +53,7 @@
         "@flydotio/dockerfile": "^0.4.0",
         "@types/crypto-js": "^4.1.1",
         "@types/jasmine": "~4.3.0",
-        "@types/node": "latest",
+        "@types/node": "~20.6.1",
         "@types/ws": "^8.5.5",
         "jasmine-core": "~5.1.0",
         "karma": "~6.4.0",
