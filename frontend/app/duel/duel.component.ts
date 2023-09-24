@@ -194,8 +194,6 @@ export class DuelComponent implements OnDestroy {
                                 message.match.currentQuestion;
                         } else {
                             this.answerValidated = true;
-                            this.currentQuestionIndex =
-                                message.match.currentQuestion;
                             if (
                                 message.answers[this.currentQuestionIndex] &&
                                 message.answers[this.currentQuestionIndex][
@@ -262,6 +260,8 @@ export class DuelComponent implements OnDestroy {
                                     };
                                 }
                             }
+                            this.tempCurrentQuestionIndex =
+                                message.match.currentQuestion;
                             this.ended = true;
                             this.nextQuestionReady = true;
                             this.hideAnswers = false;
