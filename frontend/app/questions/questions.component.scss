@@ -66,13 +66,20 @@ form {
 
 .question-toolbar {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+    flex-direction: column;
     width: 100%;
+    gap: 10px;
 
-    * {
-        width: 400px !important;
-        margin: 0 3px !important;
+    .question-toolbar-row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+
+        * {
+            width: 400px !important;
+            margin: 0 3px !important;
+        }
     }
 }
 
