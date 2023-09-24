@@ -58,7 +58,7 @@ export class QuestionsComponent {
     answers: string[] = [];
     goodAnswer: number = 0;
     themeSelected: string = '';
-    difficulty: number = 3;
+    difficulty: number = -1;
     editSaved: boolean = false;
 
     constructor(
@@ -91,6 +91,10 @@ export class QuestionsComponent {
                             });
                             return;
                         }
+                        if (this.action == 'add')
+                            this.difficulty =
+                                this.difficulty > 0 ? this.difficulty : 3;
+                        if (this.action == 'manage') this.difficulty = -1;
                         if (!this.userObj.admin && this.action != 'add') {
                             this.router.navigate(['']);
                             return;
@@ -141,7 +145,7 @@ export class QuestionsComponent {
     }
 
     async getQuestions() {
-        this.isRequestLoading = true;
+        if (this.questionsList.length == 0) this.isRequestLoading = true;
         this.http
             .post(environment.apiUrl + 'getAllQuestions', {
                 user: this.userObj._id
@@ -190,6 +194,13 @@ export class QuestionsComponent {
     getQuestionsFiltered() {
         let filteredQuestions: any[] = [];
         outer: for (let question of this.questionsList) {
+            if (
+                this.themeSelected != '' &&
+                this.themeSelected != question.theme.code
+            )
+                continue;
+            if (this.difficulty != -1 && this.difficulty != question.difficulty)
+                continue;
             if (
                 question.question
                     .toLowerCase()

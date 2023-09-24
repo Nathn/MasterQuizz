@@ -153,21 +153,58 @@
         <h1>Gestion des questions</h1>
         <div class="questions-container">
             <div class="question-toolbar">
-                <button class="add-button" [routerLink]="['/questions/add']">
-                    <fa-icon [icon]="['fas', 'plus']"></fa-icon>
-                    Ajouter une question
-                </button>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="search"
-                    name="search"
-                    [(ngModel)]="search"
-                    required
-                    autocomplete="off"
-                    spellcheck="true"
-                    placeholder="Rechercher..."
-                />
+                <div class="question-toolbar-row">
+                    <button
+                        class="add-button"
+                        [routerLink]="['/questions/add']"
+                    >
+                        <fa-icon [icon]="['fas', 'plus']"></fa-icon>
+                        Ajouter une question
+                    </button>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="search"
+                        name="search"
+                        [(ngModel)]="search"
+                        required
+                        autocomplete="off"
+                        spellcheck="true"
+                        placeholder="Rechercher..."
+                    />
+                </div>
+                <div class="question-toolbar-row">
+                    <select
+                        class="form-control"
+                        id="theme"
+                        name="theme"
+                        [(ngModel)]="themeSelected"
+                        required
+                    >
+                        <option value="">Tous les thèmes</option>
+                        <option
+                            *ngFor="let theme of themes"
+                            [value]="theme.code"
+                        >
+                            {{ theme.name }}
+                        </option>
+                    </select>
+                    <select
+                        class="form-control"
+                        id="difficulty"
+                        name="difficulty"
+                        [(ngModel)]="difficulty"
+                        required
+                    >
+                        <option value="{{ -1 }}">Toutes les difficultés</option>
+                        <option
+                            *ngFor="let diff of [1, 2, 3, 4, 5]"
+                            [value]="diff"
+                        >
+                            {{ diff }}/5
+                        </option>
+                    </select>
+                </div>
             </div>
             <span class="success-message" *ngIf="successMessage">{{
                 successMessage
