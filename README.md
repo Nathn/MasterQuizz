@@ -4,8 +4,12 @@ An interactive, multiplayer quizz website powered by Angular and Node.
 
 ## Docker install
 
--   `sudo docker build -t masterquizz -f Dockerfile.environment .`
--   `sudo docker run -p 8080:8080 -p 3000:3000 -p 3001:3001 masterquizz`
+```
+sudo docker build -t masterquizz -f Dockerfile.environment .
+```
+```
+sudo docker run -p 8080:8080 -p 3000:3000 -p 3001:3001 masterquizz
+```
 
 Then open `http://localhost:8080`.
 
