@@ -31,6 +31,8 @@ COPY . .
 RUN echo "PORT=3000\nWS_PORT=3001\nMONGO_URI=mongodb+srv://nathantranchant:YHjtNrFvBBS51fh4@mqdev.odpjjqk.mongodb.net/masterquizz\nCORS_WHITELIST=http://localhost:3000,http://localhost:8080\nENCRYPTION_KEY=masterquizz06" > backend/.env
 
 EXPOSE 8080
+EXPOSE 3000
+EXPOSE 3001
 
 # Start the application
 CMD ["npm", "run", "dev"]
