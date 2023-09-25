@@ -276,7 +276,12 @@ export class HomeComponent {
         }, 1000);
     }
 
-    closeLongModule() {
+    closeLongModule1() {
+        this.longModule1Shown = false;
+        localStorage.setItem('longModule1Shown', '0');
+    }
+
+    closeLongModule2() {
         this.longModule2Shown = false;
         localStorage.setItem('longModule2Shown', '0');
     }
