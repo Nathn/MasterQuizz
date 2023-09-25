@@ -18,8 +18,8 @@ export class HomeComponent {
     availableThemes: any = localStorage.getItem('availableThemes')
         ? JSON.parse(localStorage.getItem('availableThemes') || '')
         : [];
-    longModule1Shown: boolean = localStorage.getItem('longModule2Shown')
-        ? localStorage.getItem('longModule2Shown') == '1'
+    longModule1Shown: boolean = localStorage.getItem('longModule1Shown')
+        ? localStorage.getItem('longModule1Shown') == '1'
         : true;
     longModule2Shown: boolean = localStorage.getItem('longModule2Shown')
         ? localStorage.getItem('longModule2Shown') == '1'

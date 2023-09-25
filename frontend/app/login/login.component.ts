@@ -101,7 +101,8 @@ export class LoginComponent implements OnInit {
                 )
                     .then((userCredential) => {
                         // Signed in
-                        localStorage.setItem('longModuleShown', '1'); // home screen closeable module
+                        localStorage.setItem('longModule1Shown', '1'); // home screen closeable module
+                        localStorage.setItem('longModule2Shown', '1'); // home screen closeable module
                         this.router.navigate([this.redirectUrl]);
                     })
                     .catch((error) => {
@@ -151,7 +152,8 @@ export class LoginComponent implements OnInit {
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 } else {
-                    localStorage.setItem('longModuleShown', '1'); // home screen closeable module
+                    localStorage.setItem('longModule1Shown', '1'); // home screen closeable module
+                    localStorage.setItem('longModule2Shown', '1'); // home screen closeable module
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 }
