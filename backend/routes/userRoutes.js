@@ -83,23 +83,25 @@ router.post("/register", async (req, res) => {
                 )}`
         });
         await user.save();
-        const message = {
-            from: process.env.MAIL_TRANSPORTER_AUTH_USER, // sender's email address
-            to: process.env.MAIL_RECEIVER,
-            subject: "Nouvel utilisateur MasterQuizz", // Subject line
-            text: `Un nouvel utilisateur s'est inscrit sur MasterQuizz.\n\nPseudo: ${req.body.username}\nEmail: ${req.body.email}\n\nCordialement,\nL'équipe MasterQuizz` // plain text body
-        };
-        transporter.sendMail(message, (err, info) => {
-            if (err) {
-                console.log(
-                    `[SERVER] An error occured while sending email: ${err}`
-                );
-            } else {
-                console.log(
-                    `[SERVER] Email sent: ${info.response} - ${info.messageId}`
-                );
-            }
-        });
+        if (process.env.MAIL_TRANSPORTER_HOST && process.env.MAIL_RECEIVER) {
+            const message = {
+                from: process.env.MAIL_TRANSPORTER_AUTH_USER, // sender's email address
+                to: process.env.MAIL_RECEIVER,
+                subject: "Nouvel utilisateur MasterQuizz", // Subject line
+                text: `Un nouvel utilisateur s'est inscrit sur MasterQuizz.\n\nPseudo: ${req.body.username}\nEmail: ${req.body.email}\n\nCordialement,\nL'équipe MasterQuizz` // plain text body
+            };
+            transporter.sendMail(message, (err, info) => {
+                if (err) {
+                    console.log(
+                        `[SERVER] An error occured while sending email: ${err}`
+                    );
+                } else {
+                    console.log(
+                        `[SERVER] Email sent: ${info.response} - ${info.messageId}`
+                    );
+                }
+            });
+        }
         // And return a success message
         res.status(200).json({
             message: "OK"
@@ -121,23 +123,28 @@ router.post("/register", async (req, res) => {
                 avatarUrl: req.body.avatar
             });
             await user.save();
-            const message = {
-                from: process.env.MAIL_TRANSPORTER_AUTH_USER, // sender's email address
-                to: process.env.MAIL_RECEIVER,
-                subject: "Nouvel utilisateur MasterQuizz", // Subject line
-                text: `Un nouvel utilisateur s'est inscrit sur MasterQuizz.\n\nPseudo: ${req.body.username}\nEmail: ${req.body.email}\n\nCordialement,\nL'équipe MasterQuizz` // plain text body
-            };
-            transporter.sendMail(message, (err, info) => {
-                if (err) {
-                    console.log(
-                        `[SERVER] An error occured while sending email: ${err}`
-                    );
-                } else {
-                    console.log(
-                        `[SERVER] Email sent: ${info.response} - ${info.messageId}`
-                    );
-                }
-            });
+            if (
+                process.env.MAIL_TRANSPORTER_HOST &&
+                process.env.MAIL_RECEIVER
+            ) {
+                const message = {
+                    from: process.env.MAIL_TRANSPORTER_AUTH_USER, // sender's email address
+                    to: process.env.MAIL_RECEIVER,
+                    subject: "Nouvel utilisateur MasterQuizz", // Subject line
+                    text: `Un nouvel utilisateur s'est inscrit sur MasterQuizz.\n\nPseudo: ${req.body.username}\nEmail: ${req.body.email}\n\nCordialement,\nL'équipe MasterQuizz` // plain text body
+                };
+                transporter.sendMail(message, (err, info) => {
+                    if (err) {
+                        console.log(
+                            `[SERVER] An error occured while sending email: ${err}`
+                        );
+                    } else {
+                        console.log(
+                            `[SERVER] Email sent: ${info.response} - ${info.messageId}`
+                        );
+                    }
+                });
+            }
             res.status(200).json({
                 message: "OK"
             });

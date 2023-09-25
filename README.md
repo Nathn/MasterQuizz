@@ -1,6 +1,10 @@
 # MasterQuizz
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.1.
+An interactive, multiplayer quizz website
+
+## Docker install
+
+-   `sudo docker build -f Dockerfile.environment .`
 
 ## Development server
 
