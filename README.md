@@ -16,13 +16,13 @@ An interactive, multiplayer quizz website powered by Angular and Node.
 
 #### Troubleshooting
 
-If the command above results in `ModuleNotFoundError: No module named 'dnf'`, simply run
+If the command above results in `ModuleNotFoundError: No module named 'dnf'`, simply run this to fix Fedora's package manager :
 
 ```
 sudo sed -i 's|#!/usr/bin/python3|#!/usr/bin/python3.10|g' /usr/bin/dnf
 ```
 
-to fix Fedora's package manager then run the second par of the installation command again :
+then run the second part of the installation command again :
 
 ```
 (sudo dnf install npm || echo "npm install failed") && (sudo npm install -g n || echo "n install failed") && (sudo n 16.18.1 || echo "n version change failed") && sudo npm install
