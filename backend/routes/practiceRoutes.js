@@ -276,4 +276,86 @@ router.post("/getPracticeQuizzByDifficulty", async (req, res) => {
     }
 });
 
+router.post("/updatePlayedPracticeQuizzes", async (req, res) => {
+    /*
+    This route is used to update the playedPracticeQuizzes field of the user.
+    It adds the theme or the difficulty of the practice quizz to the
+    corresponding arrays, if they are not already in the arrays.
+    */
+    try {
+        console.log(`[SERVER] Updating played practice quizzes`);
+        await User.findOne({ _id: req.body.user_id })
+            .exec()
+            .then(async (user) => {
+                if (!user) {
+                    console.log(
+                        `[SERVER] User not found while updating played practice quizzes`
+                    );
+                    res.status(200).json({
+                        message: "Utilisateur introuvable."
+                    });
+                } else {
+                    console.log(
+                        `[SERVER] User found while updating played practice quizzes`
+                    );
+                    if (req.body.mode === "theme") {
+                        if (
+                            !user.playedPracticeQuizzes.themes.includes(
+                                req.body.quiz_id
+                            )
+                        ) {
+                            user.playedPracticeQuizzes.themes.push(
+                                req.body.quiz_id
+                            );
+                        }
+                    } else if (req.body.mode === "difficulty") {
+                        if (
+                            !user.playedPracticeQuizzes.difficulties.includes(
+                                req.body.quiz_id
+                            )
+                        ) {
+                            user.playedPracticeQuizzes.difficulties.push(
+                                req.body.quiz_id
+                            );
+                        }
+                    }
+                    await user
+                        .save()
+                        .then((user) => {
+                            console.log(
+                                `[SERVER] User updated while updating played practice quizzes`
+                            );
+                            res.status(200).json({
+                                message: "OK",
+                                user
+                            });
+                        })
+                        .catch((err) => {
+                            console.log(
+                                `[SERVER] An error occured while updating played practice quizzes: ${err}`
+                            );
+                            res.status(500).json({
+                                message: "Internal server error"
+                            });
+                        });
+                }
+            })
+            .catch((err) => {
+                console.log(
+                    `[SERVER] An error occured while updating played practice quizzes: ${err}`
+                );
+                res.status(500).json({
+                    message: "Internal server error"
+                });
+            });
+    } catch (err) {
+        console.log(
+            `[SERVER] An error occured while updating played practice quizzes: ${err}`
+        );
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
+
 module.exports = router;

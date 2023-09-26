@@ -194,7 +194,15 @@ export class PracticeComponent {
             ].correct
         )
             this.score++;
-        if (this.userObj) {
+        if (
+            this.userObj &&
+            ((this.mode == 'theme' &&
+                !this.userObj.playedPracticeQuizzes.themes.includes(this.id)) ||
+                (this.mode == 'difficulty' &&
+                    !this.userObj.playedPracticeQuizzes.difficulties.includes(
+                        this.id
+                    )))
+        ) {
             this.http
                 .post(environment.apiUrl + 'updateQuestionStats', {
                     user_id: this.userObj._id,
@@ -217,6 +225,13 @@ export class PracticeComponent {
             localStorage.removeItem(`questions-${this.id}`);
             localStorage.removeItem(`answers-${this.id}`);
             this.status = 'ended';
+            this.http
+                .post(environment.apiUrl + 'updatePlayedPracticeQuizzes', {
+                    user_id: this.userObj._id,
+                    quiz_id: this.id,
+                    mode: this.mode
+                })
+                .subscribe((res: any) => {});
         } else this.currentQuestionIndex++;
     }
 }

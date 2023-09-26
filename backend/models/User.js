@@ -26,6 +26,19 @@ const userSchema = new mongoose.Schema({
         lowercase: true,
         trim: true
     },
+    playedPracticeQuizzes: {
+        themes: [
+            {
+                type: String,
+                trim: true
+            }
+        ],
+        difficulties: [
+            {
+                type: Number
+            }
+        ]
+    },
     remainingQuestions: {
         type: Number,
         default: 15
