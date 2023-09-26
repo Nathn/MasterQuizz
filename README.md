@@ -34,14 +34,6 @@ then run the second part of the installation command again :
 ((sudo apt-get install python3.10 python3.11 && sudo ln -sf /usr/bin/python3.10 /usr/bin/python && sudo ln -sf /usr/bin/python3.10 /usr/bin/python3) || echo "python install failed") && ((sudo apt-get install npm || echo "npm install failed") && (sudo npm install -g n || echo "n install failed") && (sudo n 16.18.1 || echo "n version change failed") && sudo npm install)
 ```
 
-## Docker install
-
-```
-sudo docker compose up
-```
-
-Then open `http://localhost:3000`.
-
 ## Development server
 
 Run `npm run dev` for a development frontend+backend. Navigate to `http://localhost:8080/`. The application will automatically reload if you change any of the source files.
