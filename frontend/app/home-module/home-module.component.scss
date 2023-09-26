@@ -70,7 +70,8 @@
     user-select: none;
     text-decoration: none;
     color: $primary-text-color;
-    font-weight: 600;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
     min-height: 48px;
     cursor: pointer;
     transition: transform 0.2s ease-in-out;
@@ -106,7 +107,7 @@
     }
 
     .rankingmodule-slide-ranking-name {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: $primary-text-color;
         margin-right: 10px;
     }

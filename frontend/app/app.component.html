@@ -50,7 +50,7 @@
                 >
                     {{ userObj.displayName || userObj.username }}
                 </b>
-                <span> {{ userObj.elo || "0" }}&nbsp;🏆 </span>
+                <span class="elo"> {{ userObj.elo || "0" }}&nbsp;🏆 </span>
             </a>
             <button class="sign-out" (click)="logout()">
                 <fa-icon [icon]="['fas', 'sign-out-alt']"></fa-icon>

@@ -33,7 +33,6 @@ h6 {
 }
 
 span {
-    font-weight: 300;
     margin: auto 0;
 }
 
@@ -57,9 +56,9 @@ select {
 button,
 .label-button {
     color: $button-text-color;
-    font-weight: 300;
+    font-weight: 300 !important;
     font-size: 16px;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif !important;
     border-radius: 12px;
     background-color: $button-color;
     border: 1px solid #111;

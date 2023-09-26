@@ -37,8 +37,8 @@
     </div>
     <div class="form-group checkbox-container">
         <input type="checkbox" id="cgu" name="cgu" [ngModel]="cgu" required />
-        <label for="cgu"
-            >J'accepte les
+        <label for="cgu" class="cgu-label"
+            ><span>J'accepte les </span>
             <a href="/terms" target="_blank">
                 Conditions Générales d'Utilisation
             </a></label
@@ -68,7 +68,8 @@
             class="google-button"
             (click)="enableRegisterWithGoogle()"
         >
-            <fa-icon [icon]="['fab', 'google']"></fa-icon>S'inscrire avec Google
+            <fa-icon [icon]="['fab', 'google']"></fa-icon
+            ><span>S'inscrire avec Google</span>
         </button>
         <div class="form-links">
             <span (click)="navigateToLogin()">Déjà inscrit ?</span>
