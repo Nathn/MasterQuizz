@@ -88,10 +88,12 @@ label {
     transform: translateY(-50%);
     cursor: pointer;
     z-index: 1000;
+    transition: color 0.3s ease-in-out;
 }
 
 .icon:hover {
-    color: rgb(41, 41, 255);
+    color: rgb(0, 0, 159);
+    transition: color 0.3s ease-in-out;
 }
 
 .google-button * {
