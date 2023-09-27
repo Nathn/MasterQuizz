@@ -81,6 +81,24 @@ input[type="checkbox"] {
     color: white;
 }
 
+.input-icon-container {
+    position: relative;
+    width: max-content;
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.icon:hover {
+    color: rgb(41, 41, 255);
+}
+
 button fa-icon {
     margin-right: 10px;
 }

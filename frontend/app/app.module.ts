@@ -64,6 +64,10 @@ import {
     faEye,
     faDoorOpen
 } from '@fortawesome/free-solid-svg-icons';
+import {
+    faEye as faEyeRegular,
+    faEyeSlash
+} from '@fortawesome/free-regular-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { AppComponent } from './app.component';
@@ -130,6 +134,8 @@ export class AppModule {
             faPaperPlane,
             faCircleDot,
             faEye,
+            faEyeRegular,
+            faEyeSlash,
             faDoorOpen
         );
     }

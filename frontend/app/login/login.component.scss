@@ -72,6 +72,24 @@ label {
     margin-top: 5px;
 }
 
+.input-icon-container {
+    position: relative;
+    width: max-content;
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.icon:hover {
+    color: rgb(41, 41, 255);
+}
+
 .google-button * {
     vertical-align: middle;
     color: white;

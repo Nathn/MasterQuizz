@@ -164,6 +164,13 @@ export class RegisterComponent implements OnInit {
             });
     }
 
+    passwordVisible = false;
+    togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
+        this.passwordVisible = !this.passwordVisible;
+        passwordInput.type = this.passwordVisible ? 'text' : 'password';
+    }
+
     navigateToLogin() {
         let redirectUrl = this.redirectUrl;
         if (redirectUrl.includes('login') || redirectUrl.includes('register'))
