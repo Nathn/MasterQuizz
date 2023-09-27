@@ -188,6 +188,13 @@ export class LoginComponent implements OnInit {
         });
     }
 
+    passwordVisible = false;
+    togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
+        this.passwordVisible = !this.passwordVisible;
+        passwordInput.type = this.passwordVisible ? 'text' : 'password';
+    }
+
     sendResetEmail() {
         this.isLoading = true;
         sendPasswordResetEmail(this.authService.getAuth(), this.email)

@@ -22,14 +22,28 @@
     </div>
     <div class="form-group">
         <label for="password">Mot de passe :</label><br />
-        <input
-            type="password"
-            class="form-control"
-            id="password"
-            name="password"
-            [(ngModel)]="password"
-            required
-        />
+        <div class="input-icon-container">
+            <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                [(ngModel)]="password"
+                required
+            />
+            <fa-icon
+            [icon]="['far', 'eye']"
+            (click)="togglePasswordVisibility()"
+            class="icon"
+            *ngIf="!passwordVisible"
+        ></fa-icon>
+        <fa-icon
+            [icon]="['far', 'eye-slash']"
+            (click)="togglePasswordVisibility()"
+            class="icon"
+            *ngIf="passwordVisible"
+        ></fa-icon>
+        </div>
     </div>
     <span class="form-error" *ngIf="error">{{ error }}</span>
     <div class="buttons-container">

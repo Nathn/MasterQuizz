@@ -81,6 +81,28 @@ input[type="checkbox"] {
     color: white;
 }
 
+.input-icon-container {
+    position: relative;
+    width: max-content;
+
+    input {
+        padding-right: 35px !important;
+    }
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.icon:hover {
+    color: rgb(41, 41, 255);
+}
+
 button fa-icon {
     margin-right: 10px;
 }
@@ -94,10 +116,10 @@ button fa-icon {
     width: max-content;
     min-width: 500px;
     max-width: 100%;
+    gap: 10px;
 
     input {
         width: max-content;
-        margin-right: 10px !important;
     }
 
     .cgu-label {
