@@ -13,7 +13,7 @@
             *ngFor="let theme of availableThemes"
             [routerLink]="['/practice/theme', theme._id]"
             [ngStyle]="{
-            'background-image': 'url(' + theme.image || '' + ') !important',
+            'background-image': theme.image ? 'url(' + theme.image || '' + ') !important' : '',
         }"
         >
             <span>{{ theme.name }}</span>

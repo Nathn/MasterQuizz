@@ -34,8 +34,12 @@ export class PracticeComponent {
     isLoading: boolean = true;
     isLoadingThemes: boolean = true;
     isLoadingDifficulties: boolean = true;
-    availableThemes: any = [];
-    availableDifficulties: any = [];
+    availableThemes: any = localStorage.getItem('availableThemes')
+        ? JSON.parse(localStorage.getItem('availableThemes') || '')
+        : [];
+    availableDifficulties: any = localStorage.getItem('availableDifficulties')
+        ? JSON.parse(localStorage.getItem('availableDifficulties') || '')
+        : [];
 
     trainingView: boolean = false;
     mode: string = '';
@@ -54,6 +58,9 @@ export class PracticeComponent {
         private http: HttpClient,
         private authService: AuthService
     ) {
+        if (this.availableThemes.length > 0) this.isLoadingThemes = false;
+        if (this.availableDifficulties.length > 0)
+            this.isLoadingDifficulties = false;
         this.ar.params.subscribe((params) => {
             if (params['mode'] && !params['id'])
                 this.router.navigate(['/practice']);
@@ -83,6 +90,10 @@ export class PracticeComponent {
                     .subscribe((res: any) => {
                         if (res.themes) this.availableThemes = res.themes;
                         this.isLoadingThemes = false;
+                        localStorage.setItem(
+                            'availableThemes',
+                            JSON.stringify(res.themes)
+                        );
                     });
                 this.http
                     .post(environment.apiUrl + 'getAvailableDifficulties', {})
@@ -90,6 +101,10 @@ export class PracticeComponent {
                         if (res.difficulties)
                             this.availableDifficulties = res.difficulties;
                         this.isLoadingDifficulties = false;
+                        localStorage.setItem(
+                            'availableDifficulties',
+                            JSON.stringify(res.difficulties)
+                        );
                     });
             }
             if (params['mode'] && params['id']) {
