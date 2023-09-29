@@ -2,9 +2,15 @@ const mongoose = require("mongoose");
 const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 const matchSchema = new mongoose.Schema({
-    created: {
+    createdOn: {
         type: Date,
         default: Date.now
+    },
+    startedOn: {
+        type: Date
+    },
+    endedOn: {
+        type: Date
     },
     currentQuestion: {
         type: Number,
