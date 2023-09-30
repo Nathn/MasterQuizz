@@ -63,7 +63,10 @@
         <li *ngFor="let link of menuLinks">
             <a href="{{ link.path }}">{{ link.text }}</a>
         </li>
-        <div class="user-info-mobile">
+        <div
+            class="user-info-mobile"
+            (click)="navigateToProfile(userObj.username)"
+        >
             <div class="user-info-header">
                 <img
                     class="avatar"

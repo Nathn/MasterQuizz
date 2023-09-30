@@ -112,6 +112,11 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
+    navigateToProfile(username: string) {
+        this.showMenu = false;
+        this.router.navigate([`/profile/${username}`]);
+    }
+
     logout() {
         this.authService.logout();
     }
