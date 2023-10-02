@@ -91,7 +91,7 @@
         <div class="match-navbar">
             <span>
                 Match démarré
-                {{ dayjs(duelObj.createdOn || duelObj.created).fromNow() }}
+                {{ dayjs(duelObj.startedOn || duelObj.createdOn || duelObj.created).fromNow() }}
             </span>
             <button
                 type="button"
