@@ -85,6 +85,7 @@ function start(request, ws, userWebSockets) {
                         console.log(`[WS] Match updated`);
                         if (match.started === 2) {
                             console.log(`[WS] Both users started the match`);
+                            match.startedOn = Date.now();
                             Question.aggregate([
                                 {
                                     $match: {
