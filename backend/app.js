@@ -117,8 +117,11 @@ wss.on("connection", (ws) => {
         //   user: "5e9f1b7b0f0b7b1b1c9b1b1b" // user id
         // }
         const request = JSON.parse(message);
-        userWebSockets[request.user] = ws;
-        if (request.type === "duel") {
+        if (request.user)
+            userWebSockets[request.user] = ws;
+        if (request.type === "ping") {
+            websocket.handleWebSocketPing(ws);
+        } else if (request.type === "duel") {
             websocket.handleWebSocketDuelMessage(request, ws, userWebSockets);
         }
     });
@@ -128,7 +131,7 @@ wss.on("connection", (ws) => {
             (key) => userWebSockets[key] === ws
         );
         if (user) {
-            websocket.handleWebSocketDisconnect(user, userWebSockets);
+            websocket.handleWebSocketDisconnect(user);
             delete userWebSockets[user];
             console.log(`[WS] User ${user} WebSocket disconnected`);
         }

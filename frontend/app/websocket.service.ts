@@ -9,12 +9,16 @@ import { environment } from '../environments/environment';
 })
 export class WebSocketService {
     private connection$: WebSocketSubject<any> | null = null;
+    private pingInterval: any;
 
     constructor() {}
 
     connect(): Observable<any> {
         if (!this.connection$ || this.connection$.closed) {
             this.connection$ = webSocket(environment.wsUrl);
+            this.pingInterval = setInterval(() => {
+                this.ping();
+            }, 5000);
         } else {
             console.error('Attempted to open multiple connections');
         }
@@ -37,7 +41,12 @@ export class WebSocketService {
         }
     }
 
+    ping() {
+        this.send({ type: 'ping' });
+    }
+
     ngOnDestroy() {
         this.closeConnection();
+        clearInterval(this.pingInterval);
     }
 }

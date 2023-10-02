@@ -1,5 +1,6 @@
-const duel = require("./duel/duel");
+const { handleWebSocketPing } = require("./ping");
 const { handleWebSocketDisconnect } = require("./disconnect");
+const duel = require("./duel/duel");
 
 function handleWebSocketDuelMessage(request, ws, userWebSockets) {
     if (request.action === "find") {
@@ -16,6 +17,7 @@ function handleWebSocketDuelMessage(request, ws, userWebSockets) {
 }
 
 module.exports = {
-    handleWebSocketDuelMessage,
+    handleWebSocketPing,
     handleWebSocketDisconnect,
+    handleWebSocketDuelMessage,
 };

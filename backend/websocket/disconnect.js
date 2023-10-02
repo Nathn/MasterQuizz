@@ -1,6 +1,6 @@
 const Match = require("../models/Match");
 
-function handleWebSocketDisconnect(user, userWebSockets) {
+function handleWebSocketDisconnect(user) {
     Match.findOne({
         users: user,
         started: 0
