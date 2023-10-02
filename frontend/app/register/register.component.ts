@@ -144,12 +144,17 @@ export class RegisterComponent implements OnInit {
     registerWithGoogle(user: any) {
         // Signed in
         // add user to database
+        const emailPrefix = user.email.split('@')[0];
+        const dotIndex = emailPrefix.lastIndexOf('.');
+        let username = dotIndex !== -1 && dotIndex < emailPrefix.length - 1
+            ? emailPrefix.substring(0, dotIndex)
+            : emailPrefix;
+        if (username.length > 14) {
+            username = username.substring(0, 14);
+        }
         this.http
             .post(environment.apiUrl + 'register', {
-                username:
-                    user.email.split('@')[0].length > 14
-                        ? user.email.split('@')[0].substring(0, 14)
-                        : user.email.split('@')[0],
+                username: username,
                 email: user.email,
                 avatar: user.photoURL
             })
