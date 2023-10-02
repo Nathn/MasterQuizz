@@ -128,6 +128,7 @@ wss.on("connection", (ws) => {
             (key) => userWebSockets[key] === ws
         );
         if (user) {
+            websocket.handleWebSocketDisconnect(user, userWebSockets);
             delete userWebSockets[user];
             console.log(`[WS] User ${user} WebSocket disconnected`);
         }
