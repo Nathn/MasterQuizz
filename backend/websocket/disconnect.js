@@ -2,7 +2,7 @@ const Match = require("../models/Match");
 
 function handleWebSocketDisconnect(user) {
     Match.findOne({
-        users: user,
+        users: { $size: 1, $all: [user] },
         started: 0
     })
         .exec()
