@@ -97,7 +97,7 @@ export class HomeComponent {
                                 }
                             )
                             .subscribe((res: any) => {
-                                if (res.match) {
+                                if (res.match && res.status && res.status == "found") {
                                     user.currentDuelId = res.match._id;
                                     if (
                                         this.userObj &&

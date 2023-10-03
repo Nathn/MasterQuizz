@@ -17,14 +17,28 @@ router.post("/getCurrentDuelFromUser", async (req, res) => {
             ended: false
         });
         if (!match) {
-            console.log(`[SERVER] No match found for user ${userId}`);
-            res.status(200).json({
-                message: "OK"
+            const searchMatch = await Match.findOne({
+                users: { $size: 1, $in: [userId] },
+                started: false
             });
+            if (!searchMatch) {
+                res.status(200).json({
+                    message: "OK"
+                });
+            } else {
+                console.log(
+                    `[SERVER] Found match ${searchMatch._id} for user ${userId} (in queue)`
+                );
+                res.status(200).json({
+                    message: "OK",
+                    status: "searching"
+                });
+            }
         } else {
             console.log(`[SERVER] Found match ${match._id} for user ${userId}`);
             res.status(200).json({
                 message: "OK",
+                status: "found",
                 match: match
             });
         }
