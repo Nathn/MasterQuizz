@@ -1,6 +1,24 @@
 const Match = require("../../models/Match");
 
 function find(request, ws, userWebSockets) {
+    // Check that the user is not already in a match
+    Match.findOne({
+        users: request.user,
+    })
+        .exec()
+        .then((match) => {
+            if (match) {
+                ws.send(
+                    JSON.stringify({
+                        message: "OK",
+                        type: "duel",
+                        status: "ready",
+                        match
+                    })
+                );
+                return;
+            }
+        })
     Match.findOne({
         users: {
             $size: 1,

@@ -72,7 +72,7 @@ export class ProfileComponent {
                             user: this.displayedUser._id
                         })
                         .subscribe((res: any) => {
-                            if (res.match) {
+                            if (res.match && res.status && res.status == "found") {
                                 this.currentDuelId = res.match._id;
                             }
                             this.isRequestLoading = false;

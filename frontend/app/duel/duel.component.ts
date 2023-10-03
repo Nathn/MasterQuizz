@@ -93,9 +93,12 @@ export class DuelComponent implements OnDestroy {
                                     if (res.message != 'OK') {
                                         console.error(res.message);
                                     } else {
-                                        if (res.match) {
+                                        if (res.match && res.status && res.status == "found") {
                                             this.startedDuelId = res.match._id;
                                             this.status = 'Match en cours...';
+                                        }
+                                        if (res.status && res.status == "searching") {
+                                            this.status = "Recherche d'adversaire en cours...";
                                         }
                                         this.isRequestLoading = false;
                                         this.initDuel();
