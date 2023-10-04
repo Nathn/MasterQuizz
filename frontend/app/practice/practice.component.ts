@@ -131,6 +131,10 @@ export class PracticeComponent {
                           localStorage.getItem(`answers-${params['id']}`) || ''
                       )
                     : [];
+                this.score = this.answers.filter(
+                    (answer: any, index: number) =>
+                        this.questions[index].answers[answer].correct
+                ).length;
                 this.currentQuestionIndex = this.answers.length;
                 if (params['mode'] == 'theme') {
                     this.trainingView = true;
