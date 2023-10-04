@@ -458,6 +458,8 @@ export class DuelComponent implements OnDestroy {
 
     validatedAnswer(event: any) {
         this.answerValidated = true;
+        if (this.selectedAnswerIndex == -1)
+            this.warning = 'Le temps de réponse est écoulé !';
         this.ws.send({
             type: 'duel',
             action: 'answer',
@@ -480,6 +482,7 @@ export class DuelComponent implements OnDestroy {
     }
 
     nextQuestionPressed(event: any) {
+        this.warning = '';
         this.selectedAnswerIndex = -1;
         if (this.spectator) {
             this.currentQuestionIndex = this.tempCurrentQuestionIndex;
