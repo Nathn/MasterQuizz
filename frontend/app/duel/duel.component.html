@@ -91,7 +91,13 @@
         <div class="match-navbar">
             <span>
                 Match démarré
-                {{ dayjs(duelObj.startedOn || duelObj.createdOn || duelObj.created).fromNow() }}
+                {{
+                    dayjs(
+                        duelObj.startedOn ||
+                            duelObj.createdOn ||
+                            duelObj.created
+                    ).fromNow()
+                }}
             </span>
             <button
                 type="button"
@@ -102,6 +108,10 @@
                 Abandonner
             </button>
         </div>
+        <span *ngIf="warning" class="form-warning">
+            <fa-icon [icon]="['fas', 'exclamation-triangle']"></fa-icon>
+            {{ warning }}
+        </span>
     </h1>
     <app-home-module
         class="home-module"

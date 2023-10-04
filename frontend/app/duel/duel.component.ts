@@ -1,4 +1,9 @@
-import { Component, type OnDestroy, type OnInit } from '@angular/core';
+import {
+    Component,
+    HostListener,
+    type OnDestroy,
+    type OnInit
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
@@ -34,6 +39,7 @@ export class DuelComponent implements OnDestroy {
     isRequestLoading: boolean = true;
 
     status: string = '';
+    warning: string = '';
     currentQuestion: any = null;
     currentQuestionIndex: number = 0;
     tempCurrentQuestionIndex: number = 0;
@@ -93,12 +99,20 @@ export class DuelComponent implements OnDestroy {
                                     if (res.message != 'OK') {
                                         console.error(res.message);
                                     } else {
-                                        if (res.match && res.status && res.status == "found") {
+                                        if (
+                                            res.match &&
+                                            res.status &&
+                                            res.status == 'found'
+                                        ) {
                                             this.startedDuelId = res.match._id;
                                             this.status = 'Match en cours...';
                                         }
-                                        if (res.status && res.status == "searching") {
-                                            this.status = "Recherche d'adversaire en cours...";
+                                        if (
+                                            res.status &&
+                                            res.status == 'searching'
+                                        ) {
+                                            this.status =
+                                                "Recherche d'adversaire en cours...";
                                         }
                                         this.isRequestLoading = false;
                                         this.initDuel();
@@ -363,6 +377,27 @@ export class DuelComponent implements OnDestroy {
             this.refreshInterval = setInterval(() => {
                 if (!this.duelObj) this.startMatch();
             }, 1000);
+        }
+    }
+
+    @HostListener('window:blur', ['$event'])
+    onWindowBlur(event: Event) {
+        // if in a question
+        if (
+            this.userObj &&
+            this.duelObj &&
+            !this.spectator &&
+            this.answerValidated == false
+        ) {
+            this.answerValidated = true;
+            this.ws.send({
+                type: 'duel',
+                action: 'answer',
+                user: this.userObj._id,
+                match: this.duelId,
+                answer: this.selectedAnswerIndex
+            });
+            this.warning = 'Le changement de fenêtre est interdit !';
         }
     }
 
