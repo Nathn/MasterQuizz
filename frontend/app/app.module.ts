@@ -62,7 +62,8 @@ import {
     faCircleCheck,
     faCircleDot,
     faEye,
-    faDoorOpen
+    faDoorOpen,
+    faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
 import {
     faEye as faEyeRegular,
@@ -136,7 +137,8 @@ export class AppModule {
             faEye,
             faEyeRegular,
             faEyeSlash,
-            faDoorOpen
+            faDoorOpen,
+            faExclamationTriangle
         );
     }
 }
