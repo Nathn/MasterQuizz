@@ -387,7 +387,8 @@ export class DuelComponent implements OnDestroy {
             this.userObj &&
             this.duelObj &&
             !this.spectator &&
-            this.answerValidated == false
+            this.answerValidated == false &&
+            this.status != 'ended'
         ) {
             this.answerValidated = true;
             this.ws.send({
