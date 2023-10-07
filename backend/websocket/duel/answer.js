@@ -354,7 +354,7 @@ function answer(request, ws, userWebSockets) {
                                             );
                                             // Add the time limit to the match (Date.now() + 30 seconds)
                                             match.timeLimits.push(
-                                                Date.now() + 90000
+                                                Date.now() + 60000
                                             );
                                             match.save().then((match) => {
                                                 console.log(
