@@ -184,6 +184,8 @@ router.post("/getPracticeQuizzByTheme", async (req, res) => {
                         const filteredQuestions = questions.filter(
                             (question) => question.difficulty === difficulty
                         );
+                        // Randomize the order of the filtered questions
+                        filteredQuestions.sort(() => Math.random() - 0.5);
                         // Select 2 questions from the filtered list and add them to the practiceQuizz array
                         practiceQuizz.push(...filteredQuestions.slice(0, 2));
                     }
@@ -241,6 +243,8 @@ router.post("/getPracticeQuizzByDifficulty", async (req, res) => {
                     );
                     let practiceQuizz = [];
                     let themes = [];
+                    // Randomize the order of the questions
+                    questions.sort(() => Math.random() - 0.5);
                     for (
                         let i = 0;
                         i < questions.length && practiceQuizz.length < 10;
