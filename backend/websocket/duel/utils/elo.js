@@ -9,7 +9,9 @@ function getRatingDelta(myRating, opponentRating, myGameResult) {
 }
 
 function getNewRating(myRating, opponentRating, myGameResult) {
-    return myRating + getRatingDelta(myRating, opponentRating, myGameResult);
+    return (
+        myRating + getRatingDelta(myRating, opponentRating, myGameResult) + 1
+    );
 }
 
 module.exports = {
