@@ -87,7 +87,8 @@ export class HomeModuleComponent {
             !this.moduleParams.spectator &&
             this.moduleParams.userObj &&
             !this.answerValidated &&
-            !this.moduleParams.spectator
+            !this.moduleParams.spectator &&
+            !this.moduleParams.matchEnded
         ) {
             this.timeLeft = '';
             clearInterval(this.timerInterval);
