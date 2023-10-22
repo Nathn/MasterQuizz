@@ -83,35 +83,12 @@ export class HomeComponent {
                 );
             });
         this.http
-            .post(environment.apiUrl + 'getTopUsersByElo', {})
+            .post(environment.apiUrl + 'getTopUsersByElo', {
+                user_id: this.userObj ? this.userObj._id : null
+            })
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsers = res.users.slice(0, 7);
-                    // for each user, call getCurrentDuelFromUser and add it to the user object
-                    this.rankedUsers.forEach((user: any) => {
-                        this.http
-                            .post(
-                                environment.apiUrl + 'getCurrentDuelFromUser',
-                                {
-                                    user: user._id
-                                }
-                            )
-                            .subscribe((res: any) => {
-                                if (res.match && res.status && res.status == "found") {
-                                    user.currentDuelId = res.match._id;
-                                    if (
-                                        this.userObj &&
-                                        res.match.users.includes(
-                                            this.userObj._id
-                                        )
-                                    ) {
-                                        user.isCurrentDuelUser = true;
-                                    } else {
-                                        user.isCurrentDuelUser = false;
-                                    }
-                                }
-                            });
-                    });
                 }
             });
         this.authService.onAuthStateChanged(

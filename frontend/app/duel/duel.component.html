@@ -102,7 +102,7 @@
             <button
                 type="button"
                 (click)="forfeitMatch()"
-                *ngIf="status != 'ended' && !spectator"
+                *ngIf="status != 'ended' && !ended && !spectator"
                 class="forfeit-button"
             >
                 Abandonner
