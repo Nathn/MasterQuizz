@@ -186,7 +186,15 @@
     class="module-content-container"
 >
     <div class="results">
-        <h3 *ngIf="moduleParams.matchObj.winner">Vainqueur :</h3>
+        <h3 *ngIf="moduleParams.matchObj.winner">
+            Vainqueur
+            {{
+                moduleParams.matchObj.questions.length != 10
+                    ? "par abandon "
+                    : ""
+            }}
+            :
+        </h3>
         <h2 *ngIf="moduleParams.matchObj.winner">
             <img
                 [src]="moduleParams.matchObj.winner.avatarUrl"
