@@ -311,7 +311,7 @@ export class DuelComponent implements OnDestroy {
                         if (
                             this.userObj &&
                             message.match.users[0]._id == this.userObj._id
-                        )
+                        ) {
                             this.opponent = {
                                 answer: message.match.answers[
                                     this.currentQuestionIndex
@@ -321,10 +321,10 @@ export class DuelComponent implements OnDestroy {
                                     message.match.users[1].displayName ||
                                     message.match.users[1].username
                             };
-                        else if (
+                        } else if (
                             this.userObj &&
                             message.match.users[1]._id == this.userObj._id
-                        )
+                        ) {
                             this.opponent = {
                                 answer: message.match.answers[
                                     this.currentQuestionIndex
@@ -334,7 +334,7 @@ export class DuelComponent implements OnDestroy {
                                     message.match.users[0].displayName ||
                                     message.match.users[0].username
                             };
-                        else {
+                        } else {
                             this.tempCurrentQuestionIndex =
                                 message.match.currentQuestion;
                             this.opponent1 = {

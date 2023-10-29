@@ -23,6 +23,15 @@ function forfeit(request, ws, userWebSockets) {
                         status: "not found"
                     })
                 );
+            } else if (match.ended) {
+                console.log(`[WS] Match already ended`);
+                ws.send(
+                    JSON.stringify({
+                        message: "OK",
+                        type: "duel",
+                        status: "not found"
+                    })
+                );
             } else {
                 console.log(`[WS] Match found: ${match._id}`);
                 // Set the winner

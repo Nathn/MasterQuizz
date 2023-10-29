@@ -42,59 +42,42 @@ export class LeaderboardComponent {
             }
         );
         this.http
-            .post(environment.apiUrl + 'getTopUsersByElo', {})
+            .post(environment.apiUrl + 'getTopUsersByElo', {
+                user_id: this.userObj ? this.userObj._id : null
+            })
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsersByElo = res.users.slice(0, 15);
-                    this.addCurrentMatches(this.rankedUsersByElo);
+                    console.log(this.rankedUsersByElo[5]);
                 }
             });
         this.http
-            .post(environment.apiUrl + 'getTopUsersByNbGames', {})
+            .post(environment.apiUrl + 'getTopUsersByNbGames', {
+                user_id: this.userObj ? this.userObj._id : null
+            })
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsersByNbGames = res.users.slice(0, 15);
-                    this.addCurrentMatches(this.rankedUsersByNbGames);
+                    console.log(this.rankedUsersByNbGames[4]);
                 }
             });
         this.http
-            .post(environment.apiUrl + 'getTopUsersByNbWins', {})
+            .post(environment.apiUrl + 'getTopUsersByNbWins', {
+                user_id: this.userObj ? this.userObj._id : null
+            })
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsersByNbWins = res.users.slice(0, 15);
-                    this.addCurrentMatches(this.rankedUsersByNbWins);
                 }
             });
         this.http
-            .post(environment.apiUrl + 'getTopUsersByNbGoodAnswers', {})
+            .post(environment.apiUrl + 'getTopUsersByNbGoodAnswers', {
+                user_id: this.userObj ? this.userObj._id : null
+            })
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsersByNbGoodAnswers = res.users.slice(0, 15);
-                    this.addCurrentMatches(this.rankedUsersByNbGoodAnswers);
                 }
             });
-    }
-
-    addCurrentMatches(users: any[]) {
-        // for each user, call getCurrentDuelFromUser and add it to the user object
-        users.forEach((user: any) => {
-            this.http
-                .post(environment.apiUrl + 'getCurrentDuelFromUser', {
-                    user: user._id
-                })
-                .subscribe((res: any) => {
-                    if (res.match && res.status && res.status == "found") {
-                        user.currentDuelId = res.match._id;
-                        if (
-                            this.userObj &&
-                            res.match.users.includes(this.userObj._id)
-                        ) {
-                            user.isCurrentDuelUser = true;
-                        } else {
-                            user.isCurrentDuelUser = false;
-                        }
-                    }
-                });
-        });
     }
 }
