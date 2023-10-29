@@ -1,7 +1,7 @@
 <form *ngIf="isAuthLoading">
     <div>
         <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-        >&nbsp;Chargement...
+        >&nbsp;Chargement…
     </div>
 </form>
 <form
@@ -130,7 +130,7 @@
         >
         <span *ngIf="isRequestLoading">
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-            >&nbsp;Chargement...
+            >&nbsp;Chargement…
         </span>
     </button>
     <br />
@@ -147,7 +147,7 @@
 <div *ngIf="!isAuthLoading && action == 'manage'" class="manage-container">
     <div *ngIf="isRequestLoading">
         <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-        >&nbsp;Chargement...
+        >&nbsp;Chargement…
     </div>
     <div *ngIf="!isRequestLoading" class="manage-container-subclass">
         <h1>Gestion des questions</h1>
@@ -170,7 +170,7 @@
                         required
                         autocomplete="off"
                         spellcheck="true"
-                        placeholder="Rechercher..."
+                        placeholder="Rechercher…"
                     />
                 </div>
                 <div class="question-toolbar-row">

@@ -71,7 +71,7 @@ export class DuelComponent implements OnDestroy {
         this.ar.params.subscribe((params) => {
             if (params['id']) {
                 this.duelId = params['id'];
-                this.status = "Match trouvé ! En attente de l'adversaire...";
+                this.status = "Match trouvé ! En attente de l'adversaire…";
             }
             if (!this.duelId) {
                 if (!this.authService.isAuthenticated()) {
@@ -105,14 +105,14 @@ export class DuelComponent implements OnDestroy {
                                             res.status == 'found'
                                         ) {
                                             this.startedDuelId = res.match._id;
-                                            this.status = 'Match en cours...';
+                                            this.status = 'Match en cours…';
                                         }
                                         if (
                                             res.status &&
                                             res.status == 'searching'
                                         ) {
                                             this.status =
-                                                "Recherche d'adversaire en cours...";
+                                                "Recherche d'adversaire en cours…";
                                         }
                                         this.isRequestLoading = false;
                                         this.initDuel();
@@ -160,7 +160,7 @@ export class DuelComponent implements OnDestroy {
                 if (message.type == 'duel') {
                     console.log(message.status);
                     if (message.status == 'waiting') {
-                        this.status = "Recherche d'adversaire en cours...";
+                        this.status = "Recherche d'adversaire en cours…";
                     } else if (
                         message.status == 'ready' &&
                         (message.match.users[0]._id == this.userObj._id ||

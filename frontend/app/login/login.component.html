@@ -32,17 +32,17 @@
                 required
             />
             <fa-icon
-            [icon]="['far', 'eye']"
-            (click)="togglePasswordVisibility()"
-            class="icon"
-            *ngIf="!passwordVisible"
-        ></fa-icon>
-        <fa-icon
-            [icon]="['far', 'eye-slash']"
-            (click)="togglePasswordVisibility()"
-            class="icon"
-            *ngIf="passwordVisible"
-        ></fa-icon>
+                [icon]="['far', 'eye']"
+                (click)="togglePasswordVisibility()"
+                class="icon"
+                *ngIf="!passwordVisible"
+            ></fa-icon>
+            <fa-icon
+                [icon]="['far', 'eye-slash']"
+                (click)="togglePasswordVisibility()"
+                class="icon"
+                *ngIf="passwordVisible"
+            ></fa-icon>
         </div>
     </div>
     <span class="form-error" *ngIf="error">{{ error }}</span>
@@ -58,7 +58,7 @@
             >
             <span *ngIf="isLoading">
                 <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-                >&nbsp;Chargement...
+                >&nbsp;Chargement…
             </span>
         </button>
         <br />
@@ -108,7 +108,7 @@
         >
         <span *ngIf="isLoading">
             <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon
-            >&nbsp;Chargement...
+            >&nbsp;Chargement…
         </span>
     </button>
     <div class="form-links">

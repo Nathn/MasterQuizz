@@ -63,7 +63,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.statusChangeSubscription =
             this.cookieService.statusChange$.subscribe(
                 (event: NgcStatusChangeEvent) => {
-                    // you can use this.cookieService.getConfig() to do stuff...
+                    // you can use this.cookieService.getConfig() to do stuff…
                 }
             );
         this.getMenuLinks();
