@@ -147,13 +147,13 @@ export class LoginComponent implements OnInit {
                 avatar: user.photoURL
             })
             .subscribe((res: any) => {
+                localStorage.setItem('longModule1Shown', '1'); // home screen closeable module
+                localStorage.setItem('longModule2Shown', '1'); // home screen closeable module
                 if (res.message != 'OK') {
                     console.warn(res.message);
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 } else {
-                    localStorage.setItem('longModule1Shown', '1'); // home screen closeable module
-                    localStorage.setItem('longModule2Shown', '1'); // home screen closeable module
                     this.isLoading = false;
                     this.router.navigate([this.redirectUrl]);
                 }
@@ -190,7 +190,9 @@ export class LoginComponent implements OnInit {
 
     passwordVisible = false;
     togglePasswordVisibility() {
-        const passwordInput = document.getElementById('password') as HTMLInputElement;
+        const passwordInput = document.getElementById(
+            'password'
+        ) as HTMLInputElement;
         this.passwordVisible = !this.passwordVisible;
         passwordInput.type = this.passwordVisible ? 'text' : 'password';
     }
