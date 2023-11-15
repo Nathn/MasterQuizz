@@ -48,7 +48,6 @@ export class LeaderboardComponent {
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsersByElo = res.users.slice(0, 15);
-                    console.log(this.rankedUsersByElo[5]);
                 }
             });
         this.http
@@ -58,7 +57,6 @@ export class LeaderboardComponent {
             .subscribe((res: any) => {
                 if (res.users) {
                     this.rankedUsersByNbGames = res.users.slice(0, 15);
-                    console.log(this.rankedUsersByNbGames[4]);
                 }
             });
         this.http

@@ -28,14 +28,12 @@ router.post("/getTopUsersByElo", async (req, res) => {
                         ended: false
                     });
                     if (match) {
-                        console.log(user);
                         // Create a new object with the additional property
                         const updatedUser = {
                             ...user.toObject(),
                             currentDuelId: match._id
                         };
                         updatedUsers.push(updatedUser);
-                        console.log(updatedUser);
                         updatedUser.isCurrentDuelUser =
                             req.body.user_id &&
                             match.users.includes(req.body.user_id);
