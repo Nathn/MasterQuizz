@@ -59,6 +59,7 @@
         align-items: center;
         overflow-x: auto;
         width: 100%;
+        scrollbar-width: none;
 
         .home-module-long-content-item {
             display: flex;
@@ -103,6 +104,10 @@
                 transform: rotate(360deg);
             }
         }
+    }
+
+    .home-module-long-content::-webkit-scrollbar {
+        display: none;
     }
 
     @media (max-width: 768px) {
