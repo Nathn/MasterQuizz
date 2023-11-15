@@ -5,7 +5,7 @@ const path = require("path");
 const shrinkRay = require("shrink-ray-current");
 
 require("dotenv").config({
-    path: "backend/.env",
+    path: "backend/.env"
 });
 
 const routes = require("./routes");
@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(
     express.urlencoded({
-        extended: true,
+        extended: true
     })
 );
 
@@ -33,7 +33,7 @@ app.use((req, res, next) => {
         const origin = req.headers.origin;
         if (!origin) {
             res.status(403).json({
-                message: "Forbidden",
+                message: "Forbidden"
             });
         } else {
             if (process.env.CORS_WHITELIST.split(",").includes(origin)) {
@@ -46,7 +46,7 @@ app.use((req, res, next) => {
                 next();
             } else {
                 res.status(403).json({
-                    message: "Forbidden",
+                    message: "Forbidden"
                 });
             }
         }
@@ -64,20 +64,17 @@ app.use(
                 ".jpg": "image/jpg",
                 ".gif": "image/gif",
                 ".svg": "image/svg+xml",
-                ".ico": "image/x-icon",
+                ".ico": "image/x-icon"
             };
             const ext = path.slice(path.lastIndexOf("."));
             res.setHeader("Content-Type", mimeType[ext] || "text/plain");
-        },
+        }
     })
 );
 
 // MongoDB connection
 mongoose.set("strictQuery", true);
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGO_URI);
 mongoose.Promise = global.Promise;
 mongoose.connection.on("error", (err) => {
     console.log(`An error occured while connecting to the database: ${err}`);
@@ -92,7 +89,7 @@ const wss = new ws.Server({
         console.log(
             `[SERVER] is running on port ${process.env.PORT || 3000} !`
         );
-    }),
+    })
 }).on("error", (err) => {
     console.log(
         `[WS] An error occurred while creating the WebSocket server: ${err}`
@@ -117,8 +114,7 @@ wss.on("connection", (ws) => {
         //   user: "5e9f1b7b0f0b7b1b1c9b1b1b" // user id
         // }
         const request = JSON.parse(message);
-        if (request.user)
-            userWebSockets[request.user] = ws;
+        if (request.user) userWebSockets[request.user] = ws;
         if (request.type === "ping") {
             websocket.handleWebSocketPing(ws);
         } else if (request.type === "duel") {
