@@ -109,11 +109,21 @@ export class LoginComponent implements OnInit {
                         const errorCode = error.code;
                         const errorMessage = error.message;
                         console.log('error', errorCode, errorMessage);
-                        if (errorCode == 'auth/wrong-password') {
-                            this.error = 'Mot de passe incorrect.';
-                        }
-                        if (errorCode == 'auth/user-not-found') {
-                            this.error = "Nom d'utilisateur introuvable.";
+                        switch (errorCode) {
+                            case 'auth/wrong-password':
+                                this.error = 'Mot de passe incorrect.';
+                                break;
+                            case 'auth/user-not-found':
+                                this.error = "Nom d'utilisateur introuvable.";
+                                break;
+                            case 'auth/invalid-login-credentials':
+                                this.error =
+                                    'Les identifiants renseignés sont invalides.';
+                                break;
+                            default:
+                                this.error =
+                                    'Une erreur inconnue est survenue. Veuillez réessayer.';
+                                break;
                         }
                         this.isLoading = false;
                     });
@@ -122,6 +132,7 @@ export class LoginComponent implements OnInit {
 
     loginWithGoogle() {
         this.isLoading = true;
+        this.error = '';
         signInWithPopup(
             this.authService.getAuth(),
             this.authService.getGoogleProvider()
