@@ -16,6 +16,9 @@
     max-width: 90%;
     padding: 15px;
     margin: auto;
+    border: 3px solid $secondary-color;
+    border-radius: 10px;
+    background: #dbedff;
 
     .loading {
         margin: auto;
