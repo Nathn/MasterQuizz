@@ -34,7 +34,7 @@
         "dayjs": "^1.11.9",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
-        "firebase": "^10.0.0",
+        "firebase": "^11.1.0",
         "mongoose": "^8.0.0",
         "mongoose-mongodb-errors": "^0.0.2",
         "ngx-cookieconsent": "^6.0.0",
