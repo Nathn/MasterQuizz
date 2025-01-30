@@ -37,7 +37,7 @@
         "firebase": "^11.2.0",
         "mongoose": "^8.0.0",
         "mongoose-mongodb-errors": "^0.0.2",
-        "ngx-cookieconsent": "^6.0.0",
+        "ngx-cookieconsent": "^8.0.0",
         "nodemailer": "^6.9.5",
         "nodemon": "^3.0.1",
         "path": "^0.12.7",
