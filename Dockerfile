@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Adjust NODE_VERSION as desired
-ARG NODE_VERSION=22.14.0
+ARG NODE_VERSION=22.13.1
 FROM node:${NODE_VERSION}-slim as base
 
 LABEL fly_launch_runtime="Node.js"
@@ -18,7 +18,7 @@ FROM base as build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
-    apt-get install -y python pkg-config build-essential 
+    apt-get install -y python3 pkg-config build-essential 
 
 # Install node modules
 COPY package.json ./
@@ -31,7 +31,7 @@ COPY --link . .
 RUN npm run build
 
 # Remove development dependencies
-RUN npm prune --omit=dev
+RUN npm prune --omit=dev --legacy-peer-deps
 
 
 # Final stage for app image
