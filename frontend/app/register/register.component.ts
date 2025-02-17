@@ -1,6 +1,10 @@
 import { Component, type OnInit, NgZone } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { AuthService } from '../auth.service';
@@ -9,8 +13,10 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-register',
+    standalone: true,
     templateUrl: './register.component.html',
-    styleUrls: ['./register.component.scss']
+    styleUrls: ['./register.component.scss'],
+    imports: [CommonModule, FontAwesomeModule, FormsModule]
 })
 export class RegisterComponent implements OnInit {
     userObj: any = localStorage.getItem('userObj')

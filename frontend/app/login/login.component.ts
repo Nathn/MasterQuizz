@@ -1,6 +1,10 @@
 import { Component, NgZone, type OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AES } from 'crypto-js';
 import * as CryptoJS from 'crypto-js';
@@ -16,8 +20,10 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-login',
+    standalone: true,
     templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss']
+    styleUrls: ['./login.component.scss'],
+    imports: [CommonModule, FormsModule, FontAwesomeModule]
 })
 export class LoginComponent implements OnInit {
     userObj: any = localStorage.getItem('userObj')

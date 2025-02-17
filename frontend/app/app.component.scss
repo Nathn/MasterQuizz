@@ -1,4 +1,4 @@
-@import "../styles/variables";
+@use "../styles/variables";
 
 /* Top toolbar styles */
 .toolbar {
@@ -7,14 +7,14 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 60px;
-    background-color: $secondary-color;
+    background-color: variables.$secondary-color;
     width: 100vw;
     height: 75px;
     z-index: 100;
 }
 
 .toolbar *:not(button span) {
-    color: $secondary-text-color;
+    color: variables.$secondary-text-color;
 }
 
 .logo {
@@ -45,7 +45,7 @@
     .menu-icon {
         display: none;
         font-size: 32px;
-        color: $button-text-color;
+        color: variables.$button-text-color;
         border: none;
         padding: 0;
         background-color: transparent;
@@ -82,7 +82,7 @@
                     left: 0;
                     width: 0;
                     height: 2px;
-                    background-color: $secondary-text-color;
+                    background-color: variables.$secondary-text-color;
                     transition: width 0.3s ease-in-out;
                 }
 
@@ -165,7 +165,7 @@ button {
             left: 0;
             width: 0;
             height: 2px;
-            background-color: $secondary-text-color;
+            background-color: variables.$secondary-text-color;
             transition: width 0.3s ease-in-out;
         }
     }
@@ -181,7 +181,7 @@ button {
     float: left;
     width: 40px;
     height: 40px;
-    border: 1px solid $secondary-text-color;
+    border: 1px solid variables.$secondary-text-color;
     border-radius: 50%;
 }
 
@@ -220,8 +220,8 @@ h2 {
 /* Footer styles */
 footer {
     padding: 10px;
-    color: $secondary-text-color;
-    background-color: $secondary-color;
+    color: variables.$secondary-text-color;
+    background-color: variables.$secondary-color;
     text-align: center;
     position: fixed;
     bottom: 0;
@@ -258,15 +258,15 @@ footer {
         z-index: 95;
         width: 100%;
         margin: 0;
-        background-color: rgba($secondary-color, 0.93);
+        background-color: rgba(variables.$secondary-color, 0.93);
         padding: 10px 0;
-        border: 1px solid $secondary-text-color;
+        border: 1px solid variables.$secondary-text-color;
         border-radius: 0 0 12px 12px;
         border-top: none;
         text-align: center;
 
         * {
-            color: $secondary-text-color;
+            color: variables.$secondary-text-color;
         }
 
         li {
@@ -288,7 +288,7 @@ footer {
                     left: 0;
                     width: 0;
                     height: 2px;
-                    background-color: $secondary-text-color;
+                    background-color: variables.$secondary-text-color;
                     transition: width 0.3s ease-in-out;
                 }
 
@@ -306,7 +306,7 @@ footer {
             justify-content: space-between;
             margin: 10px 10%;
             padding: 5px 10px;
-            border: 1px solid rgba($secondary-text-color, 0.93);
+            border: 1px solid rgba(variables.$secondary-text-color, 0.93);
             border-radius: 12px;
 
             .user-info-header {

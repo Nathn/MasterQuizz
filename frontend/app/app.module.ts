@@ -86,21 +86,7 @@ import { PracticeComponent } from './practice/practice.component';
 import { CguComponent } from './cgu/cgu.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        HomeComponent,
-        LoginComponent,
-        RegisterComponent,
-        QuestionsComponent,
-        HomeModuleComponent,
-        QuestionComponent,
-        ProfileComponent,
-        DuelComponent,
-        AboutComponent,
-        LeaderboardComponent,
-        PracticeComponent,
-        CguComponent
-    ],
+    declarations: [],
     imports: [
         BrowserModule,
         AppRoutingModule,

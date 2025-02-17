@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { HomeModuleComponent } from '../home-module/home-module.component';
 
 import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
-import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home',
+    standalone: true,
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss']
+    styleUrls: ['./home.component.scss'],
+    imports: [CommonModule, FontAwesomeModule, HomeModuleComponent]
 })
 export class HomeComponent {
     userObj: any = localStorage.getItem('userObj')

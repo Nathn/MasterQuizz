@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { HomeModuleComponent } from '../home-module/home-module.component';
 
 import { AuthService } from '../auth.service';
 
@@ -8,8 +13,10 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-practice',
+    standalone: true,
     templateUrl: './practice.component.html',
-    styleUrls: ['./practice.component.scss']
+    styleUrls: ['./practice.component.scss'],
+    imports: [CommonModule, FontAwesomeModule, RouterModule, HomeModuleComponent]
 })
 export class PracticeComponent {
     userObj: any = localStorage.getItem('userObj')

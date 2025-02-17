@@ -1,7 +1,10 @@
 import { Component, type OnInit, type OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import {
     NgcCookieConsentService,
@@ -11,8 +14,10 @@ import { AuthService } from './auth.service';
 
 @Component({
     selector: 'app-root',
+    standalone: true,
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
+    imports: [CommonModule, FontAwesomeModule, RouterModule]
 })
 export class AppComponent implements OnInit, OnDestroy {
     title = 'MasterQuizz';

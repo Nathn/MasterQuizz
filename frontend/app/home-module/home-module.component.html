@@ -142,7 +142,7 @@
             *ngIf="answerValidated && !moduleParams.nextQuestionReady"
             disabled
         >
-            <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+            <fa-icon [icon]="['fas', 'spinner']" [animation]="'spin'"></fa-icon>
             {{
                 moduleParams.waitingForAnswerText ||
                     "En attente de l'adversaire…"
@@ -359,5 +359,5 @@
     "
     class="module-content-container spinner"
 >
-    <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+    <fa-icon [icon]="['fas', 'spinner']" [animation]="'spin'"></fa-icon>
 </div>

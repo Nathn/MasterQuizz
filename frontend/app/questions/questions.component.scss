@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 h1,
 h2,
@@ -8,7 +8,7 @@ h5,
 h6 {
     font-size: xx-large;
     text-align: center !important;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
 }
 
 a {
@@ -107,9 +107,9 @@ form {
     width: 400px;
     height: fit-content;
     background-color: #fff;
-    border: 2px solid $primary-text-color;
+    border: 2px solid variables.$primary-text-color;
     border-radius: 5px;
-    box-shadow: 0 0 2px 4px rgba($primary-text-color, 0.1);
+    box-shadow: 0 0 2px 4px rgba(variables.$primary-text-color, 0.1);
 }
 
 .question-header {

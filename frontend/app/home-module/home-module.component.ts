@@ -5,11 +5,19 @@ import {
     EventEmitter,
     SimpleChanges
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { QuestionComponent } from '../question/question.component';
 
 @Component({
     selector: 'app-home-module',
+    standalone: true,
     templateUrl: './home-module.component.html',
-    styleUrls: ['./home-module.component.scss']
+    styleUrls: ['./home-module.component.scss'],
+    imports: [CommonModule, FontAwesomeModule, RouterModule, QuestionComponent]
 })
 export class HomeModuleComponent {
     @Input('question') question: any;

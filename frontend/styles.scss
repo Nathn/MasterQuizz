@@ -1,4 +1,4 @@
-@import "./styles/variables";
+@use "styles/variables";
 
 @font-face {
     font-family: "Epica Sans Pro Black";
@@ -19,7 +19,7 @@
 }
 
 body {
-    background: $primary-color;
+    background: variables.$primary-color;
     font-family: "Verdana", sans-serif;
 }
 
@@ -49,18 +49,18 @@ select {
     margin: 10px 0 !important;
     width: 100%;
     max-width: 500px;
-    background-color: $input-color;
-    color: $input-text-color;
+    background-color: variables.$input-color;
+    color: variables.$input-text-color;
 }
 
 button,
 .label-button {
-    color: $button-text-color;
+    color: variables.$button-text-color;
     font-weight: 300 !important;
     font-size: 16px;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif !important;
+    font-family: variables.$primary-font !important;
     border-radius: 12px;
-    background-color: $button-color;
+    background-color: variables.$button-color;
     border: 1px solid #111;
     padding: 10px;
     cursor: pointer;
@@ -72,7 +72,7 @@ button,
 
 button *:not(fa-icon):not(svg):not(path),
 .label-button *:not(fa-icon):not(svg):not(path) {
-    color: $button-text-color;
+    color: variables.$button-text-color;
 }
 
 button:not([disabled]):hover,
@@ -84,10 +84,10 @@ button:not([disabled]):focus,
 
 button:disabled {
     cursor: not-allowed;
-    color: $button-disabled-text-color;
+    color: variables.$button-disabled-text-color;
 
     * {
-        color: $button-disabled-text-color;
+        color: variables.$button-disabled-text-color;
     }
 }
 
@@ -96,7 +96,7 @@ button.transparent:disabled {
 }
 
 button:disabled:not(.transparent) {
-    background-color: $button-disabled-color;
+    background-color: variables.$button-disabled-color;
 }
 
 form {
@@ -124,7 +124,7 @@ form {
     .form-warning {
         display: block;
         font-size: larger;
-        font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+        font-family: variables.$primary-font;
         margin-bottom: 15px;
         text-wrap: balance;
         text-align: center;
@@ -132,18 +132,18 @@ form {
     }
 
     .form-error {
-        color: $primary-error-color;
+        color: variables.$primary-error-color;
     }
 
     .form-warning {
-        color: $primary-warning-color;
+        color: variables.$primary-warning-color;
     }
 
     .form-links {
         margin-top: 15px;
 
         span {
-            color: $primary-link-color;
+            color: variables.$primary-link-color;
             cursor: pointer;
             text-decoration: none;
             transition: color 0.3s ease-in-out;
@@ -159,7 +159,7 @@ form {
                 left: 0;
                 width: 0;
                 height: 2px;
-                background-color: $primary-link-color;
+                background-color: variables.$primary-link-color;
                 transition: width 0.3s ease-in-out;
             }
 
@@ -177,8 +177,8 @@ form {
 }
 
 .success-message {
-    color: $primary-success-color;
+    color: variables.$primary-success-color;
     font-size: larger;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
     text-align: center;
 }

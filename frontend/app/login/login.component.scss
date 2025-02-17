@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 *:not(button, span, h1, h2, h3, h4, h5, h6) {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -9,7 +9,7 @@
 h2 {
     font-size: xx-large;
     text-align: center !important;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
     margin-bottom: 30px;
 }
 
@@ -28,8 +28,8 @@ select {
     width: 100%;
     min-width: 500px;
     max-width: 100%;
-    background-color: $input-color;
-    color: $input-text-color;
+    background-color: variables.$input-color;
+    color: variables.$input-text-color;
 }
 
 label {
@@ -64,7 +64,7 @@ label {
     width: fit-content;
     font-weight: 300;
     font-size: 16px;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
     cursor: pointer;
     outline: none;
     box-shadow: none;

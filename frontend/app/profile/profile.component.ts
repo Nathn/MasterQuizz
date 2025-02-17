@@ -1,16 +1,22 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
-import { AuthService } from '../auth.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { AuthService } from '../auth.service';
 
 import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-profile',
+    standalone: true,
     templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss']
+    styleUrls: ['./profile.component.scss'],
+    imports: [CommonModule, FormsModule, RouterModule, FontAwesomeModule]
 })
 export class ProfileComponent {
     userObj: any = localStorage.getItem('userObj')

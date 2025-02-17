@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { AuthService } from '../auth.service';
 
@@ -8,8 +12,10 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-questions',
+    standalone: true,
     templateUrl: './questions.component.html',
-    styleUrls: ['./questions.component.scss']
+    styleUrls: ['./questions.component.scss'],
+    imports: [CommonModule, FormsModule, RouterModule, FontAwesomeModule]
 })
 export class QuestionsComponent {
     userObj: any = localStorage.getItem('userObj')

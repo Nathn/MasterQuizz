@@ -95,13 +95,13 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "MasterQuizz:build:production"
+                            "buildTarget": "MasterQuizz:build:production"
                         },
                         "productionhttp": {
-                            "browserTarget": "MasterQuizz:build:productionhttp"
+                            "buildTarget": "MasterQuizz:build:productionhttp"
                         },
                         "development": {
-                            "browserTarget": "MasterQuizz:build:development"
+                            "buildTarget": "MasterQuizz:build:development"
                         }
                     },
                     "defaultConfiguration": "development",
@@ -112,7 +112,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "MasterQuizz:build"
+                        "buildTarget": "MasterQuizz:build"
                     }
                 },
                 "test": {

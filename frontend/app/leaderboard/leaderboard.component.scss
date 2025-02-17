@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 h1,
 h2,
@@ -8,7 +8,7 @@ h5,
 h6 {
     font-size: xx-large;
     text-align: center !important;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
 }
 
 .home-module-container {
@@ -29,7 +29,7 @@ h6 {
     align-items: center;
     text-align: center;
     margin: 20px 0;
-    background: $secondary-color;
+    background: variables.$secondary-color;
     border-radius: 12px;
     position: relative;
     padding: 20px 25px 30px;

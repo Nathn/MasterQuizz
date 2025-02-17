@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 .qdjlogo {
     position: absolute;
@@ -6,8 +6,8 @@
     max-width: 100%;
     display: flex;
     align-items: center;
-    background: $tertiary-color;
-    color: $tertiary-text-color;
+    background: variables.$tertiary-color;
+    color: variables.$tertiary-text-color;
     font-family: Epica Sans Pro Black, Impact, Haettenschweiler,
         "Arial Narrow Bold", sans-serif !important;
     font-size: larger;
@@ -17,7 +17,7 @@
     border-radius: 69px;
     flex-direction: row;
     justify-content: center;
-    border: solid 7px $secondary-color;
+    border: solid 7px variables.$secondary-color;
     box-shadow: inset 0px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -27,7 +27,7 @@
 
 .spinner {
     font-size: 32px;
-    color: $secondary-text-color;
+    color: variables.$secondary-text-color;
 }
 
 .button-start {
@@ -37,7 +37,7 @@
 }
 
 .button-start:not(:disabled) {
-    border: solid 1px $secondary-text-color;
+    border: solid 1px variables.$secondary-text-color;
 }
 
 .button-start:not(:disabled):hover,
@@ -69,7 +69,7 @@
     -ms-user-select: none;
     user-select: none;
     text-decoration: none;
-    color: $primary-text-color;
+    color: variables.$primary-text-color;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 700;
     min-height: 48px;
@@ -108,7 +108,7 @@
 
     .rankingmodule-slide-ranking-name {
         font-size: 1.2rem;
-        color: $primary-text-color;
+        color: variables.$primary-text-color;
         margin-right: 10px;
     }
 
@@ -122,7 +122,7 @@
     }
 
     .rankingmodule-slide-ranking-live-own {
-        background-color: $secondary-color;
+        background-color: variables.$secondary-color;
         border-color: #4469ac;
         padding: 5px;
         border-radius: 50%;
@@ -141,12 +141,12 @@
 
 .results {
     margin: 25px auto;
-    color: $secondary-text-color;
+    color: variables.$secondary-text-color;
     font-size: 1.2rem;
     text-wrap: balance;
 
     a {
-        color: $secondary-text-color;
+        color: variables.$secondary-text-color;
     }
 
     h2 {
@@ -161,7 +161,7 @@
             border-radius: 50%;
             width: 32px;
             height: 32px;
-            border: 1px solid $secondary-text-color;
+            border: 1px solid variables.$secondary-text-color;
         }
     }
 
@@ -176,11 +176,11 @@
         }
 
         .correct {
-            color: $secondary-success-color;
+            color: variables.$secondary-success-color;
         }
 
         .incorrect {
-            color: $secondary-error-color;
+            color: variables.$secondary-error-color;
         }
     }
 
@@ -188,19 +188,19 @@
     .custom-result {
         display: block;
         margin: 25px auto;
-        background-color: $quaternary-color;
-        color: $quaternary-text-color;
+        background-color: variables.$quaternary-color;
+        color: variables.$quaternary-text-color;
         padding: 5px 14px;
         width: min-content;
         border-radius: 16px;
     }
 
     .elo-change.positive {
-        border: 1px solid $secondary-success-color;
+        border: 1px solid variables.$secondary-success-color;
     }
 
     .elo-change.negative {
-        border: 1px solid $secondary-error-color;
+        border: 1px solid variables.$secondary-error-color;
     }
 
     .custom-result {

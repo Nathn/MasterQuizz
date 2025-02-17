@@ -4,6 +4,7 @@ import {
     type OnDestroy,
     type OnInit
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Subject, takeUntil } from 'rxjs';
@@ -12,6 +13,10 @@ import * as dayjs from 'dayjs';
 import 'dayjs/locale/fr'; // Import the French locale
 import relativeTime from 'dayjs/plugin/relativeTime'; // Import the relativeTime plugin
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
+import { HomeModuleComponent } from '../home-module/home-module.component';
+
 import { WebSocketService } from '../websocket.service';
 import { AuthService } from '../auth.service';
 
@@ -19,8 +24,10 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-duel',
+    standalone: true,
     templateUrl: './duel.component.html',
-    styleUrls: ['./duel.component.scss']
+    styleUrls: ['./duel.component.scss'],
+    imports: [CommonModule, FontAwesomeModule, HomeModuleComponent]
 })
 export class DuelComponent implements OnDestroy {
     userObj: any = localStorage.getItem('userObj')

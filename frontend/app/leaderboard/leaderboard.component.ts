@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+
+import { HomeModuleComponent } from '../home-module/home-module.component';
 
 import { AuthService } from '../auth.service';
 
@@ -8,8 +11,10 @@ import { environment } from '../../environments/environment';
 
 @Component({
     selector: 'app-leaderboard',
+    standalone: true,
     templateUrl: './leaderboard.component.html',
-    styleUrls: ['./leaderboard.component.scss']
+    styleUrls: ['./leaderboard.component.scss'],
+    imports: [CommonModule, HomeModuleComponent]
 })
 export class LeaderboardComponent {
     userObj: any = localStorage.getItem('userObj')

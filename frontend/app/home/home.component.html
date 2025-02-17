@@ -5,7 +5,7 @@
 </h1>
 <div class="home-module-long" *ngIf="longModule1Shown">
     <h2 class="loading-container" *ngIf="isLoadingThemes">
-        <fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>
+        <fa-icon [icon]="['fas', 'spinner']" [animation]="'spin'"></fa-icon>
     </h2>
     <div class="home-module-long-content" *ngIf="!isLoadingThemes">
         <div

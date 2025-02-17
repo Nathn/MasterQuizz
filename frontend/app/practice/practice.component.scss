@@ -1,15 +1,15 @@
-@import "../../styles/variables";
+@use "../../styles/variables";
 
 h1 {
     font-size: xx-large;
     text-align: center !important;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
 }
 
 h2 {
     font-size: x-large;
     text-align: left !important;
-    font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+    font-family: variables.$primary-font;
 }
 
 .link-boxes-container {
@@ -27,7 +27,7 @@ h2 {
         display: flex;
         flex-direction: column;
         align-items: center;
-        background: $secondary-color;
+        background: variables.$secondary-color;
         background-size: cover;
         border-radius: 12px;
         position: relative;
@@ -37,16 +37,16 @@ h2 {
         transition: transform 0.2s ease-in-out;
 
         span {
-            font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+            font-family: variables.$primary-font;
             font-size: 2.2em;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: $primary-text-color;
-            text-shadow: -1px -1px 0 $secondary-text-color,
-                1px -1px 0 $secondary-text-color,
-                -1px 1px 0 $secondary-text-color,
-                1px 1px 0 $secondary-text-color;
+            color: variables.$primary-text-color;
+            text-shadow: -1px -1px 0 variables.$secondary-text-color,
+                1px -1px 0 variables.$secondary-text-color,
+                -1px 1px 0 variables.$secondary-text-color,
+                1px 1px 0 variables.$secondary-text-color;
             width: 100%;
             background-color: rgba(255, 255, 255, 0.5);
             padding: 0px 15px;
@@ -70,7 +70,7 @@ h2 {
     margin: auto;
 
     h1 {
-        font-family: Averta, Verdana, Geneva, Tahoma, sans-serif;
+        font-family: variables.$primary-font;
         text-align: center;
         font-size: xx-large;
         margin-bottom: 1em;
@@ -81,7 +81,7 @@ h2 {
         flex-direction: column;
         align-items: center;
         margin: 20px;
-        background: $secondary-color;
+        background: variables.$secondary-color;
         border-radius: 12px;
         position: relative;
         padding: 20px 20px 30px;

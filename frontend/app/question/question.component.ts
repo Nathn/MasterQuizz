@@ -6,11 +6,16 @@ import {
     OnInit,
     SimpleChanges
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
     selector: 'app-question',
+    standalone: true,
     templateUrl: './question.component.html',
-    styleUrls: ['./question.component.scss']
+    styleUrls: ['./question.component.scss'],
+    imports: [CommonModule, FontAwesomeModule]
 })
 export class QuestionComponent implements OnInit {
     @Input('question') question: any;
