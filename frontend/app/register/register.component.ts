@@ -105,7 +105,7 @@ export class RegisterComponent implements OnInit {
                                     return;
                                 } else {
                                     this.isLoading = false;
-                                    window.location.href = this.redirectUrl;
+                                    this.router.navigate([this.redirectUrl]);
                                 }
                             });
                     })
