@@ -1,6 +1,7 @@
 {
     "name": "master-quizz",
     "version": "1.1.2",
+    "private": false,
     "scripts": {
         "ng": "ng",
         "start": "node backend/app.js",
@@ -10,7 +11,6 @@
         "watch": "ng build --watch --configuration=development",
         "test": "ng test"
     },
-    "private": true,
     "dependencies": {
         "@angular/animations": "^19.1.6",
         "@angular/cli": "^19.1.6",
