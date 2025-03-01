@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -43,7 +44,8 @@ export class ProfileComponent {
         private router: Router,
         private ar: ActivatedRoute,
         private http: HttpClient,
-        private authService: AuthService
+        private authService: AuthService,
+        private sanitizer: DomSanitizer
     ) {
         this.storage = getStorage(this.authService.getApp());
         this.authService.onAuthStateChanged(
@@ -124,8 +126,8 @@ export class ProfileComponent {
                         oldDisplayName.toLowerCase() !=
                         this.userObj.displayName.toLowerCase()
                     ) {
-                        window.location.href =
-                            '/profile/' + this.tempUsername.toLowerCase();
+                        const sanitizedUrl = this.sanitizer.sanitize(4, '/profile/' + this.tempUsername.toLowerCase());
+                        window.location.href = sanitizedUrl;
                     } else if (oldDisplayName != this.userObj.displayName) {
                         window.location.reload();
                     }
