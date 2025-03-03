@@ -11,7 +11,7 @@ router.post("/createQuestion", async (req, res) => {
         console.log(`[SERVER] Creating a new question: ${req.body.question}`);
         // Get corresponding theme
         const theme = await Theme.findOne({
-            code: req.body.theme,
+            code: { $eq: req.body.theme },
         }).exec();
         if (!theme) {
             console.log(
