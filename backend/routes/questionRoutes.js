@@ -9,6 +9,11 @@ const User = require("../models/User");
 router.post("/createQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Creating a new question: ${req.body.question}`);
+        // Validate user input
+        if (typeof req.body.theme !== "string" || typeof req.body.user_id !== "string") {
+            res.status(400).json({ message: "Invalid input" });
+            return;
+        }
         // Get corresponding theme
         const theme = await Theme.findOne({
             code: { $eq: req.body.theme },
@@ -62,6 +67,11 @@ router.post("/createQuestion", async (req, res) => {
 router.post("/updateQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Updating a question: ${req.body.questionId}`);
+        // Validate user input
+        if (typeof req.body.questionId !== "string" || typeof req.body.theme !== "string" || typeof req.body.user_id !== "string") {
+            res.status(400).json({ message: "Invalid input" });
+            return;
+        }
         // Get corresponding theme
         const theme = await Theme.findOne({
             code: { $eq: req.body.theme },
