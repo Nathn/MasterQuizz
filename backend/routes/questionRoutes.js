@@ -24,7 +24,7 @@ router.post("/createQuestion", async (req, res) => {
         }
         // Get the user executing the request
         const user = await User.findOne({
-            _id: req.body.user_id,
+            _id: { $eq: req.body.user_id },
         }).exec();
         if (!user) {
             console.log(
@@ -64,12 +64,12 @@ router.post("/updateQuestion", async (req, res) => {
         console.log(`[SERVER] Updating a question: ${req.body.questionId}`);
         // Get corresponding theme
         const theme = await Theme.findOne({
-            code: req.body.theme,
+            code: { $eq: req.body.theme },
         }).exec();
         // Update the question
         await Question.updateOne(
             {
-                _id: req.body.questionId,
+                _id: { $eq: req.body.questionId },
             },
             {
                 answers: req.body.answers,
@@ -118,7 +118,7 @@ router.post("/deleteQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Deleting a question: ${req.body.questionId}`);
         await Question.deleteOne({
-            _id: req.body.questionId,
+            _id: { $eq: req.body.questionId },
         })
             .exec()
             .then((question) => {
@@ -160,7 +160,7 @@ router.post("/getRandomQuestion", async (req, res) => {
         if (req.body.user_id) {
             // Get the user
             await User.findOne({
-                _id: req.body.user_id,
+                _id: { $eq: req.body.user_id },
             })
                 .exec()
                 .then((user) => {
@@ -249,7 +249,7 @@ router.post("/getQuestionFromId", async (req, res) => {
             `[SERVER] Getting a question from id: ${req.body.questionId}`
         );
         await Question.findOne({
-            _id: req.body.questionId,
+            _id: { $eq: req.body.questionId },
         })
             .exec()
             .then((question) => {
@@ -348,7 +348,7 @@ router.post("/updateQuestionStats", async (req, res) => {
         );
         await Question.updateOne(
             {
-                _id: req.body.question_id,
+                _id: { $eq: req.body.question_id },
             },
             {
                 $inc: {
@@ -369,7 +369,7 @@ router.post("/updateQuestionStats", async (req, res) => {
                     );
                     await User.updateOne(
                         {
-                            _id: req.body.user_id,
+                            _id: { $eq: req.body.user_id },
                         },
                         {
                             $inc: {
@@ -434,7 +434,7 @@ router.post("/switchQuestionOnlineStatus", async (req, res) => {
             `[SERVER] Switching question online status: ${req.body.questionId}`
         );
         await Question.findOne({
-            _id: req.body.question_id,
+            _id: { $eq: req.body.question_id },
         })
             .exec()
             .then(async (question) => {
@@ -448,7 +448,7 @@ router.post("/switchQuestionOnlineStatus", async (req, res) => {
                 } else {
                     await Question.updateOne(
                         {
-                            _id: req.body.question_id,
+                            _id: { $eq: req.body.question_id },
                         },
                         {
                             online: !question.online,
