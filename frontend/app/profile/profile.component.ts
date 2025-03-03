@@ -127,7 +127,7 @@ export class ProfileComponent {
                         this.userObj.displayName.toLowerCase()
                     ) {
                         const sanitizedUrl = this.sanitizer.sanitize(4, '/profile/' + this.tempUsername.toLowerCase());
-                        window.location.href = sanitizedUrl;
+                        window.location.href = sanitizedUrl || window.location.href;
                     } else if (oldDisplayName != this.userObj.displayName) {
                         window.location.reload();
                     }
