@@ -40,7 +40,7 @@ router.post("/validateRegister", async (req, res) => {
     }
     // Check if the username is already taken
     let user = await User.findOne({
-        username
+        username: { $eq: username }
     });
     if (user) {
         return res.status(200).json({
@@ -49,7 +49,7 @@ router.post("/validateRegister", async (req, res) => {
     }
     // Check if the email is already taken
     user = await User.findOne({
-        email
+        email: { $eq: email }
     });
     if (user) {
         return res.status(200).json({
@@ -165,7 +165,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
             `[SERVER] Getting email from username: ${req.body.username}`
         );
         await User.findOne({
-            username: req.body.username
+            username: { $eq: req.body.username }
         })
             .exec()
             .then((user) => {
@@ -212,7 +212,7 @@ router.post("/getUserFromEmail", async (req, res) => {
     try {
         console.log(`[SERVER] Getting user from email: ${req.body.email}`);
         await User.findOne({
-            email: req.body.email
+            email: { $eq: req.body.email }
         })
             .exec()
             .then((user) => {
@@ -258,7 +258,7 @@ router.post("/getUserFromUsername", async (req, res) => {
             `[SERVER] Getting user from username: ${req.body.username}`
         );
         await User.findOne({
-            username: req.body.username
+            username: { $eq: req.body.username }
         })
             .exec()
             .then((user) => {
@@ -314,7 +314,7 @@ router.post("/editUsername", async (req, res) => {
         }
         // Check if the username is already taken
         let userTest = await User.findOne({
-            username: req.body.username
+            username: { $eq: req.body.username }
         });
         if (userTest && userTest._id.toString() !== req.body.userId) {
             return res.status(200).json({
@@ -326,7 +326,7 @@ router.post("/editUsername", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId
+                _id: { $eq: req.body.userId }
             },
             {
                 username: req.body.username.toLowerCase(),
@@ -377,7 +377,7 @@ router.post("/editAvatar", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId
+                _id: { $eq: req.body.userId }
             },
             {
                 avatarUrl: req.body.avatar
@@ -426,7 +426,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId
+                _id: { $eq: req.body.userId }
             },
             {
                 remainingQuestions: req.body.remainingQuestions
@@ -453,7 +453,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                         );
                         User.findOneAndUpdate(
                             {
-                                _id: req.body.userId
+                                _id: { $eq: req.body.userId }
                             },
                             {
                                 timeBeforeQuestionRefill: Date.now() + 86400000
@@ -492,7 +492,7 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                         console.log(`[SERVER] Removing refillQuestionsTime`);
                         User.findOneAndUpdate(
                             {
-                                _id: req.body.userId
+                                _id: { $eq: req.body.userId }
                             },
                             {
                                 timeBeforeQuestionRefill: null
