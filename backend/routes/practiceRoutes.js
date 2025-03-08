@@ -223,7 +223,7 @@ router.post("/getPracticeQuizzByDifficulty", async (req, res) => {
     try {
         console.log(`[SERVER] Getting practice quizz by difficulty`);
         await Question.find({
-            difficulty: req.body.difficulty,
+            difficulty: { $eq: req.body.difficulty },
             online: true
         })
             .sort({ theme: "asc" })
@@ -288,7 +288,12 @@ router.post("/updatePlayedPracticeQuizzes", async (req, res) => {
     */
     try {
         console.log(`[SERVER] Updating played practice quizzes`);
-        await User.findOne({ _id: req.body.user_id })
+        const userId = req.body.user_id;
+        if (typeof userId !== "string") {
+            res.status(400).json({ message: "Invalid user ID" });
+            return;
+        }
+        await User.findOne({ _id: { $eq: userId } })
             .exec()
             .then(async (user) => {
                 if (!user) {
