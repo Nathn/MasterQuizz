@@ -159,7 +159,7 @@ router.post("/getPracticeQuizzByTheme", async (req, res) => {
     try {
         console.log(`[SERVER] Getting practice quizz by theme`);
         await Question.find({
-            theme: req.body.theme,
+            theme: { $eq: req.body.theme },
             online: true
         })
             .sort({ difficulty: "asc" })
