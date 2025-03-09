@@ -463,7 +463,7 @@ router.post("/switchQuestionOnlineStatus", async (req, res) => {
                         {
                             online: !question.online,
                             updated: Date.now(),
-                            userUpdated: req.body.user_id,
+                            userUpdated: typeof req.body.user_id === "string" ? req.body.user_id : "",
                         }
                     )
                         .exec()
