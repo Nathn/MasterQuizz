@@ -424,6 +424,10 @@ router.post("/updateRemainingQuestions", async (req, res) => {
         console.log(
             `[SERVER] Updating remaining questions of user ${req.body.userId} to ${req.body.remainingQuestions}`
         );
+        if (typeof req.body.userId !== "string") {
+            res.status(400).json({ message: "Invalid user ID" });
+            return;
+        }
         await User.findOneAndUpdate(
             {
                 _id: { $eq: req.body.userId }
@@ -451,6 +455,10 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                 Date.now() + 86400000
                             }`
                         );
+                        if (typeof req.body.userId !== "string") {
+                            res.status(400).json({ message: "Invalid user ID" });
+                            return;
+                        }
                         User.findOneAndUpdate(
                             {
                                 _id: { $eq: req.body.userId }
@@ -490,6 +498,10 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                             });
                     } else if (user.timeBeforeQuestionRefill) {
                         console.log(`[SERVER] Removing refillQuestionsTime`);
+                        if (typeof req.body.userId !== "string") {
+                            res.status(400).json({ message: "Invalid user ID" });
+                            return;
+                        }
                         User.findOneAndUpdate(
                             {
                                 _id: { $eq: req.body.userId }
