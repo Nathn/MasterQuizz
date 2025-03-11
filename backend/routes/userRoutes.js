@@ -329,8 +329,8 @@ router.post("/editUsername", async (req, res) => {
                 _id: { $eq: req.body.userId }
             },
             {
-                username: req.body.username.toLowerCase(),
-                displayName: req.body.username
+                username: encodeURIComponent(req.body.username.toLowerCase()),
+                displayName: encodeURIComponent(req.body.username)
             }
         )
             .exec()
@@ -380,7 +380,7 @@ router.post("/editAvatar", async (req, res) => {
                 _id: { $eq: req.body.userId }
             },
             {
-                avatarUrl: req.body.avatar
+                avatarUrl: encodeURIComponent(req.body.avatar)
             }
         )
             .exec()
