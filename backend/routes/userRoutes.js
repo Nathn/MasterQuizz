@@ -428,6 +428,10 @@ router.post("/updateRemainingQuestions", async (req, res) => {
             res.status(400).json({ message: "Invalid user ID" });
             return;
         }
+        if (typeof req.body.remainingQuestions !== "number") {
+            res.status(400).json({ message: "Invalid remaining questions" });
+            return;
+        }
         await User.findOneAndUpdate(
             {
                 _id: { $eq: req.body.userId }
