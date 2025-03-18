@@ -26,7 +26,7 @@ router.post("/validateRegister", async (req, res) => {
     */
     const { username, email } = req.body;
     // Check if the email is valid
-    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    if (!email || email.length > 254 || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
         return res.status(200).json({
             message: "L'adresse email n'est pas valide."
         });
