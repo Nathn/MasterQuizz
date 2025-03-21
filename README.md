@@ -2,47 +2,45 @@
 
 An interactive, multiplayer quizz website powered by Angular and Node.
 
-## Recommended configuration
+## Installation
 
--   Python v3.10.7
--   Node v16.18.1
--   NPM v8.19.2
+### Prerequisites
+-   [Git](https://git-scm.com/)
+-   [Node.js](https://nodejs.org/en/download) with [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-### Fedora install
-
+### Clone the repository
 ```
-((sudo dnf install python3.10 python3.11 && sudo ln -sf /usr/bin/python3.10 /usr/bin/python && sudo ln -sf /usr/bin/python3.10 /usr/bin/python3) || echo "python install failed") && ((sudo dnf install npm || echo "npm install failed") && (sudo npm install -g n || echo "n install failed") && (sudo n 16.18.1 || echo "n version change failed") && sudo npm install)
-```
-
-#### Troubleshooting
-
-If the command above results in `ModuleNotFoundError: No module named 'dnf'`, simply run this to fix Fedora's package manager :
-
-```
-sudo sed -i 's|#!/usr/bin/python3|#!/usr/bin/python3.10|g' /usr/bin/dnf
+git clone git@github.com:Nathn/MasterQuizz.git
+cd MasterQuizz
 ```
 
-then run the second part of the installation command again :
-
+### Install dependencies
 ```
-(sudo dnf install npm || echo "npm install failed") && (sudo npm install -g n || echo "n install failed") && (sudo n 16.18.1 || echo "n version change failed") && sudo npm install
+npm install --include=dev --legacy-peer-deps
 ```
-
-### Ubuntu install
-
-```
-((sudo apt-get install python3.10 python3.11 && sudo ln -sf /usr/bin/python3.10 /usr/bin/python && sudo ln -sf /usr/bin/python3.10 /usr/bin/python3) || echo "python install failed") && ((sudo apt-get install npm || echo "npm install failed") && (sudo npm install -g n || echo "n install failed") && (sudo n 16.18.1 || echo "n version change failed") && sudo npm install)
-```
+This will install both frontend and backend dependencies, including:
+- [Angular 19.1.6](https://github.com/angular/angular/releases/tag/19.1.6)
+- [Typescript 5.8.2](https://github.com/microsoft/TypeScript/releases/tag/v5.8.2)
 
 ## Set up environment(s)
+### Frontend
 Edit `frontend/environments/environment.ts` to add Firebase credentials. These should have Google authentification set up in [your console](console.firebase.google.com). If you plan to run a production server, duplicate the environment.ts file into a new `environment.prod.ts` with production credentials, a reliable `encryptionKey` and `production` set to `true`. You can also have a `environment.prodhttp.ts` if you want to support `http://` in production.
 
-## Development server
+### Backend
+Create `backend/.env` to the following :
+```
+PORT=3000
+WS_PORT=3001
+MONGO_URI=mongodb+srv://<username>:<password>@<domain>/masterquizz
+CORS_WHITELIST=http://localhost:3000,http://localhost:8080
+ENCRYPTION_KEY=YOUR_ENCRYPTION_KEY
+```
+You can get a `MONGO_URI` by creating a new project on [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database).
 
+## Development server
 Run `npm run dev` for a development frontend+backend. Navigate to `http://localhost:8080/`. The application will automatically reload if you change any of the source files.
 
 ## Production build
-
 Run `npm run prod` to build the project and start the server in production conditions, then navigate to `http://localhost:3000/`. The build artifacts will be stored in the `dist/` directory.
 
 ## Code scaffolding
