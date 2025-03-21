@@ -26,7 +26,7 @@ router.post("/validateRegister", async (req, res) => {
     */
     const { username, email } = req.body;
     // Check if the email is valid
-    if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    if (!email || email.length > 254 || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
         return res.status(200).json({
             message: "L'adresse email n'est pas valide."
         });
@@ -40,7 +40,7 @@ router.post("/validateRegister", async (req, res) => {
     }
     // Check if the username is already taken
     let user = await User.findOne({
-        username
+        username: { $eq: username }
     });
     if (user) {
         return res.status(200).json({
@@ -49,7 +49,7 @@ router.post("/validateRegister", async (req, res) => {
     }
     // Check if the email is already taken
     user = await User.findOne({
-        email
+        email: { $eq: email }
     });
     if (user) {
         return res.status(200).json({
@@ -165,7 +165,7 @@ router.post("/getEmailFromUsername", async (req, res) => {
             `[SERVER] Getting email from username: ${req.body.username}`
         );
         await User.findOne({
-            username: req.body.username
+            username: { $eq: req.body.username }
         })
             .exec()
             .then((user) => {
@@ -212,7 +212,7 @@ router.post("/getUserFromEmail", async (req, res) => {
     try {
         console.log(`[SERVER] Getting user from email: ${req.body.email}`);
         await User.findOne({
-            email: req.body.email
+            email: { $eq: req.body.email }
         })
             .exec()
             .then((user) => {
@@ -258,7 +258,7 @@ router.post("/getUserFromUsername", async (req, res) => {
             `[SERVER] Getting user from username: ${req.body.username}`
         );
         await User.findOne({
-            username: req.body.username
+            username: { $eq: req.body.username }
         })
             .exec()
             .then((user) => {
@@ -314,7 +314,7 @@ router.post("/editUsername", async (req, res) => {
         }
         // Check if the username is already taken
         let userTest = await User.findOne({
-            username: req.body.username
+            username: { $eq: req.body.username }
         });
         if (userTest && userTest._id.toString() !== req.body.userId) {
             return res.status(200).json({
@@ -326,11 +326,11 @@ router.post("/editUsername", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId
+                _id: { $eq: req.body.userId }
             },
             {
-                username: req.body.username.toLowerCase(),
-                displayName: req.body.username
+                username: encodeURIComponent(req.body.username.toLowerCase()),
+                displayName: encodeURIComponent(req.body.username)
             }
         )
             .exec()
@@ -377,10 +377,10 @@ router.post("/editAvatar", async (req, res) => {
         );
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId
+                _id: { $eq: req.body.userId }
             },
             {
-                avatarUrl: req.body.avatar
+                avatarUrl: encodeURIComponent(req.body.avatar)
             }
         )
             .exec()
@@ -424,9 +424,17 @@ router.post("/updateRemainingQuestions", async (req, res) => {
         console.log(
             `[SERVER] Updating remaining questions of user ${req.body.userId} to ${req.body.remainingQuestions}`
         );
+        if (typeof req.body.userId !== "string") {
+            res.status(400).json({ message: "Invalid user ID" });
+            return;
+        }
+        if (typeof req.body.remainingQuestions !== "number") {
+            res.status(400).json({ message: "Invalid remaining questions" });
+            return;
+        }
         await User.findOneAndUpdate(
             {
-                _id: req.body.userId
+                _id: { $eq: req.body.userId }
             },
             {
                 remainingQuestions: req.body.remainingQuestions
@@ -451,9 +459,13 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                                 Date.now() + 86400000
                             }`
                         );
+                        if (typeof req.body.userId !== "string") {
+                            res.status(400).json({ message: "Invalid user ID" });
+                            return;
+                        }
                         User.findOneAndUpdate(
                             {
-                                _id: req.body.userId
+                                _id: { $eq: req.body.userId }
                             },
                             {
                                 timeBeforeQuestionRefill: Date.now() + 86400000
@@ -490,9 +502,13 @@ router.post("/updateRemainingQuestions", async (req, res) => {
                             });
                     } else if (user.timeBeforeQuestionRefill) {
                         console.log(`[SERVER] Removing refillQuestionsTime`);
+                        if (typeof req.body.userId !== "string") {
+                            res.status(400).json({ message: "Invalid user ID" });
+                            return;
+                        }
                         User.findOneAndUpdate(
                             {
-                                _id: req.body.userId
+                                _id: { $eq: req.body.userId }
                             },
                             {
                                 timeBeforeQuestionRefill: null

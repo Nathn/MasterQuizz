@@ -9,9 +9,14 @@ const User = require("../models/User");
 router.post("/createQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Creating a new question: ${req.body.question}`);
+        // Validate user input
+        if (typeof req.body.theme !== "string" || typeof req.body.user_id !== "string") {
+            res.status(400).json({ message: "Invalid input" });
+            return;
+        }
         // Get corresponding theme
         const theme = await Theme.findOne({
-            code: req.body.theme,
+            code: { $eq: req.body.theme },
         }).exec();
         if (!theme) {
             console.log(
@@ -24,7 +29,7 @@ router.post("/createQuestion", async (req, res) => {
         }
         // Get the user executing the request
         const user = await User.findOne({
-            _id: req.body.user_id,
+            _id: { $eq: req.body.user_id },
         }).exec();
         if (!user) {
             console.log(
@@ -62,14 +67,19 @@ router.post("/createQuestion", async (req, res) => {
 router.post("/updateQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Updating a question: ${req.body.questionId}`);
+        // Validate user input
+        if (typeof req.body.questionId !== "string" || typeof req.body.theme !== "string" || typeof req.body.user_id !== "string") {
+            res.status(400).json({ message: "Invalid input" });
+            return;
+        }
         // Get corresponding theme
         const theme = await Theme.findOne({
-            code: req.body.theme,
+            code: { $eq: req.body.theme },
         }).exec();
         // Update the question
         await Question.updateOne(
             {
-                _id: req.body.questionId,
+                _id: { $eq: req.body.questionId },
             },
             {
                 answers: req.body.answers,
@@ -118,7 +128,7 @@ router.post("/deleteQuestion", async (req, res) => {
     try {
         console.log(`[SERVER] Deleting a question: ${req.body.questionId}`);
         await Question.deleteOne({
-            _id: req.body.questionId,
+            _id: { $eq: req.body.questionId },
         })
             .exec()
             .then((question) => {
@@ -160,7 +170,7 @@ router.post("/getRandomQuestion", async (req, res) => {
         if (req.body.user_id) {
             // Get the user
             await User.findOne({
-                _id: req.body.user_id,
+                _id: { $eq: req.body.user_id },
             })
                 .exec()
                 .then((user) => {
@@ -249,7 +259,7 @@ router.post("/getQuestionFromId", async (req, res) => {
             `[SERVER] Getting a question from id: ${req.body.questionId}`
         );
         await Question.findOne({
-            _id: req.body.questionId,
+            _id: { $eq: req.body.questionId },
         })
             .exec()
             .then((question) => {
@@ -348,7 +358,7 @@ router.post("/updateQuestionStats", async (req, res) => {
         );
         await Question.updateOne(
             {
-                _id: req.body.question_id,
+                _id: { $eq: req.body.question_id },
             },
             {
                 $inc: {
@@ -369,7 +379,7 @@ router.post("/updateQuestionStats", async (req, res) => {
                     );
                     await User.updateOne(
                         {
-                            _id: req.body.user_id,
+                            _id: { $eq: req.body.user_id },
                         },
                         {
                             $inc: {
@@ -434,7 +444,7 @@ router.post("/switchQuestionOnlineStatus", async (req, res) => {
             `[SERVER] Switching question online status: ${req.body.questionId}`
         );
         await Question.findOne({
-            _id: req.body.question_id,
+            _id: { $eq: req.body.question_id },
         })
             .exec()
             .then(async (question) => {
@@ -448,12 +458,12 @@ router.post("/switchQuestionOnlineStatus", async (req, res) => {
                 } else {
                     await Question.updateOne(
                         {
-                            _id: req.body.question_id,
+                            _id: { $eq: req.body.question_id },
                         },
                         {
                             online: !question.online,
                             updated: Date.now(),
-                            userUpdated: req.body.user_id,
+                            userUpdated: typeof req.body.user_id === "string" ? req.body.user_id : "",
                         }
                     )
                         .exec()
