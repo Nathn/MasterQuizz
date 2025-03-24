@@ -2,7 +2,8 @@
 
 An interactive, multiplayer quizz website powered by Angular and Node.
 
-![status](https://img.shields.io/website?url=http%3A%2F%masterquizz.fr)
+![Code scanning workflow Status](https://img.shields.io/github/actions/workflow/status/Nathn/MasterQuizz/github-code-scanning%2Fcodeql?label=code%20scanning)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/Nathn/MasterQuizz/main)
 
 ## Installation
 
