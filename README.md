@@ -2,6 +2,8 @@
 
 An interactive, multiplayer quizz website powered by Angular and Node.
 
+![status](https://img.shields.io/website?url=http%3A%2F%masterquizz.fr)
+
 ## Installation
 
 ### Prerequisites
