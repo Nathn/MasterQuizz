@@ -14,6 +14,7 @@ const websocket = require("./websocket");
 // Express server
 const app = express();
 
+app.set('trust proxy', true);
 app.use(express.json());
 app.use(
     express.urlencoded({
