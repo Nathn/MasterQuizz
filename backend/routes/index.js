@@ -38,7 +38,7 @@ router.use("/", limiter, themeRoutes);
 router.use("/", limiter, userRoutes);
 
 // Serve static files from the Angular app
-router.get("/*", (req, res) => {
+router.get("/{*path}", (req, res) => {
     res.sendFile(path.resolve(__dirname, "../../dist/master-quizz/index.html"));
 });
 
